@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles/main.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
+      rel="stylesheet"
+    />
+    <title>Pathfinder - Main</title>
+    <link rel="icon" href=".img/icon.png" />
+  </head>
+
+  <body>
+    <div id="headingbar">
+      <h1 id="heading">PATHFINDER ></h1>
+
+      <a href="index.html">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Menu
+      </a>
+      <h1 id="heading">|</h1>
+      <a href="javascript:reset_board();">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Reset
+      </a>
+      <h1 id="heading">|</h1>
+      <a href="javascript:restart_board();">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Restart
+      </a>
+      <h1 id="heading">|</h1>
+      <a href="javascript:save_board();">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Save
+      </a>
+      <h1 id="heading">|</h1>
+      <a href="javascript:import_to_board();">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Import
+      </a>
+      <h1 id="heading">|</h1>
+      <a href="javascript:start_pathfinding();">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        PATHFIND
+      </a>
+    </div>
+
+    <div id="dynamic_table" oncontextmenu="return!1"></div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/dijstras.js"></script>
+    <script src="scripts/save.js"></script>
+  </body>
+</html>
