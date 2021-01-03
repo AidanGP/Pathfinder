@@ -1,3 +1,7 @@
+:root {
+  --main-font: #8af542;
+}
+
 html,
 body {
   margin: 0;
@@ -15,24 +19,29 @@ body {
   -o-user-select: none;
   user-select: none;
 }
-
+#title {
+  padding: 150px;
+  border-color: black;
+  border-style: dashed;
+}
 a {
   position: relative;
-  display: inline-block;
+  display: block;
   padding: 15px;
   margin-left: 6px;
-  color: #fca311;
+  color: var(--main-font);
   text-transform: uppercase;
   text-decoration: none;
   font-size: 24px;
   overflow: hidden;
   transition: 0.2s;
+  text-align: center;
 }
 
 a:hover {
   color: #000000;
-  background: #fca311;
-  box-shadow: 0 0 10px #fca311, 0 0 40px #fca311, 0 0 80px #fca311;
+  background: var(--main-font);
+  box-shadow: 0 0 10px var(--main-font), 0 0 40px var(--main-font), 0 0 80px var(--main-font);
   transition-delay: 1s;
 }
 
@@ -45,7 +54,7 @@ a span:nth-child(1) {
   left: -100%;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #fca311);
+  background: linear-gradient(90deg, transparent, var(--main-font));
 }
 a:hover span:nth-child(1) {
   left: 100%;
@@ -56,7 +65,7 @@ a span:nth-child(3) {
   right: -100%;
   width: 100%;
   height: 2px;
-  background: linear-gradient(270deg, transparent, #fca311);
+  background: linear-gradient(270deg, transparent, var(--main-font));
 }
 a:hover span:nth-child(3) {
   right: 100%;
@@ -68,7 +77,7 @@ a span:nth-child(2) {
   right: 0%;
   width: 2px;
   height: 100%;
-  background: linear-gradient(180deg, transparent, #fca311);
+  background: linear-gradient(180deg, transparent, var(--main-font));
 }
 a:hover span:nth-child(2) {
   top: 100%;
@@ -80,10 +89,43 @@ a span:nth-child(4) {
   left: 0%;
   width: 2px;
   height: 100%;
-  background: linear-gradient(360deg, transparent, #fca311);
+  background: linear-gradient(360deg, transparent, var(--main-font));
 }
 a:hover span:nth-child(4) {
   bottom: 100%;
   transition: 1s;
   transition-delay: 0.25s;
+}
+#myRange {
+  display: block;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: var(--main-font);
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: var(--main-font);
+  cursor: pointer;
 }
