@@ -1,6 +1,6 @@
 const CELL_COLOR = "rgb(229, 229, 229)";
 const BLOCK_COLOR = "rgb(0, 0, 0)";
-const NODE_COLOR = "rgb(252, 163, 17)";
+const NODE_COLOR = "rgb(30, 215, 96)";
 const PATH_COLOR = "rgb(255, 255, 255)";
 const VISUAL_COLORS = [
     "rgb(116, 0, 184)  ",

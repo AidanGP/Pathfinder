@@ -1,6 +1,6 @@
 const cell_color = "rgb(229, 229, 229)";
 const block_color = "rgb(0, 0, 0)";
-const node_color = "rgb(252, 163, 17)";
+const node_color = "rgb(30, 215, 96)";
 const path_color = "rgb(255, 255, 255)";
 function getBlockedCells(grid_board) {
     let blocked_cells = [];

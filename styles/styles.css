@@ -1,5 +1,5 @@
 :root {
-  --main-font: #8af542;
+  --main-font: #1ed760;
 }
 
 html,
@@ -10,7 +10,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #ffffff;
+  background: #e5e5e5;
   font-family: "Staatliches", cursive;
 
   -moz-user-select: -moz-none;
@@ -39,7 +39,7 @@ a {
 }
 
 a:hover {
-  color: #000000;
+  color: #000;
   background: var(--main-font);
   box-shadow: 0 0 10px var(--main-font), 0 0 40px var(--main-font), 0 0 80px var(--main-font);
   transition-delay: 1s;

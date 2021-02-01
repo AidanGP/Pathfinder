@@ -12,66 +12,29 @@
       rel="stylesheet"
     />
     <title>Pathfinder - Main</title>
-    <link rel="icon" href=".img/icon.png" />
+    <link rel="icon" href="img/favicon.ico" />
   </head>
 
   <body>
     <div id="headingbar">
       <h1 id="heading">PATHFINDER ></h1>
 
-      <a href="index.html">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Menu
-      </a>
-      <h1 id="heading">|</h1>
-      <a href="javascript:reset_board();">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Reset
-      </a>
-      <h1 id="heading">|</h1>
-      <a href="javascript:restart_board();">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Restart
-      </a>
-      <h1 id="heading">|</h1>
-      <a href="javascript:save_board();">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Save
-      </a>
-      <h1 id="heading">|</h1>
-      <a href="javascript:import_to_board();">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Import
-      </a>
-      <h1 id="heading">|</h1>
-      <a href="javascript:start_pathfinding();">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        PATHFIND
-      </a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="javascript:reset_board()">Reset</a></li>
+        <li><a href="javascript:restart_board()">Restart</a></li>
+        <li><a href="javascript:save_board()">Save</a></li>
+        <li><a href="javascript:someFunction()">Import</a></li>
+        <li><a href="javascript:start_pathfinding()">Pathfind</a></li>
+      </ul>
+
+
     </div>
+    
 
     <div id="dynamic_table" oncontextmenu="return!1"></div>
 
     <script src="scripts/main.js"></script>
     <script src="scripts/dijstras.js"></script>
-    <script src="scripts/save.js"></script>
   </body>
 </html>
