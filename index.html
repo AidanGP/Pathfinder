@@ -1,29 +1,34 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="styles/styles.css" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
-      rel="stylesheet"
-    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
     <title>Pathfinder</title>
-
     <link rel="icon" href="img/favicon.ico" />
   </head>
 
   <body>
-
-    <div id="title">
     <h1 id="heading">< PATHFINDER ></h1>
+    <div id="headingbar">
+      
 
-    <a href="main.html">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      Continue
-    </a>
+      <ul>
+        <li><a href="javascript:reset_board()">Reset</a></li>
+        <li><a href="javascript:restart_board()">Restart</a></li>
+        <li><a href="javascript:save_board()">Save</a></li>
+        <li><a href="javascript:someFunction()">Import</a></li>
+        <li><a href="javascript:start_pathfinding()">Pathfind</a></li>
+      </ul>
+
+
     </div>
     
+
+    <div id="dynamic_table" oncontextmenu="return!1"></div>
+
+    <script src="scripts/main.js"></script>
+    <script src="scripts/dijstras.js"></script>
   </body>
 </html>

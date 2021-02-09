@@ -201,4 +201,3 @@ function import_to_board() {
 // });
 setGrid();
 setGridCells();
-//# sourceMappingURL=main.js.map

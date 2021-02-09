@@ -140,4 +140,3 @@ function main(x_dimension, y_dimension, board) {
     const result = dijstras(graph, nodes, blocked);
     return result;
 }
-//# sourceMappingURL=dijstras.js.map
