@@ -1,6 +1,6 @@
 const cell_color = "rgb(229, 229, 229)";
 const block_color = "rgb(0, 0, 0)";
-const node_color = "rgb(30, 215, 96)";
+const node_color = "rgb(252, 163, 17)";
 const path_color = "rgb(255, 255, 255)";
 function getBlockedCells(grid_board) {
     let blocked_cells = [];
@@ -95,11 +95,16 @@ function dijstras(graph, node_cells, blocked_cells) {
     while (Object.keys(unseenNodes).length !== 0) {
         var minNode = undefined;
         for (var node in unseenNodes) {
-            if (minNode === undefined || shortest_distance[node] < shortest_distance[minNode]) {
-                if (!(blocked_cells.includes(node))) {
-                    minNode = node;
+            if (minNode === undefined) {
+                minNode = node;
+                if (!(minNode === start || visualisation.includes(goal) || blocked_cells.includes(parseInt(minNode)))) {
                     visualisation.push(minNode);
-
+                }
+            }
+            else if (shortest_distance[node] < shortest_distance[minNode]) {
+                minNode = node;
+                if (!(minNode === start || visualisation.includes(goal) || blocked_cells.includes(parseInt(minNode)))) {
+                    visualisation.push(minNode);
                 }
             }
         }
@@ -113,7 +118,6 @@ function dijstras(graph, node_cells, blocked_cells) {
         });
         delete unseenNodes[minNode];
     }
-    console.log(visualisation);
     let currentNode = goal;
     while (currentNode !== start) {
         path.unshift(currentNode);

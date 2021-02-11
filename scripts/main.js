@@ -1,6 +1,6 @@
 const CELL_COLOR = "rgb(229, 229, 229)";
 const BLOCK_COLOR = "rgb(0, 0, 0)";
-const NODE_COLOR = "rgb(30, 215, 96)";
+const NODE_COLOR = "rgb(252, 163, 17)";
 const PATH_COLOR = "rgb(255, 255, 255)";
 const VISUAL_COLORS = [
     "rgb(116, 0, 184)  ",
@@ -119,7 +119,6 @@ function node_check() {
 }
 async function start_pathfinding() {
     let x = main(SIZE_X, SIZE_Y, node_check());
-    //console.log(x);
     var visualisation = x['visual'];
     var visual = visualisation.slice(1, visualisation.length - 1);
     await plot_visualisation(visual);
