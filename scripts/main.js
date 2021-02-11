@@ -17,6 +17,7 @@ const VISUAL_COLORS = [
 let cycle = 0;
 const SIZE_X = Math.floor($(window).width() / 50);
 const SIZE_Y = Math.floor($(window).height() / 50);
+console.log("X SIZE ~", SIZE_X, "Y SIZE ~", SIZE_Y);
 function element(elementID) {
     return document.getElementById(elementID);
 }

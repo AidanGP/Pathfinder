@@ -36,7 +36,6 @@ function setWeights(x_dimension, y_dimension, index, is_blocked, grid) {
     const row = Math.floor(index / x_dimension);
     const column = index - (x_dimension * row);
     let affected = [];
-    var empty_grid = grid;
     var weight = 1;
     if (is_blocked) {
         weight = Infinity;
@@ -80,6 +79,7 @@ function setGraph(x_dimension, y_dimension, blocked, grid) {
 }
 function dijstras(graph, node_cells, blocked_cells) {
     let nodes = node_cells;
+    console.log(graph);
     const start = nodes[0].toString();
     const goal = nodes[1].toString();
     let shortest_distance = {};
@@ -95,16 +95,11 @@ function dijstras(graph, node_cells, blocked_cells) {
     while (Object.keys(unseenNodes).length !== 0) {
         var minNode = undefined;
         for (var node in unseenNodes) {
-            if (minNode === undefined) {
-                minNode = node;
-                if (!(minNode === start || visualisation.includes(goal) || blocked_cells.includes(parseInt(minNode)))) {
+            if (minNode === undefined || shortest_distance[node] < shortest_distance[minNode]) {
+                if (!(blocked_cells.includes(node))) {
+                    minNode = node;
                     visualisation.push(minNode);
-                }
-            }
-            else if (shortest_distance[node] < shortest_distance[minNode]) {
-                minNode = node;
-                if (!(minNode === start || visualisation.includes(goal) || blocked_cells.includes(parseInt(minNode)))) {
-                    visualisation.push(minNode);
+
                 }
             }
         }
@@ -118,21 +113,17 @@ function dijstras(graph, node_cells, blocked_cells) {
         });
         delete unseenNodes[minNode];
     }
+    console.log(visualisation);
     let currentNode = goal;
     while (currentNode !== start) {
-        try {
-            path.unshift(currentNode);
-            currentNode = predecessor[currentNode];
-        }
-        catch (err) {
-            alert('There is no valid path, please try again.');
-            return [];
-        }
+        path.unshift(currentNode);
+        currentNode = predecessor[currentNode];
     }
     path.unshift(start);
     return { 'visual': visualisation, 'path': path };
 }
 function main(x_dimension, y_dimension, board) {
+    console.log("X DIM ~", x_dimension, "Y DIM ~", y_dimension);
     const blocked = getBlockedCells(board);
     const nodes = getNodeCells(board);
     const empty_board = setEmptryGrid(x_dimension, y_dimension);
