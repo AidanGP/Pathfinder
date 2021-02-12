@@ -126,7 +126,6 @@ function dijstras(graph, node_cells, blocked_cells) {
     return { 'visual': visualisation, 'path': path };
 }
 function main(x_dimension, y_dimension, board) {
-    console.log("X DIM ~", x_dimension, "Y DIM ~", y_dimension);
     const blocked = getBlockedCells(board);
     const nodes = getNodeCells(board);
     const empty_board = setEmptryGrid(x_dimension, y_dimension);
