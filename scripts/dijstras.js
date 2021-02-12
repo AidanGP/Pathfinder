@@ -1,24 +1,24 @@
-const cell_color = "rgb(229, 229, 229)";
-const block_color = "rgb(0, 0, 0)";
-const node_color = "rgb(252, 163, 17)";
-const path_color = "rgb(255, 255, 255)";
 function getBlockedCells(grid_board) {
     let blocked_cells = [];
     for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == block_color) {
+        if (grid_board[index] == BLOCK_COLOR) {
             blocked_cells.push(index);
         }
     }
     return blocked_cells;
 }
 function getNodeCells(grid_board) {
-    let node_cells = [];
+    var start_node = undefined;
+    var end_node = undefined;
     for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == node_color) {
-            node_cells.push(index);
+        if (grid_board[index] == E_NODE_COLOR) {
+            start_node = index;
+        }
+        else if (grid_board[index] == S_NODE_COLOR) {
+            end_node = index;
         }
     }
-    return node_cells;
+    return [end_node, start_node];
 }
 function setEmptryGrid(x_dimension, y_dimension) {
     let grid = [];
@@ -79,7 +79,6 @@ function setGraph(x_dimension, y_dimension, blocked, grid) {
 }
 function dijstras(graph, node_cells, blocked_cells) {
     let nodes = node_cells;
-    console.log(graph);
     const start = nodes[0].toString();
     const goal = nodes[1].toString();
     let shortest_distance = {};

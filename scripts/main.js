@@ -1,40 +1,25 @@
-const CELL_COLOR = "rgb(229, 229, 229)";
-const BLOCK_COLOR = "rgb(0, 0, 0)";
-const NODE_COLOR = "rgb(252, 163, 17)";
-const PATH_COLOR = "rgb(255, 255, 255)";
-const VISUAL_COLORS = [
-    "rgb(116, 0, 184)  ",
-    "rgb(105, 48, 195) ",
-    "rgb(94, 96, 206)  ",
-    "rgb(83, 144, 217) ",
-    "rgb(78, 168, 222) ",
-    "rgb(72, 191, 227) ",
-    "rgb(86, 207, 225) ",
-    "rgb(100, 223, 223)",
-    "rgb(114, 239, 221)",
-    "rgb(128, 255, 219)",
-];
+var node_mode = false;
+var start_nodes = 0;
+var end_nodes = 0;
+
 let cycle = 0;
-const SIZE_X = Math.floor($(window).width() / 50);
-const SIZE_Y = Math.floor($(window).height() / 50);
-console.log("X SIZE ~", SIZE_X, "Y SIZE ~", SIZE_Y);
-function element(elementID) {
-    return document.getElementById(elementID);
-}
+
+
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
 function setGrid() {
-    let tableDiv = element('dynamic_table');
-    let table_grid = document.createElement('TABLE');
-    let tableBody = document.createElement('TBODY');
-    tableDiv.innerHTML = '';
-    table_grid.style.tableLayout = 'fixed';
-    table_grid.style.fontSize = '10px';
-    table_grid.appendChild(tableBody);
+    const TABLE_DIV = document.getElementById('dynamic_table');
+    const TABLE_GRID = document.createElement('TABLE');
+    const TABLE_BODY = document.createElement('TBODY');
+    TABLE_DIV.innerHTML = '';
+    TABLE_GRID.style.tableLayout = 'fixed';
+    TABLE_GRID.style.fontSize = '10px';
+    TABLE_GRID.appendChild(TABLE_BODY);
     for (let table_row = 0; table_row < SIZE_Y; table_row++) {
         let table_row_element = document.createElement('TR');
-        tableBody.appendChild(table_row_element);
+        TABLE_BODY.appendChild(table_row_element);
         for (let table_column = 0; table_column < SIZE_X; table_column++) {
             const table_cell_ID = table_row + ',' + table_column;
             let table_cell = document.createElement('TD');
@@ -44,69 +29,87 @@ function setGrid() {
             table_row_element.appendChild(table_cell);
         }
     }
-    table_grid.setAttribute('id', 'cell_grid');
-    tableDiv.appendChild(table_grid);
+    TABLE_GRID.setAttribute('id', 'cell_grid');
+    TABLE_DIV.appendChild(TABLE_GRID);
 }
+
 function setGridCells() {
-    let table_grid = element('cell_grid');
-    for (let row = 0; row < table_grid.rows.length; row++) {
-        for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
-            const table_cell = table_grid.rows[row].cells[col];
-            const mouse_left_click = 1;
-            const mouse_middle_click = 2;
-            const mouse_right_click = 3;
-            table_cell.onmousemove = function (event) {
-                const mouse_btn = event.which;
-                if (mouse_btn == mouse_left_click) {
-                    onLeftClick(this);
+    const TABLE_GRID = document.getElementById('cell_grid');
+    for (let row = 0; row < TABLE_GRID.rows.length; row++) {
+        for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
+            const TABLE_CELL = TABLE_GRID.rows[row].cells[col];
+
+            TABLE_CELL.onmousemove = function (event) {
+                const MOUSE_BTN = event.which;
+                
+                if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
+                    onLeftClick(this, node_mode);
                 }
-                else if (mouse_btn == mouse_right_click) {
-                    onRightClick(this);
+                else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
+                    onRightClick(this, node_mode);
                 }
-            };
-            table_cell.onmousedown = function (event) {
-                const mouse_btn = event.which;
-                if (mouse_btn == mouse_left_click) {
-                    onLeftClick(this);
-                }
-                else if (mouse_btn == mouse_middle_click) {
-                    onMiddleClick(this);
-                }
-                else if (mouse_btn == mouse_right_click) {
-                    onRightClick(this);
+            }
+ 
+            TABLE_CELL.onmousedown = function (event) {
+                const MOUSE_BTN = event.which;
+                
+                if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
+                    onLeftClick(this, node_mode);
+                } else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
+                    onRightClick(this, node_mode);
                 }
             };
         }
     }
 }
-function onLeftClick(table_cell) {
-    let table_cell_style = element(table_cell.innerHTML).style;
+
+function swap_node_mode() {
+    const SWAP_BTN = document.getElementById("swapper");
+    if (node_mode) {
+        node_mode = false;
+        SWAP_BTN.innerHTML = "place nodes";
+
+    } else {
+        node_mode = true;
+        SWAP_BTN.innerHTML = "place blocks";
+    }
+}
+
+function onLeftClick(table_cell, place_nodes) {
+    let table_cell_style = document.getElementById(table_cell.innerHTML).style;
     const current_cell_color = $(table_cell).css('backgroundColor');
-    if (current_cell_color == CELL_COLOR) {
+    if (!place_nodes && current_cell_color == CELL_COLOR) {
         table_cell_style.backgroundColor = BLOCK_COLOR;
         table_cell_style.color = 'transparent';
-    }
-}
-function onRightClick(table_cell) {
-    let table_cell_style = element(table_cell.innerHTML).style;
-    const current_cell_color = $(table_cell).css('backgroundColor');
-    if (current_cell_color != CELL_COLOR) {
-        table_cell_style.backgroundColor = CELL_COLOR;
-        table_cell_style.color = 'transparent';
-    }
-}
-function onMiddleClick(table_cell) {
-    let table_cell_style = element(table_cell.innerHTML).style;
-    const current_cell_color = $(table_cell).css('backgroundColor');
-    if (current_cell_color == CELL_COLOR) {
-        const node_counter = 1;
-        //add a node counting function
-        if (node_counter < 2) {
-            table_cell_style.backgroundColor = NODE_COLOR;
+    } else if (current_cell_color == CELL_COLOR && start_nodes == 0) {
+            table_cell_style.backgroundColor = S_NODE_COLOR;
             table_cell_style.color = 'transparent';
+            start_nodes ++;
+    }
+}
+
+function onRightClick(table_cell, place_nodes) {
+    let table_cell_style = document.getElementById(table_cell.innerHTML).style;
+    const current_cell_color = $(table_cell).css('backgroundColor');
+    if (!place_nodes) {
+        if (current_cell_color != CELL_COLOR) {
+            table_cell_style.backgroundColor = CELL_COLOR;
+            table_cell_style.color = 'transparent';
+        }
+        if (current_cell_color == S_NODE_COLOR) {
+            start_nodes --;
+        } else if (current_cell_color == E_NODE_COLOR) {
+            end_nodes --;
+        }
+    } else {
+        if (current_cell_color == CELL_COLOR && end_nodes == 0) {
+            table_cell_style.backgroundColor = E_NODE_COLOR;
+            table_cell_style.color = 'transparent';
+            end_nodes ++;
         }
     }
 }
+
 function node_check() {
     let table_grid_array = [];
     $('table#cell_grid tr').each(function () {
@@ -117,6 +120,7 @@ function node_check() {
     });
     return table_grid_array;
 }
+
 async function start_pathfinding() {
     let x = main(SIZE_X, SIZE_Y, node_check());
     var visualisation = x['visual'];
@@ -126,13 +130,14 @@ async function start_pathfinding() {
     var path_true = path.slice(1, path.length - 1);
     await plot_path(path_true, PATH_COLOR);
 }
+
 async function plot_path(path, color) {
-    let table = element('cell_grid');
+    let table = document.getElementById('cell_grid');
     for (var index = 0; index < path.length; index++) {
         var cell_index = parseInt(path[index]);
         const row = Math.floor(cell_index / SIZE_X);
         const column = cell_index - (SIZE_X * row);
-        var cell = element(table.rows[row].cells[column].innerHTML);
+        var cell = document.getElementById(table.rows[row].cells[column].innerHTML);
         cell.style.color = color;
         cell.style.backgroundColor = color;
         if (color == PATH_COLOR) {
@@ -141,6 +146,7 @@ async function plot_path(path, color) {
     }
     await sleep(50);
 }
+
 async function plot_visualisation(visual) {
     var increment = 1;
     var i, j, temparray, chunk = Math.ceil(visual.length / 10);
@@ -154,23 +160,28 @@ async function plot_visualisation(visual) {
     }
     cycle = 0;
 }
+
 function reset_board() {
     setGrid();
     setGridCells();
+    end_nodes = 0;
+    start_nodes = 0;
 }
+
 function restart_board() {
-    let table_grid = element('cell_grid');
+    let table_grid = document.getElementById('cell_grid');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
             const table_cell = table_grid.rows[row].cells[col];
             const cell_bg = table_cell.style.backgroundColor;
-            if ((cell_bg != BLOCK_COLOR) && (cell_bg != NODE_COLOR) && (cell_bg != CELL_COLOR)) {
+            if ((cell_bg != BLOCK_COLOR) && (cell_bg != S_NODE_COLOR) && (cell_bg != CELL_COLOR) && (cell_bg != E_NODE_COLOR)) {
                 table_cell.style.color = CELL_COLOR;
                 table_cell.style.backgroundColor = CELL_COLOR;
             }
         }
     }
 }
+
 function save_board() {
     var file_name = prompt("Please enter a file name", "File Name");
     if (file_name != null) {
@@ -184,6 +195,7 @@ function save_board() {
         URL.revokeObjectURL(a.href);
     }
 }
+
 function import_to_board() {
     //start pathfinding SIZEX SIZEY save_file
 }

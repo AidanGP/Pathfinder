@@ -64,7 +64,10 @@ select {
   margin: 10px;
   font-family: 'Source Sans Pro', sans-serif;
   text-transform: lowercase;
-  font-size: 16px;
+  font-size: 20px;
+}
+#path-btn {
+  font-weight:bold;
 }
 
 select {
