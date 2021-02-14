@@ -117,11 +117,28 @@ function onRightClick(table_cell, place_nodes) {
 
 function nodeCheck() {
     let table_grid_array = [];
+    let idx = 0;
     $('table#cell_grid tr').each(function () {
         const table_cell = $(this).find('td');
+        table_grid_array.push([]);
         table_cell.each(function () {
-            table_grid_array.push($(this).css('backgroundColor'));
+            var item = undefined;
+            switch ($(this).css('backgroundColor')) {
+                case CELL_COLOR:
+                    item = 0;
+                    break;
+                case BLOCK_COLOR:
+                    item = 1;
+                    break;
+                case S_NODE_COLOR:
+                    item = 2;
+                    break;
+                case E_NODE_COLOR:
+                    item = 3;
+            }
+            table_grid_array[idx].push(item);
         });
+        idx ++;
     });
     return table_grid_array;
 }
@@ -194,14 +211,23 @@ function restartBoard() {
 function saveBoard() {
     var file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const board_contents = nodeCheck().toString();
-        console.log(board_contents);
-        const a = document.createElement('a');
-        const file = new Blob([board_contents]);
-        a.href = URL.createObjectURL(file);
-        a.download = file_name;
+        var twoDiArray = nodeCheck();
+        var csvRows = [];
+        for (var i = 0; i < twoDiArray.length; ++i) {
+            for (var j = 0; j < twoDiArray[i].length; ++j) {
+                twoDiArray[i][j] = '\"' + twoDiArray[i][j] + '\"';  // Handle elements that contain commas
+            }
+            csvRows.push(twoDiArray[i].join(','));
+        }
+
+        var csvString = csvRows.join('\r\n');
+        var a = document.createElement('a');
+        a.href = 'data:attachment/csv,' + csvString;
+        a.target = '_blank';
+        a.download = file_name + '.csv';
+
+        document.body.appendChild(a);
         a.click();
-        URL.revokeObjectURL(a.href);
     }
 }
 
