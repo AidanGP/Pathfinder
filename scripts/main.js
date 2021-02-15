@@ -232,19 +232,10 @@ function saveBoard() {
 }
 
 function importToBoard() {
-    //start pathfinding SIZEX SIZEY save_file
+    //check SIZEX and SIZEY against the size of the csv
+    // if there is a match between the sizes then set the board
+    // else alert('Size mismatch between desired file and window size.')
 }
-// const downloadToFile = (content, filename, contentType) => {
-//   const a = document.createElement('a');
-//   const file = new Blob([content], {type: contentType});
-//   a.href= URL.createObjectURL(file);
-//   a.download = filename;
-//   a.click();
-// 	URL.revokeObjectURL(a.href);
-// };
-// document.querySelector('#btnSave').addEventListener('click', () => {
-//   const textArea = document.querySelector('textarea');
-//   downloadToFile(textArea.value, 'my-new-file.txt', 'text/plain');
-// });
+
 setGrid();
 setGridCells();
