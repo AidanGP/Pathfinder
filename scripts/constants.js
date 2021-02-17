@@ -16,6 +16,15 @@ const E_NODE_ENCODING = 3;
 const MOUSE_LEFT_CLICK = 1;
 const MOUSE_RIGHT_CLICK = 3;
 
+// Window Sizes
+const SIZE_X = Math.floor($(window).width() / 50);
+const SIZE_Y = Math.floor($(window).height() / 50);
+
+// Default Start and End Positions
+const START_AND_FINISH_NODE_ROW = Math.floor(1/2 * SIZE_Y);
+const START_COL = Math.floor(1/5 * SIZE_X);
+const END_COL = Math.floor(4/5 * SIZE_X);
+
 const VISUAL_COLORS = [
     "rgb(116, 0, 184)  ",
     "rgb(105, 48, 195) ",
@@ -29,5 +38,3 @@ const VISUAL_COLORS = [
     "rgb(128, 255, 219)",
 ];
 
-const SIZE_X = Math.floor($(window).width() / 50);
-const SIZE_Y = Math.floor($(window).height() / 50);

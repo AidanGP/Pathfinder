@@ -1,9 +1,3 @@
-var node_mode = false; // Bool : able to place nodes or not
-var start_node = false; // Bool : whether the start node is placed
-var end_node = false; // Bool : whether the end node is placed
-
-let cycle = 0; // Int : Iterator used in visualisation
-
 function sleep(ms) {
     // Sleep for a number of milliseconds
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -18,7 +12,7 @@ function setGrid() {
     TABLE_GRID.style.tableLayout = 'fixed';
     TABLE_GRID.style.fontSize = '10px';
     TABLE_GRID.appendChild(TABLE_BODY);
-    for (let table_row = 0; table_row < SIZE_Y; table_row++) {
+    for (let table_row = 0; table_row < SIZE_Y; table_row ++) {
         let table_row_element = document.createElement('TR');
         TABLE_BODY.appendChild(table_row_element);
         for (let table_column = 0; table_column < SIZE_X; table_column++) {
@@ -27,6 +21,12 @@ function setGrid() {
             let table_cell_label = document.createTextNode(table_cell_ID);
             table_cell.appendChild(table_cell_label);
             table_cell.setAttribute('id', table_cell_ID);
+            table_cell.style.color = 'transparent';
+            if (table_row == START_AND_FINISH_NODE_ROW && table_column == START_COL) {
+                table_cell.style.backgroundColor = S_NODE_COLOR;
+            } else if (table_row == START_AND_FINISH_NODE_ROW && table_column == END_COL ) {
+                table_cell.style.backgroundColor = E_NODE_COLOR;
+            }
             table_row_element.appendChild(table_cell);
         }
     }
@@ -45,10 +45,10 @@ function setGridCells() {
                 const MOUSE_BTN = event.which;
                 
                 if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
-                    onLeftClick(this, node_mode);
+                    onLeftClick(this);
                 }
                 else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
-                    onRightClick(this, node_mode);
+                    onRightClick(this);
                 }
             }
  
@@ -56,62 +56,30 @@ function setGridCells() {
                 const MOUSE_BTN = event.which;
                 
                 if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
-                    onLeftClick(this, node_mode);
+                    onLeftClick(this);
                 } else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
-                    onRightClick(this, node_mode);
+                    onRightClick(this);
                 }
             };
         }
     }
 }
 
-function swapNodeMode() {
-    // Swap between block placing and node placing modes
-    const SWAP_BTN = document.getElementById('swapper');
-    if (node_mode) {
-        node_mode = false;
-        SWAP_BTN.innerHTML = 'place nodes';
-        SWAP_BTN.style.color = 'black';
-
-    } else {
-        node_mode = true;
-        SWAP_BTN.innerHTML = 'place blocks';
-        SWAP_BTN.style.color = S_NODE_COLOR;
-    }
-}
-
-function onLeftClick(table_cell, place_nodes) {
+function onLeftClick(table_cell) {
     let table_cell_style = document.getElementById(table_cell.innerHTML).style;
     const current_cell_color = $(table_cell).css('backgroundColor');
-    if (!place_nodes && current_cell_color == CELL_COLOR) {
+    if (current_cell_color == CELL_COLOR) {
         table_cell_style.backgroundColor = BLOCK_COLOR;
         table_cell_style.color = 'transparent';
-    } else if (current_cell_color == CELL_COLOR && start_node == false) {
-            table_cell_style.backgroundColor = S_NODE_COLOR;
-            table_cell_style.color = 'transparent';
-            start_node = true;
     }
 }
 
-function onRightClick(table_cell, place_nodes) {
+function onRightClick(table_cell) {
     let table_cell_style = document.getElementById(table_cell.innerHTML).style;
     const current_cell_color = $(table_cell).css('backgroundColor');
-    if (!place_nodes) {
-        if (current_cell_color != CELL_COLOR) {
-            table_cell_style.backgroundColor = CELL_COLOR;
-            table_cell_style.color = 'transparent';
-        }
-        if (current_cell_color == S_NODE_COLOR) {
-            start_node = false;
-        } else if (current_cell_color == E_NODE_COLOR) {
-            end_node = false;
-        }
-    } else {
-        if (current_cell_color == CELL_COLOR && end_node == false) {
-            table_cell_style.backgroundColor = E_NODE_COLOR;
-            table_cell_style.color = 'transparent';
-            end_node = true;
-        }
+    if (current_cell_color != CELL_COLOR) {
+        table_cell_style.backgroundColor = CELL_COLOR;
+        table_cell_style.color = 'transparent';
     }
 }
 
@@ -141,17 +109,13 @@ function nodeCheck() {
 }
 
 async function startPathfinding() {
-    if (start_node && end_node) { 
-        const x = main(SIZE_X, SIZE_Y, nodeCheck());
-        const visualisation = x['visual'];
-        const visual = visualisation.slice(1, visualisation.length - 1);
-        await plotVisualisation(visual, false);
-        const path = x['path'];
-        const path_true = path.slice(1, path.length - 1);
-        await plotVisualisation(path_true, true);
-    } else {
-        alert('Please place a start and end node :)');
-    }
+    const x = main(SIZE_X, SIZE_Y, nodeCheck());
+    const visualisation = x['visual'];
+    const visual = visualisation.slice(1, visualisation.length - 1);
+    await plotVisualisation(visual, false);
+    const path = x['path'];
+    const path_true = path.slice(1, path.length - 1);
+    await plotVisualisation(path_true, true);
 }
 
 async function plotVisualisation(visual, is_path) {
@@ -175,8 +139,7 @@ async function plotVisualisation(visual, is_path) {
 function resetBoard() {
     setGrid();
     setGridCells();
-    end_node = false;
-    start_node = false;
+
 }
 
 function restartBoard() {
@@ -184,8 +147,7 @@ function restartBoard() {
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
             const table_cell = table_grid.rows[row].cells[col];
-            const cell_bg = table_cell.style.backgroundColor;
-            if ((cell_bg != BLOCK_COLOR) && (cell_bg != S_NODE_COLOR) && (cell_bg != CELL_COLOR) && (cell_bg != E_NODE_COLOR)) {
+            if (table_cell.className == 'node-visited' || table_cell.className == 'node-shortest-path') {
                 table_cell.style.color = 'transparent';
                 table_cell.style.backgroundColor = CELL_COLOR;
                 table_cell.className = '';
@@ -211,17 +173,6 @@ function saveBoard() {
 function importToBoard() {
     //start pathfinding SIZEX SIZEY save_file
 }
-// const downloadToFile = (content, filename, contentType) => {
-//   const a = document.createElement('a');
-//   const file = new Blob([content], {type: contentType});
-//   a.href= URL.createObjectURL(file);
-//   a.download = filename;
-//   a.click();
-// 	URL.revokeObjectURL(a.href);
-// };
-// document.querySelector('#btnSave').addEventListener('click', () => {
-//   const textArea = document.querySelector('textarea');
-//   downloadToFile(textArea.value, 'my-new-file.txt', 'text/plain');
-// });
+
 setGrid();
 setGridCells();
