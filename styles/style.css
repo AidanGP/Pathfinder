@@ -39,6 +39,7 @@ body {
   opacity: 0.8;
 }
 #dynamic_table table {
+  background-color: #e5e5e5;
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
