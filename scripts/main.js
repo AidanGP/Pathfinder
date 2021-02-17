@@ -1,16 +1,15 @@
-var node_mode = false; // Bool : able to place nodes or not
-var start_node = false; // Bool : whether the start node is placed
-var end_node = false; // Bool : whether the end node is placed
+var node_mode = false;
+var start_nodes = 0;
+var end_nodes = 0;
 
-let cycle = 0; // Int : Iterator used in visualisation
+let cycle = 0;
+
 
 function sleep(ms) {
-    // Sleep for a number of milliseconds
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function setGrid() {
-    // Initialise the grid
     const TABLE_DIV = document.getElementById('dynamic_table');
     const TABLE_GRID = document.createElement('TABLE');
     const TABLE_BODY = document.createElement('TBODY');
@@ -35,7 +34,6 @@ function setGrid() {
 }
 
 function setGridCells() {
-    // Apply all of the mouse listeners for the grid
     const TABLE_GRID = document.getElementById('cell_grid');
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
         for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
@@ -65,18 +63,15 @@ function setGridCells() {
     }
 }
 
-function swapNodeMode() {
-    // Swap between block placing and node placing modes
-    const SWAP_BTN = document.getElementById('swapper');
+function swap_node_mode() {
+    const SWAP_BTN = document.getElementById("swapper");
     if (node_mode) {
         node_mode = false;
-        SWAP_BTN.innerHTML = 'place nodes';
-        SWAP_BTN.style.color = 'black';
+        SWAP_BTN.innerHTML = "place nodes";
 
     } else {
         node_mode = true;
-        SWAP_BTN.innerHTML = 'place blocks';
-        SWAP_BTN.style.color = S_NODE_COLOR;
+        SWAP_BTN.innerHTML = "place blocks";
     }
 }
 
@@ -86,10 +81,10 @@ function onLeftClick(table_cell, place_nodes) {
     if (!place_nodes && current_cell_color == CELL_COLOR) {
         table_cell_style.backgroundColor = BLOCK_COLOR;
         table_cell_style.color = 'transparent';
-    } else if (current_cell_color == CELL_COLOR && start_node == false) {
+    } else if (current_cell_color == CELL_COLOR && start_nodes == 0) {
             table_cell_style.backgroundColor = S_NODE_COLOR;
             table_cell_style.color = 'transparent';
-            start_node = true;
+            start_nodes ++;
     }
 }
 
@@ -102,20 +97,20 @@ function onRightClick(table_cell, place_nodes) {
             table_cell_style.color = 'transparent';
         }
         if (current_cell_color == S_NODE_COLOR) {
-            start_node = false;
+            start_nodes --;
         } else if (current_cell_color == E_NODE_COLOR) {
-            end_node = false;
+            end_nodes --;
         }
     } else {
-        if (current_cell_color == CELL_COLOR && end_node == false) {
+        if (current_cell_color == CELL_COLOR && end_nodes == 0) {
             table_cell_style.backgroundColor = E_NODE_COLOR;
             table_cell_style.color = 'transparent';
-            end_node = true;
+            end_nodes ++;
         }
     }
 }
 
-function nodeCheck() {
+function node_check() {
     let table_grid_array = [];
     let idx = 0;
     $('table#cell_grid tr').each(function () {
@@ -143,21 +138,17 @@ function nodeCheck() {
     return table_grid_array;
 }
 
-async function startPathfinding() {
-    if (start_node && end_node) { 
-        let x = main(SIZE_X, SIZE_Y, nodeCheck());
-        var visualisation = x['visual'];
-        var visual = visualisation.slice(1, visualisation.length - 1);
-        await plotVisualisation(visual);
-        var path = x['path'];
-        var path_true = path.slice(1, path.length - 1);
-        await plotPath(path_true, PATH_COLOR);
-    } else {
-        alert('Please place a start and end node :)');
-    }
+async function start_pathfinding() {
+    let x = main(SIZE_X, SIZE_Y, node_check());
+    var visualisation = x['visual'];
+    var visual = visualisation.slice(1, visualisation.length - 1);
+    await plot_visualisation(visual);
+    var path = x['path'];
+    var path_true = path.slice(1, path.length - 1);
+    await plot_path(path_true, PATH_COLOR);
 }
 
-async function plotPath(path, color) {
+async function plot_path(path, color) {
     let table = document.getElementById('cell_grid');
     for (var index = 0; index < path.length; index++) {
         var cell_index = parseInt(path[index]);
@@ -173,12 +164,12 @@ async function plotPath(path, color) {
     await sleep(50);
 }
 
-async function plotVisualisation(visual) {
+async function plot_visualisation(visual) {
     var increment = 1;
     var i, j, temparray, chunk = Math.ceil(visual.length / 10);
     for (i = 0, j = visual.length; i < j; i += chunk) {
         temparray = visual.slice(i, i + chunk);
-        await plotPath(temparray, VISUAL_COLORS[cycle]);
+        await plot_path(temparray, VISUAL_COLORS[cycle]);
         cycle += increment;
         if (cycle >= 8) {
             increment = -1;
@@ -187,14 +178,14 @@ async function plotVisualisation(visual) {
     cycle = 0;
 }
 
-function resetBoard() {
+function reset_board() {
     setGrid();
     setGridCells();
-    end_node = false;
-    start_node = false;
+    end_nodes = 0;
+    start_nodes = 0;
 }
 
-function restartBoard() {
+function restart_board() {
     let table_grid = document.getElementById('cell_grid');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
@@ -208,9 +199,10 @@ function restartBoard() {
     }
 }
 
-function saveBoard() {
-    var file_name = prompt('Please enter a file name', 'File Name');
+function save_board() {
+    var file_name = prompt("Please enter a file name", "File Name");
     if (file_name != null) {
+<<<<<<< HEAD
         var twoDiArray = nodeCheck();
         var csvRows = [];
         for (var i = 0; i < twoDiArray.length; ++i) {
@@ -227,14 +219,27 @@ function saveBoard() {
         a.download = file_name + '.csv';
 
         document.body.appendChild(a);
+=======
+        const board_contents = node_check().toString();
+        console.log(board_contents);
+        const a = document.createElement('a');
+        const file = new Blob([board_contents]);
+        a.href = URL.createObjectURL(file);
+        a.download = file_name;
+>>>>>>> parent of ad7cba4 (2/12 final changes)
         a.click();
     }
 }
 
+<<<<<<< HEAD
 function importToBoard() {
     //check SIZEX and SIZEY against the size of the csv
     // if there is a match between the sizes then set the board
     // else alert('Size mismatch between desired file and window size.')
+=======
+function import_to_board() {
+    //start pathfinding SIZEX SIZEY save_file
+>>>>>>> parent of ad7cba4 (2/12 final changes)
 }
 
 setGrid();
