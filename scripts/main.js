@@ -1,15 +1,16 @@
-var node_mode = false;
-var start_nodes = 0;
-var end_nodes = 0;
+var node_mode = false; // Bool : able to place nodes or not
+var start_node = false; // Bool : whether the start node is placed
+var end_node = false; // Bool : whether the end node is placed
 
-let cycle = 0;
-
+let cycle = 0; // Int : Iterator used in visualisation
 
 function sleep(ms) {
+    // Sleep for a number of milliseconds
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function setGrid() {
+    // Initialise the grid
     const TABLE_DIV = document.getElementById('dynamic_table');
     const TABLE_GRID = document.createElement('TABLE');
     const TABLE_BODY = document.createElement('TBODY');
@@ -34,6 +35,7 @@ function setGrid() {
 }
 
 function setGridCells() {
+    // Apply all of the mouse listeners for the grid
     const TABLE_GRID = document.getElementById('cell_grid');
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
         for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
@@ -63,15 +65,18 @@ function setGridCells() {
     }
 }
 
-function swap_node_mode() {
-    const SWAP_BTN = document.getElementById("swapper");
+function swapNodeMode() {
+    // Swap between block placing and node placing modes
+    const SWAP_BTN = document.getElementById('swapper');
     if (node_mode) {
         node_mode = false;
-        SWAP_BTN.innerHTML = "place nodes";
+        SWAP_BTN.innerHTML = 'place nodes';
+        SWAP_BTN.style.color = 'black';
 
     } else {
         node_mode = true;
-        SWAP_BTN.innerHTML = "place blocks";
+        SWAP_BTN.innerHTML = 'place blocks';
+        SWAP_BTN.style.color = S_NODE_COLOR;
     }
 }
 
@@ -81,10 +86,10 @@ function onLeftClick(table_cell, place_nodes) {
     if (!place_nodes && current_cell_color == CELL_COLOR) {
         table_cell_style.backgroundColor = BLOCK_COLOR;
         table_cell_style.color = 'transparent';
-    } else if (current_cell_color == CELL_COLOR && start_nodes == 0) {
+    } else if (current_cell_color == CELL_COLOR && start_node == false) {
             table_cell_style.backgroundColor = S_NODE_COLOR;
             table_cell_style.color = 'transparent';
-            start_nodes ++;
+            start_node = true;
     }
 }
 
@@ -97,145 +102,126 @@ function onRightClick(table_cell, place_nodes) {
             table_cell_style.color = 'transparent';
         }
         if (current_cell_color == S_NODE_COLOR) {
-            start_nodes --;
+            start_node = false;
         } else if (current_cell_color == E_NODE_COLOR) {
-            end_nodes --;
+            end_node = false;
         }
     } else {
-        if (current_cell_color == CELL_COLOR && end_nodes == 0) {
+        if (current_cell_color == CELL_COLOR && end_node == false) {
             table_cell_style.backgroundColor = E_NODE_COLOR;
             table_cell_style.color = 'transparent';
-            end_nodes ++;
+            end_node = true;
         }
     }
 }
 
-function node_check() {
+function nodeCheck() {
     let table_grid_array = [];
-    let idx = 0;
     $('table#cell_grid tr').each(function () {
         const table_cell = $(this).find('td');
-        table_grid_array.push([]);
         table_cell.each(function () {
-            var item = undefined;
+            var encoded_item;
             switch ($(this).css('backgroundColor')) {
                 case CELL_COLOR:
-                    item = 0;
+                    encoded_item = CELL_ENCODING;
                     break;
                 case BLOCK_COLOR:
-                    item = 1;
+                    encoded_item = BLOCK_ENCODING;
                     break;
                 case S_NODE_COLOR:
-                    item = 2;
+                    encoded_item = S_NODE_ENCODING;
                     break;
                 case E_NODE_COLOR:
-                    item = 3;
+                    encoded_item = E_NODE_ENCODING;
             }
-            table_grid_array[idx].push(item);
+            table_grid_array.push(encoded_item);
         });
-        idx ++;
     });
     return table_grid_array;
 }
 
-async function start_pathfinding() {
-    let x = main(SIZE_X, SIZE_Y, node_check());
-    var visualisation = x['visual'];
-    var visual = visualisation.slice(1, visualisation.length - 1);
-    await plot_visualisation(visual);
-    var path = x['path'];
-    var path_true = path.slice(1, path.length - 1);
-    await plot_path(path_true, PATH_COLOR);
+async function startPathfinding() {
+    if (start_node && end_node) { 
+        const x = main(SIZE_X, SIZE_Y, nodeCheck());
+        const visualisation = x['visual'];
+        const visual = visualisation.slice(1, visualisation.length - 1);
+        await plotVisualisation(visual, false);
+        const path = x['path'];
+        const path_true = path.slice(1, path.length - 1);
+        await plotVisualisation(path_true, true);
+    } else {
+        alert('Please place a start and end node :)');
+    }
 }
 
-async function plot_path(path, color) {
+async function plotVisualisation(visual, is_path) {
     let table = document.getElementById('cell_grid');
-    for (var index = 0; index < path.length; index++) {
-        var cell_index = parseInt(path[index]);
+    for (var i = 0; i < visual.length; i ++) {
+        const cell_index = parseInt(visual[i]);
         const row = Math.floor(cell_index / SIZE_X);
         const column = cell_index - (SIZE_X * row);
-        var cell = document.getElementById(table.rows[row].cells[column].innerHTML);
-        cell.style.color = color;
-        cell.style.backgroundColor = color;
-        if (color == PATH_COLOR) {
+        const cell = document.getElementById(table.rows[row].cells[column].innerHTML);
+        
+        if (is_path) {
+            cell.className = 'node-shortest-path';
             await sleep(50);
+        } else {
+            cell.className = 'node-visited';
         }
+        await sleep(3);
     }
-    await sleep(50);
 }
 
-async function plot_visualisation(visual) {
-    var increment = 1;
-    var i, j, temparray, chunk = Math.ceil(visual.length / 10);
-    for (i = 0, j = visual.length; i < j; i += chunk) {
-        temparray = visual.slice(i, i + chunk);
-        await plot_path(temparray, VISUAL_COLORS[cycle]);
-        cycle += increment;
-        if (cycle >= 8) {
-            increment = -1;
-        }
-    }
-    cycle = 0;
-}
-
-function reset_board() {
+function resetBoard() {
     setGrid();
     setGridCells();
-    end_nodes = 0;
-    start_nodes = 0;
+    end_node = false;
+    start_node = false;
 }
 
-function restart_board() {
+function restartBoard() {
     let table_grid = document.getElementById('cell_grid');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
             const table_cell = table_grid.rows[row].cells[col];
             const cell_bg = table_cell.style.backgroundColor;
             if ((cell_bg != BLOCK_COLOR) && (cell_bg != S_NODE_COLOR) && (cell_bg != CELL_COLOR) && (cell_bg != E_NODE_COLOR)) {
-                table_cell.style.color = CELL_COLOR;
+                table_cell.style.color = 'transparent';
                 table_cell.style.backgroundColor = CELL_COLOR;
+                table_cell.className = '';
             }
         }
     }
 }
 
-function save_board() {
-    var file_name = prompt("Please enter a file name", "File Name");
+function saveBoard() {
+    var file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        var twoDiArray = nodeCheck();
-        var csvRows = [];
-        for (var i = 0; i < twoDiArray.length; ++i) {
-            for (var j = 0; j < twoDiArray[i].length; ++j) {
-                twoDiArray[i][j] = '\"' + twoDiArray[i][j] + '\"';  // Handle elements that contain commas
-            }
-            csvRows.push(twoDiArray[i].join(','));
-        }
-
-        var csvString = csvRows.join('\r\n');
-        var a = document.createElement('a');
-        a.href = 'data:attachment/csv,' + csvString;
-        a.target = '_blank';
-        a.download = file_name + '.csv';
-
-        document.body.appendChild(a);
-        const board_contents = node_check().toString();
+        const board_contents = nodeCheck().toString();
         console.log(board_contents);
         const a = document.createElement('a');
         const file = new Blob([board_contents]);
         a.href = URL.createObjectURL(file);
         a.download = file_name;
         a.click();
+        URL.revokeObjectURL(a.href);
     }
 }
 
 function importToBoard() {
-    //check SIZEX and SIZEY against the size of the csv
-    // if there is a match between the sizes then set the board
-    // else alert('Size mismatch between desired file and window size.')
-}
-function import_to_board() {
     //start pathfinding SIZEX SIZEY save_file
 }
-
+// const downloadToFile = (content, filename, contentType) => {
+//   const a = document.createElement('a');
+//   const file = new Blob([content], {type: contentType});
+//   a.href= URL.createObjectURL(file);
+//   a.download = filename;
+//   a.click();
+// 	URL.revokeObjectURL(a.href);
+// };
+// document.querySelector('#btnSave').addEventListener('click', () => {
+//   const textArea = document.querySelector('textarea');
+//   downloadToFile(textArea.value, 'my-new-file.txt', 'text/plain');
+// });
 setGrid();
 setGridCells();

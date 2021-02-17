@@ -1,9 +1,18 @@
+
+// Colors
 const CELL_COLOR = "rgb(229, 229, 229)";
 const BLOCK_COLOR = "rgb(0, 0, 0)";
 const S_NODE_COLOR = "rgb(252, 163, 17)";
 const E_NODE_COLOR = "rgb(0, 163, 17)";
 const PATH_COLOR = "rgb(255, 255, 255)";
 
+// Encodings
+const CELL_ENCODING = 0;
+const BLOCK_ENCODING = 1;
+const S_NODE_ENCODING = 2;
+const E_NODE_ENCODING = 3;
+
+// Mouse Values
 const MOUSE_LEFT_CLICK = 1;
 const MOUSE_RIGHT_CLICK = 3;
 

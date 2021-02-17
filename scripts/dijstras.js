@@ -1,24 +1,24 @@
 function getBlockedCells(grid_board) {
     let blocked_cells = [];
     for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == BLOCK_COLOR) {
+        if (grid_board[index] == BLOCK_ENCODING) {
             blocked_cells.push(index);
         }
     }
     return blocked_cells;
 }
 function getNodeCells(grid_board) {
-    var start_node = undefined;
-    var end_node = undefined;
+    var start_node;
+    var end_node;
     for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == E_NODE_COLOR) {
+        if (grid_board[index] == S_NODE_ENCODING) {
             start_node = index;
         }
-        else if (grid_board[index] == S_NODE_COLOR) {
+        else if (grid_board[index] == E_NODE_ENCODING) {
             end_node = index;
         }
     }
-    return [end_node, start_node];
+    return [start_node, end_node];
 }
 function setEmptryGrid(x_dimension, y_dimension) {
     let grid = [];
@@ -126,7 +126,6 @@ function dijstras(graph, node_cells, blocked_cells) {
     return { 'visual': visualisation, 'path': path };
 }
 function main(x_dimension, y_dimension, board) {
-    console.log("X DIM ~", x_dimension, "Y DIM ~", y_dimension);
     const blocked = getBlockedCells(board);
     const nodes = getNodeCells(board);
     const empty_board = setEmptryGrid(x_dimension, y_dimension);
