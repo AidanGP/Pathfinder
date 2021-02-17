@@ -232,7 +232,7 @@ function importToBoard() {
     //check SIZEX and SIZEY against the size of the csv
     // if there is a match between the sizes then set the board
     // else alert('Size mismatch between desired file and window size.')
-
+}
 function import_to_board() {
     //start pathfinding SIZEX SIZEY save_file
 }
