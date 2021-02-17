@@ -1,3 +1,8 @@
+var moving_node = false;
+var moving_color;
+var s_prev_nodes = [0, 0];
+var e_prev_nodes = [0, 0];
+
 function sleep(ms) {
     // Sleep for a number of milliseconds
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -40,11 +45,17 @@ function setGridCells() {
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
         for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
             const TABLE_CELL = TABLE_GRID.rows[row].cells[col];
+            
 
             TABLE_CELL.onmousemove = function (event) {
                 const MOUSE_BTN = event.which;
                 
-                if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
+                if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
+                    if (moving_color == undefined) {
+                        moving_color = TABLE_CELL.style.backgroundColor;
+                    }
+                    onNodeMove(this)
+                } else if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
                     onLeftClick(this);
                 }
                 else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
@@ -54,20 +65,31 @@ function setGridCells() {
  
             TABLE_CELL.onmousedown = function (event) {
                 const MOUSE_BTN = event.which;
-                
-                if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
+                const is_node = (TABLE_CELL.style.backgroundColor == S_NODE_COLOR) || (TABLE_CELL.style.backgroundColor == E_NODE_COLOR);
+                if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) {
+                    moving_node = true;
+                } else if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
                     onLeftClick(this);
                 } else if (MOUSE_BTN == MOUSE_RIGHT_CLICK) {
                     onRightClick(this);
                 }
             };
+
+            TABLE_CELL.onmouseup = function () {
+                moving_node = false;
+                moving_color = undefined;
+                s_prev_nodes = [0, 0];
+                e_prev_nodes = [0, 0];
+            }
         }
     }
 }
 
 function onLeftClick(table_cell) {
-    let table_cell_style = document.getElementById(table_cell.innerHTML).style;
+    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
     const current_cell_color = $(table_cell).css('backgroundColor');
+
+    
     if (current_cell_color == CELL_COLOR) {
         table_cell_style.backgroundColor = BLOCK_COLOR;
         table_cell_style.color = 'transparent';
@@ -75,12 +97,41 @@ function onLeftClick(table_cell) {
 }
 
 function onRightClick(table_cell) {
-    let table_cell_style = document.getElementById(table_cell.innerHTML).style;
-    const current_cell_color = $(table_cell).css('backgroundColor');
-    if (current_cell_color != CELL_COLOR) {
+    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
+    if (table_cell_style.backgroundColor != CELL_COLOR) {
         table_cell_style.backgroundColor = CELL_COLOR;
         table_cell_style.color = 'transparent';
     }
+}
+
+function onNodeMove(table_cell) {
+    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
+    const current_cell_color = $(table_cell).css('backgroundColor');
+    if (current_cell_color != BLOCK_COLOR) {
+        
+        table_cell_style.backgroundColor = moving_color;
+        table_cell_style.color = 'transparent';
+    }
+    if (moving_color == S_NODE_COLOR) {
+
+        if (s_prev_nodes[0] != table_cell) {
+            s_prev_nodes.unshift(table_cell);
+        }
+        if (s_prev_nodes[1] != 0) {
+            s_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+            s_prev_nodes[1].style.color = 'transparent';
+        }
+    } else if (moving_color == E_NODE_COLOR) {
+
+        if (e_prev_nodes[0] != table_cell) {
+            e_prev_nodes.unshift(table_cell);
+        }
+        if (e_prev_nodes[1] != 0) {
+            e_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+            e_prev_nodes[1].style.color = 'transparent';
+        }
+    }
+
 }
 
 function nodeCheck() {
