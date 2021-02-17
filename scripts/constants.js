@@ -25,16 +25,7 @@ const START_AND_FINISH_NODE_ROW = Math.floor(1/2 * SIZE_Y);
 const START_COL = Math.floor(1/5 * SIZE_X);
 const END_COL = Math.floor(4/5 * SIZE_X);
 
-const VISUAL_COLORS = [
-    "rgb(116, 0, 184)  ",
-    "rgb(105, 48, 195) ",
-    "rgb(94, 96, 206)  ",
-    "rgb(83, 144, 217) ",
-    "rgb(78, 168, 222) ",
-    "rgb(72, 191, 227) ",
-    "rgb(86, 207, 225) ",
-    "rgb(100, 223, 223)",
-    "rgb(114, 239, 221)",
-    "rgb(128, 255, 219)",
-];
+// Delays
+const PATH_DELAY = 50;
+const VISUALISATION_DELAY = 1;
 

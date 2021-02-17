@@ -3,43 +3,37 @@ var moving_color;
 var s_prev_nodes = [0, 0];
 var e_prev_nodes = [0, 0];
 
-function sleep(ms) {
-    // Sleep for a number of milliseconds
-    return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-function setGrid() {
+const setGrid = () => {
     // Initialise the grid
     const TABLE_DIV = document.getElementById('dynamic_table');
     const TABLE_GRID = document.createElement('TABLE');
     const TABLE_BODY = document.createElement('TBODY');
     TABLE_DIV.innerHTML = '';
-    TABLE_GRID.style.tableLayout = 'fixed';
-    TABLE_GRID.style.fontSize = '10px';
     TABLE_GRID.appendChild(TABLE_BODY);
-    for (let table_row = 0; table_row < SIZE_Y; table_row ++) {
-        let table_row_element = document.createElement('TR');
+    for (let i = 0; i < SIZE_Y; i ++) {
+        const table_row_element = document.createElement('TR');
         TABLE_BODY.appendChild(table_row_element);
-        for (let table_column = 0; table_column < SIZE_X; table_column++) {
-            const table_cell_ID = table_row + ',' + table_column;
-            let table_cell = document.createElement('TD');
-            let table_cell_label = document.createTextNode(table_cell_ID);
-            table_cell.appendChild(table_cell_label);
-            table_cell.setAttribute('id', table_cell_ID);
-            table_cell.style.color = 'transparent';
-            if (table_row == START_AND_FINISH_NODE_ROW && table_column == START_COL) {
+        for (let j = 0; j < SIZE_X; j ++) {
+            const table_cell_ID = i + ',' + j;
+            const table_cell = document.createElement('TD');
+            table_cell.id = table_cell_ID;
+            table_cell.style.backgroundColor = CELL_COLOR;
+
+            if (i == START_AND_FINISH_NODE_ROW && j == START_COL) {
                 table_cell.style.backgroundColor = S_NODE_COLOR;
-            } else if (table_row == START_AND_FINISH_NODE_ROW && table_column == END_COL ) {
+            } else if (i == START_AND_FINISH_NODE_ROW && j == END_COL ) {
                 table_cell.style.backgroundColor = E_NODE_COLOR;
             }
             table_row_element.appendChild(table_cell);
         }
     }
-    TABLE_GRID.setAttribute('id', 'cell_grid');
+    TABLE_GRID.id = 'cell_grid';
     TABLE_DIV.appendChild(TABLE_GRID);
 }
 
-function setGridCells() {
+const setMouseListeners = () => {
     // Apply all of the mouse listeners for the grid
     const TABLE_GRID = document.getElementById('cell_grid');
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
@@ -85,33 +79,28 @@ function setGridCells() {
     }
 }
 
-function onLeftClick(table_cell) {
-    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
-    const current_cell_color = $(table_cell).css('backgroundColor');
+const onLeftClick = (table_cell) => {
+    const cell_color = table_cell.style;
 
-    
-    if (current_cell_color == CELL_COLOR) {
-        table_cell_style.backgroundColor = BLOCK_COLOR;
-        table_cell_style.color = 'transparent';
+    if (cell_color.backgroundColor == CELL_COLOR) {
+        cell_color.backgroundColor = BLOCK_COLOR;
     }
 }
 
-function onRightClick(table_cell) {
-    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
-    if (table_cell_style.backgroundColor != CELL_COLOR) {
-        table_cell_style.backgroundColor = CELL_COLOR;
-        table_cell_style.color = 'transparent';
+const onRightClick = (table_cell) => {
+    const cell_color = table_cell.style;
+
+    if (cell_color.backgroundColor != CELL_COLOR) {
+        cell_color.backgroundColor = CELL_COLOR;
     }
 }
 
-function onNodeMove(table_cell) {
-    const table_cell_style = document.getElementById(table_cell.innerHTML).style;
-    const current_cell_color = $(table_cell).css('backgroundColor');
-    if (current_cell_color != BLOCK_COLOR) {
-        
-        table_cell_style.backgroundColor = moving_color;
-        table_cell_style.color = 'transparent';
+const onNodeMove = (table_cell) => {
+    const cell_color = table_cell.style;
+    if (cell_color.backgroundColor != BLOCK_COLOR) {
+        cell_color.backgroundColor = moving_color;
     }
+
     if (moving_color == S_NODE_COLOR) {
 
         if (s_prev_nodes[0] != table_cell) {
@@ -119,7 +108,6 @@ function onNodeMove(table_cell) {
         }
         if (s_prev_nodes[1] != 0) {
             s_prev_nodes[1].style.backgroundColor = CELL_COLOR;
-            s_prev_nodes[1].style.color = 'transparent';
         }
     } else if (moving_color == E_NODE_COLOR) {
 
@@ -128,13 +116,12 @@ function onNodeMove(table_cell) {
         }
         if (e_prev_nodes[1] != 0) {
             e_prev_nodes[1].style.backgroundColor = CELL_COLOR;
-            e_prev_nodes[1].style.color = 'transparent';
         }
     }
 
 }
 
-function nodeCheck() {
+const gridToArray = () => {
     let table_grid_array = [];
     $('table#cell_grid tr').each(function () {
         const table_cell = $(this).find('td');
@@ -160,7 +147,7 @@ function nodeCheck() {
 }
 
 async function startPathfinding() {
-    const x = main(SIZE_X, SIZE_Y, nodeCheck());
+    const x = main(SIZE_X, SIZE_Y, gridToArray());
     const visualisation = x['visual'];
     const visual = visualisation.slice(1, visualisation.length - 1);
     await plotVisualisation(visual, false);
@@ -170,36 +157,34 @@ async function startPathfinding() {
 }
 
 async function plotVisualisation(visual, is_path) {
-    let table = document.getElementById('cell_grid');
+    const table = document.getElementById('cell_grid');
     for (var i = 0; i < visual.length; i ++) {
         const cell_index = parseInt(visual[i]);
         const row = Math.floor(cell_index / SIZE_X);
         const column = cell_index - (SIZE_X * row);
-        const cell = document.getElementById(table.rows[row].cells[column].innerHTML);
+        const cell = table.rows[row].cells[column];
         
         if (is_path) {
             cell.className = 'node-shortest-path';
-            await sleep(50);
+            await sleep(PATH_DELAY);
         } else {
             cell.className = 'node-visited';
         }
-        await sleep(3);
+        await sleep(VISUALISATION_DELAY);
     }
 }
 
-function resetBoard() {
+const clearBoard = () => {
     setGrid();
-    setGridCells();
-
+    setMouseListeners();
 }
 
-function restartBoard() {
-    let table_grid = document.getElementById('cell_grid');
+const restartBoard = () => {
+    const table_grid = document.getElementById('cell_grid');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
             const table_cell = table_grid.rows[row].cells[col];
             if (table_cell.className == 'node-visited' || table_cell.className == 'node-shortest-path') {
-                table_cell.style.color = 'transparent';
                 table_cell.style.backgroundColor = CELL_COLOR;
                 table_cell.className = '';
             }
@@ -207,23 +192,22 @@ function restartBoard() {
     }
 }
 
-function saveBoard() {
-    var file_name = prompt('Please enter a file name', 'File Name');
+const saveBoard = () => {
+    const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const board_contents = nodeCheck().toString();
+        const board_contents = gridToArray().toString();
         console.log(board_contents);
-        const a = document.createElement('a');
+        const link = document.createElement('a');
         const file = new Blob([board_contents]);
-        a.href = URL.createObjectURL(file);
-        a.download = file_name;
-        a.click();
-        URL.revokeObjectURL(a.href);
+        link.href = URL.createObjectURL(file);
+        link.download = file_name;
+        link.click();
     }
 }
 
-function importToBoard() {
+const importToBoard = () => {
     //start pathfinding SIZEX SIZEY save_file
 }
 
 setGrid();
-setGridCells();
+setMouseListeners();
