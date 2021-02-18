@@ -36,8 +36,33 @@ body {
   height: 40px;
 }
 #dynamic_table td:hover {
-  opacity: 0.8;
+  animation-name: tableHover;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
+
+@keyframes tableHover {
+  0% {
+    transform: scale(0.9);
+    
+  }
+
+  50% {
+    transform: scale(1.1);
+    
+  }
+
+  100% {
+    transform: scale(1);
+    
+  }
+}
+
 #dynamic_table table {
   background-color: #e5e5e5;
   width: 100%;
@@ -93,9 +118,8 @@ select:hover {
 
 @keyframes visitedAnimation {
   0% {
-    transform: scale(0.3);
+    transform: scale(0.6);
     background-color: rgba(0, 0, 66, 0.75);
-    border-radius: 100%;
   }
 
   50% {
@@ -112,6 +136,7 @@ select:hover {
     background-color: rgba(0, 190, 218, 0.75);
   }
 }
+
 .node-shortest-path {
   animation-name: shortestPath;
   animation-duration: 1.5s;
