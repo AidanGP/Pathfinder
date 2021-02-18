@@ -29,3 +29,6 @@ const END_COL = Math.floor(4/5 * SIZE_X);
 const PATH_DELAY = 50;
 const VISUALISATION_DELAY = 1;
 
+// Algorithms
+const ALGORITHMS = ['dijstras', 'a_star'];
+

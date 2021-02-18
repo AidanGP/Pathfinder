@@ -147,11 +147,16 @@ const gridToArray = () => {
 }
 
 async function startPathfinding() {
-    const x = main(SIZE_X, SIZE_Y, gridToArray());
-    const visualisation = x['visual'];
+    const board = gridToArray();
+    const blocked = getBlockedCells(board);
+    const nodes = getNodeCells(board);
+    const empty_board = setEmptryGrid();
+    const graph = setGraph(blocked, empty_board);
+    const result = dijstras(graph, nodes, blocked);
+    const visualisation = result['visual'];
     const visual = visualisation.slice(1, visualisation.length - 1);
     await plotVisualisation(visual, false);
-    const path = x['path'];
+    const path = result['path'];
     const path_true = path.slice(1, path.length - 1);
     await plotVisualisation(path_true, true);
 }
