@@ -2,6 +2,7 @@ var moving_node = false;
 var moving_color;
 var s_prev_nodes = [0, 0];
 var e_prev_nodes = [0, 0];
+var disable_btns = false;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -82,7 +83,7 @@ const setMouseListeners = () => {
 const onLeftClick = (table_cell) => {
     const cell_color = table_cell.style;
 
-    if (cell_color.backgroundColor == CELL_COLOR) {
+    if (cell_color.backgroundColor == CELL_COLOR && !disable_btns) {
         cell_color.backgroundColor = BLOCK_COLOR;
     }
 }
@@ -90,38 +91,52 @@ const onLeftClick = (table_cell) => {
 const onRightClick = (table_cell) => {
     const cell_color = table_cell.style;
 
-    if (cell_color.backgroundColor != CELL_COLOR) {
+    if (cell_color.backgroundColor == BLOCK_COLOR && !disable_btns) {
         cell_color.backgroundColor = CELL_COLOR;
     }
 }
 
 const onNodeMove = (table_cell) => {
     const cell_color = table_cell.style;
-    if (cell_color.backgroundColor != BLOCK_COLOR) {
-        cell_color.backgroundColor = moving_color;
-    }
-
+    
+    
+    var other_node;
     if (moving_color == S_NODE_COLOR) {
-
-        if (s_prev_nodes[0] != table_cell) {
-            s_prev_nodes.unshift(table_cell);
-        }
-        if (s_prev_nodes[1] != 0) {
-            s_prev_nodes[1].style.backgroundColor = CELL_COLOR;
-        }
+        other_node = E_NODE_COLOR;
     } else if (moving_color == E_NODE_COLOR) {
-
-        if (e_prev_nodes[0] != table_cell) {
-            e_prev_nodes.unshift(table_cell);
-        }
-        if (e_prev_nodes[1] != 0) {
-            e_prev_nodes[1].style.backgroundColor = CELL_COLOR;
-        }
+        other_node = S_NODE_COLOR;
     }
+    
+    const is_moveable = cell_color.backgroundColor != BLOCK_COLOR && cell_color.backgroundColor != other_node;
+
+    if (is_moveable && !disable_btns) {
+        
+        cell_color.backgroundColor = moving_color;
+        if (moving_color == S_NODE_COLOR) {
+
+            if (s_prev_nodes[0] != table_cell) {
+                s_prev_nodes.unshift(table_cell);
+            }
+            if (s_prev_nodes[1] != 0) {
+                s_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+            }
+        } else if (moving_color == E_NODE_COLOR) {
+    
+            if (e_prev_nodes[0] != table_cell) {
+                e_prev_nodes.unshift(table_cell);
+            }
+            if (e_prev_nodes[1] != 0) {
+                e_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+            }
+        }
+    
+    }
+
 
 }
 
 const gridToArray = () => {
+    if (disable_btns) return;
     let table_grid_array = [];
     $('table#cell_grid tr').each(function () {
         const table_cell = $(this).find('td');
@@ -147,6 +162,11 @@ const gridToArray = () => {
 }
 
 async function startPathfinding() {
+    if (disable_btns) return;
+    var a = document.getElementsByTagName('a');
+    for (var i = 0; i < a.length; i++) {
+        a[i].className = 'disabled';
+    }
     const board = gridToArray();
     const blocked = getBlockedCells(board);
     const nodes = getNodeCells(board);
@@ -154,37 +174,63 @@ async function startPathfinding() {
     const graph = setGraph(blocked, empty_board);
     const result = dijstras(graph, nodes, blocked);
     const visualisation = result['visual'];
-    const visual = visualisation.slice(1, visualisation.length - 1);
-    await plotVisualisation(visual, false);
     const path = result['path'];
+
+    const visual = visualisation.slice(1, visualisation.length - 1);
+
     const path_true = path.slice(1, path.length - 1);
-    await plotVisualisation(path_true, true);
+
+    const v = [];
+    var i,j,temparray,chunk = path_true.length;
+    for (i=0,j=visual.length; i<j; i+=chunk) {
+        temparray = visual.slice(i,i+chunk);
+        v.push(temparray);
+    }
+    console.log(v);
+    disable_btns = true;
+    await plotVisualisation(v, false);
+
+    await plotVisualisation([path_true], true);
+    disable_btns = false;
+    for (var i = 0; i < a.length; i++) {
+        a[i].className = '';
+    }
 }
 
 async function plotVisualisation(visual, is_path) {
     const table = document.getElementById('cell_grid');
     for (var i = 0; i < visual.length; i ++) {
-        const cell_index = parseInt(visual[i]);
-        const row = Math.floor(cell_index / SIZE_X);
-        const column = cell_index - (SIZE_X * row);
-        const cell = table.rows[row].cells[column];
-        
-        if (is_path) {
-            cell.className = 'node-shortest-path';
-            await sleep(PATH_DELAY);
-        } else {
-            cell.className = 'node-visited';
+        for (var j = 0; j < visual[i].length; j ++) {
+            const cell_index = parseInt(visual[i][j]);
+            const row = Math.floor(cell_index / SIZE_X);
+            const column = cell_index - (SIZE_X * row);
+            const cell = table.rows[row].cells[column];
+            
+            if (is_path) {
+                cell.className = 'node-shortest-path';
+                await sleep(PATH_DELAY);
+            } else {
+                cell.className = 'node-visited';
+            }
+            
         }
         await sleep(VISUALISATION_DELAY);
     }
 }
 
 const clearBoard = () => {
+    if (disable_btns) return;
+    disable_btns = false;
+    var a = document.getElementsByTagName('a');
+    for (var i = 0; i < a.length; i++) {
+        a[i].className = '';
+    }
     setGrid();
     setMouseListeners();
 }
 
 const restartBoard = () => {
+    if (disable_btns) return;
     const table_grid = document.getElementById('cell_grid');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
@@ -198,6 +244,7 @@ const restartBoard = () => {
 }
 
 const saveBoard = () => {
+    if (disable_btns) return;
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
         const board_contents = gridToArray().toString();
@@ -211,6 +258,7 @@ const saveBoard = () => {
 }
 
 const importToBoard = () => {
+    if (disable_btns) return;
     //start pathfinding SIZEX SIZEY save_file
 }
 
