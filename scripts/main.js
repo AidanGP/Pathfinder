@@ -1,6 +1,6 @@
-let moving_node = false;
-let disable_btns = false;
-let prev_nodes = [0, 0];
+let moving_node = false; // Is a node being moved
+let disable_btns = false; // Should the buttons be disabled
+let prev_nodes = [null, null];
 let moving_class;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -57,8 +57,7 @@ const setMouseListeners = () => {
 
       TABLE_CELL.onmousedown = function (event) {
         const MOUSE_BTN = event.which;
-        const is_node =
-          TABLE_CELL.className == S_NODE || TABLE_CELL.className == E_NODE;
+        const is_node = TABLE_CELL.className == S_NODE || TABLE_CELL.className == E_NODE;
 
         if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) moving_node = true;
 
@@ -166,8 +165,7 @@ async function startPathfinding() {
   const path_true = path.slice(1, path.length - 1);
 
   const v = [];
-  let temparray,
-    chunk = path_true.length + 1;
+  let temparray, chunk = path_true.length + 1;
   for (let i = 0; i < visual.length; i += chunk) {
     temparray = visual.slice(i, i + chunk);
     v.push(temparray);
