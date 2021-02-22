@@ -1,32 +1,32 @@
 const getBlockedCells = (grid_board) => {
     let blocked_cells = [];
-    for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == BLOCK_ENCODING) {
-            blocked_cells.push(index);
+    for (let i = 0; i < grid_board.length; i++) {
+        if (grid_board[i] == BLOCK_ENCODING) {
+            blocked_cells.push(i);
         }
     }
     return blocked_cells;
 }
 const getNodeCells = (grid_board) => {
-    var start_node;
-    var end_node;
-    for (let index = 0; index < grid_board.length; index++) {
-        if (grid_board[index] == S_NODE_ENCODING) {
-            start_node = index;
+    let start_node;
+    let end_node;
+    for (let i = 0; i < grid_board.length; i++) {
+        if (grid_board[i] == S_NODE_ENCODING) {
+            start_node = i;
         }
-        else if (grid_board[index] == E_NODE_ENCODING) {
-            end_node = index;
+        else if (grid_board[i] == E_NODE_ENCODING) {
+            end_node = i;
         }
     }
     return [start_node, end_node];
 }
-const setEmptryGrid = () => {
+const getEmptyGrid = () => {
     let grid = [];
     let counter = 0;
-    for (let row = 0; row < SIZE_Y; row++) {
+    for (let i = 0; i < SIZE_Y; i++) {
         grid.push([]);
-        for (let col = 0; col < SIZE_X; col++) {
-            grid[row].push(counter);
+        for (let j = 0; j < SIZE_X; j++) {
+            grid[i].push(counter);
             counter++;
         }
     }
@@ -36,7 +36,7 @@ const setWeights = (index, is_blocked, grid) => {
     const row = Math.floor(index / SIZE_X);
     const column = index - (SIZE_X * row);
     let affected = [];
-    var weight = 1;
+    let weight = 1;
     if (is_blocked) {
         weight = Infinity;
     }
@@ -61,14 +61,14 @@ const setWeights = (index, is_blocked, grid) => {
 const setGraph = (blocked, grid) => {
     let new_board = [];
     const blocked_cells = blocked;
-    for (let index = 0; index < (SIZE_X * SIZE_Y); index++) {
-        const isBlocked = blocked_cells.includes(index);
-        const affected = setWeights(index, isBlocked, grid);
+    for (let i = 0; i < (SIZE_X * SIZE_Y); i++) {
+        const isBlocked = blocked_cells.includes(i);
+        const affected = setWeights(i, isBlocked, grid);
         let posMass = {};
         for (let counter = 0; counter < affected.length; counter += 2) {
             posMass[affected[counter].toString()] = affected[counter + 1];
         }
-        new_board.push(index.toString());
+        new_board.push(i.toString());
         new_board.push(posMass);
     }
     let bDict = {};
