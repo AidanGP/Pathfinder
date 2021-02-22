@@ -116,11 +116,12 @@ const onNodeMove = (table_cell) => {
 
 const gridToArray = () => {
     if (disable_btns) return;
-    let table_grid_array = [];
-    const TABLE_GRID = document.getElementById('table');
-    for (let i = 0; i < TABLE_GRID.rows.length; i++) {
-        for (let j = 0; j < TABLE_GRID.rows[i].cells.length; j++) {
-            const TABLE_CELL = TABLE_GRID.rows[i].cells[j].className;
+    let table_arr = [];
+    const TABLE = document.getElementById('table');
+    for (let i = 0; i < TABLE.rows.length; i++) {
+        table_arr.push([]);
+        for (let j = 0; j < TABLE.rows[i].cells.length; j++) {
+            const TABLE_CELL = TABLE.rows[i].cells[j].className;
             let encoded_item;
             switch (TABLE_CELL) {
                 case CELL:
@@ -135,10 +136,10 @@ const gridToArray = () => {
                 case E_NODE:
                     encoded_item = E_NODE_ENCODING;
             }
-            table_grid_array.push(encoded_item);
+            table_arr[i].push(encoded_item);
         }
     }
-    return table_grid_array;
+    return table_arr;
 }
 
 async function startPathfinding() {
@@ -225,12 +226,23 @@ const saveBoard = () => {
     if (disable_btns) return;
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const board_contents = gridToArray().toString();
-        const link = document.createElement('a');
-        const file = new Blob([board_contents]);
-        link.href = URL.createObjectURL(file);
-        link.download = file_name;
-        link.click();
+        const grid = gridToArray();
+        var csvRows = [];
+        for (var i = 0; i < grid.length; ++i) {
+            for (var j = 0; j < grid[i].length; ++j) {
+                grid[i][j] = '\"' + grid[i][j] + '\"';
+            }
+            csvRows.push(grid[i].join(','));
+        }
+    
+        var csvString = csvRows.join('\r\n');
+        var a         = document.createElement('a');
+        a.href        = 'data:attachment/csv,' + csvString;
+        a.target      = '_blank';
+        a.download    = file_name + '.csv';
+    
+        document.body.appendChild(a);
+        a.click();
     }
 }
 
