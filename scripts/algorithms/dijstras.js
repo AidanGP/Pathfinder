@@ -7,14 +7,14 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     let unseenNodes = graph;
     let bDict = graph;
     let path = [];
-    for (var node in unseenNodes) {
+    for (let node in unseenNodes) {
         shortest_distance[node] = Infinity;
     }
     shortest_distance[start] = 0;
-    var visualisation = [];
+    let visualisation = [];
     while (Object.keys(unseenNodes).length !== 0) {
-        var minNode = undefined;
-        for (var node in unseenNodes) {
+        let minNode = undefined;
+        for (let node in unseenNodes) {
             if (minNode === undefined) {
                 minNode = node;
                 if (!(minNode === start || visualisation.includes(goal) || blocked_cells.includes(parseInt(minNode)))) {

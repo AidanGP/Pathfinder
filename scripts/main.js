@@ -1,8 +1,8 @@
-var moving_node = false;
-var moving_class;
-var s_prev_nodes = [0, 0];
-var e_prev_nodes = [0, 0];
-var disable_btns = false;
+let moving_node = false;
+let moving_class;
+let s_prev_nodes = [0, 0];
+let e_prev_nodes = [0, 0];
+let disable_btns = false;
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -16,8 +16,10 @@ const setGrid = () => {
         const table_row_element = document.createElement('TR');
         TABLE_BODY.appendChild(table_row_element);
         for (let j = 0; j < SIZE_X; j ++) {
-            const table_cell_ID = i + ',' + j;
+            
             const table_cell = document.createElement('TD');
+
+            const table_cell_ID = i + ',' + j;
             table_cell.id = table_cell_ID;
 
             table_cell.className = CELL;
@@ -80,22 +82,18 @@ const setMouseListeners = () => {
 
 const onLeftClick = (table_cell) => {
 
-    if (table_cell.className == CELL && !disable_btns) {
-        table_cell.className = WALL;
-    }
+    if (table_cell.className == CELL && !disable_btns) table_cell.className = WALL;
 }
 
 const onRightClick = (table_cell) => {
 
-    if (table_cell.className == WALL && !disable_btns) {
-        table_cell.className = CELL;
-    }
+    if (table_cell.className == WALL && !disable_btns) table_cell.className = CELL;
 }
 
 const onNodeMove = (table_cell) => {
     
     
-    var other_node;
+    let other_node;
     if (moving_class == S_NODE) {
         other_node = E_NODE;
     } else if (moving_class == E_NODE) {
@@ -129,8 +127,10 @@ const onNodeMove = (table_cell) => {
 const gridToArray = () => {
     if (disable_btns) return;
     let table_grid_array = [];
+    let idx = 0;
     const TABLE_GRID = document.getElementById('table');
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
+        table_grid_array.push([]);
         for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
             const TABLE_CELL = TABLE_GRID.rows[row].cells[col].className;
             let encoded_item;
@@ -147,22 +147,23 @@ const gridToArray = () => {
                 case E_NODE:
                     encoded_item = E_NODE_ENCODING;
             }
-            table_grid_array.push(encoded_item);
+            table_grid_array[idx].push(encoded_item);
         }
+        idx ++;
     }
     return table_grid_array;
 }
 
 async function startPathfinding() {
     if (disable_btns) return;
-    var a = document.getElementsByTagName('a');
-    for (var i = 0; i < a.length; i++) {
+    let a = document.getElementsByTagName('a');
+    for (let i = 0; i < a.length; i++) {
         a[i].className = 'disabled';
     }
     const board = gridToArray();
     const blocked = getBlockedCells(board);
     const nodes = getNodeCells(board);
-    const empty_board = setEmptryGrid();
+    const empty_board = getEmptyGrid();
     const graph = setGraph(blocked, empty_board);
     const result = dijstras(graph, nodes, blocked);
     const visualisation = result['visual'];
@@ -173,9 +174,9 @@ async function startPathfinding() {
     const path_true = path.slice(1, path.length - 1);
 
     const v = [];
-    var i,j,temparray,chunk = path_true.length;
-    for (i=0,j=visual.length; i<j; i+=chunk) {
-        temparray = visual.slice(i,i+chunk);
+    let temparray,chunk = Math.floor(path_true.length * 4/5);
+    for (let i = 0; i < visual.length; i += chunk) {
+        temparray = visual.slice(i, i + chunk);
         v.push(temparray);
     }
     disable_btns = true;
@@ -183,15 +184,15 @@ async function startPathfinding() {
 
     await plotVisualisation([path_true], true);
     disable_btns = false;
-    for (var i = 0; i < a.length; i++) {
+    for (let i = 0; i < a.length; i++) {
         a[i].className = '';
     }
 }
 
 async function plotVisualisation(visual, is_path) {
     const table = document.getElementById('table');
-    for (var i = 0; i < visual.length; i ++) {
-        for (var j = 0; j < visual[i].length; j ++) {
+    for (let i = 0; i < visual.length; i ++) {
+        for (let j = 0; j < visual[i].length; j ++) {
             const cell_index = parseInt(visual[i][j]);
             const row = Math.floor(cell_index / SIZE_X);
             const column = cell_index - (SIZE_X * row);
@@ -212,8 +213,8 @@ async function plotVisualisation(visual, is_path) {
 const clearBoard = () => {
     if (disable_btns) return;
     disable_btns = false;
-    var a = document.getElementsByTagName('a');
-    for (var i = 0; i < a.length; i++) {
+    let a = document.getElementsByTagName('a');
+    for (let i = 0; i < a.length; i++) {
         a[i].className = '';
     }
     setGrid();
@@ -237,12 +238,23 @@ const saveBoard = () => {
     if (disable_btns) return;
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const board_contents = gridToArray().toString();
-        const link = document.createElement('a');
-        const file = new Blob([board_contents]);
-        link.href = URL.createObjectURL(file);
-        link.download = file_name;
-        link.click();
+        const grid = gridToArray();
+        let csvRows = [];
+        for (let i = 0; i < grid.length; ++i) {
+            for (let j = 0; j < grid[i].length; ++j) {
+                grid[i][j] = '\"' + grid[i][j] + '\"';
+            }
+            csvRows.push(grid[i].join(','));
+        }
+    
+        let csvString = csvRows.join('\r\n');
+        let a         = document.createElement('a');
+        a.href        = 'data:attachment/csv,' + csvString;
+        a.target      = '_blank';
+        a.download    = file_name + '.csv';
+    
+        document.body.appendChild(a);
+        a.click();
     }
 }
 
