@@ -4,6 +4,12 @@
   --s-node-color: rgb(0, 232, 108);
   --e-node-color: rgb(250, 133, 184);
   --bg: rgb(255, 255, 255);
+
+  --visited-0: '';
+  --visited-1: '';
+  --visited-2: '';
+  --visited-3: '';
+  --visited-4: '';
 }
 
 html,
@@ -166,20 +172,24 @@ select {
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.9);
-    background-color: rgba(0, 0, 66, 0.75);
+    background-color: var(--visited-0);
   }
 
-  50% {
-    background-color: rgba(17, 104, 217, 0.75);
+  30% {
+    background-color: var(--visited-1);
+  }
+
+  55% {
+    transform: scale(1.1);
+    background-color: var(--visited-2);
   }
 
   75% {
-    transform: scale(1.1);
-    background-color: rgba(0, 217, 159, 0.75);
+    background-color: var(--visited-3);
   }
 
   100% {
     transform: scale(1);
-    background-color: rgba(0, 190, 218, 0.75);
+    background-color: var(--visited-4);
   }
 }

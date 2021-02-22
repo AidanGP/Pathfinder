@@ -1,38 +1,55 @@
 let moving_node = false; // Is a node being moved
 let disable_btns = false; // Should the buttons be disabled
-let prev_nodes = [null, null];
-let moving_class;
 
+// Variables used in the dragging and dropping modules
+let current_node; // Stores the current node being dragged over
+let prev_node; // Stores the previous node that was dragged over
+let moving_class; // Set to either S_NODE or E_NODE
+
+
+// Choose a random theme (5 colors) for the visited nodes
+const rand_int = Math.floor(Math.random() * THEMES.length);
+const rand_theme = THEMES[rand_int];
+
+let root = document.documentElement;
+// Assign the 5 colors to their css elements
+for (let i = 0; i < 5; i ++) {
+    root.style.setProperty('--visited-' + i, rand_theme[i]);
+}
+
+// Waits for a number of milliseconds
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// Initialise the grid with empty cells and the starting spots for nodes
 const setGrid = () => {
-  // Initialise the grid
-  const TABLE = document.getElementById("table");
-  const TABLE_BODY = document.createElement("TBODY");
-  TABLE.innerHTML = "";
-  TABLE.appendChild(TABLE_BODY);
+  const table = document.getElementById("table");
+  table.innerHTML = "";
   for (let i = 0; i < SIZE_Y; i++) {
-    const table_row_element = document.createElement("TR");
-    TABLE_BODY.appendChild(table_row_element);
+
+    const row = document.createElement("TR");
+    table.appendChild(row);
+
     for (let j = 0; j < SIZE_X; j++) {
-      const table_cell = document.createElement("TD");
-      const table_cell_ID = i + "," + j;
-      table_cell.id = table_cell_ID;
+    
+      const cell = document.createElement("TD");
 
-      table_cell.className = CELL;
+      const ID = i + "," + j;
+      cell.id = ID;
+      cell.className = CELL;
 
+      // Pre-place the start and end node at default location
       if (i == START_AND_FINISH_NODE_ROW && j == START_COL) {
-        table_cell.className = S_NODE;
+        cell.className = S_NODE;
       } else if (i == START_AND_FINISH_NODE_ROW && j == END_COL) {
-        table_cell.className = E_NODE;
+        cell.className = E_NODE;
       }
-      table_row_element.appendChild(table_cell);
+      row.appendChild(cell);
     }
   }
 };
 
+// Start mouse listeners in the grid
 const setMouseListeners = () => {
-  // Apply all of the mouse listeners for the grid
   const TABLE = document.getElementById("table");
   for (let row = 0; row < TABLE.rows.length; row++) {
     for (let col = 0; col < TABLE.rows[row].cells.length; col++) {
@@ -73,24 +90,27 @@ const setMouseListeners = () => {
       TABLE_CELL.onmouseup = function () {
         moving_node = false;
         moving_class = undefined;
-        prev_nodes = [0, 0];
+        current_node = undefined;
+        prev_node = undefined;
       };
     }
   }
 };
 
+// Changes an empty cell to a wall
 const onLeftClick = (table_cell) => {
   if (table_cell.className == CELL && !disable_btns)
     table_cell.className = WALL;
 };
 
+// Changes a wall to an empty cell
 const onRightClick = (table_cell) => {
   if (table_cell.className == WALL && !disable_btns)
     table_cell.className = CELL;
 };
 
+// Support for dragging and dropping the start / end nodes
 const onNodeMove = (table_cell) => {
-  //console.log(prev_nodes);
   let other_node;
   if (moving_class == S_NODE) {
     other_node = E_NODE;
@@ -103,15 +123,17 @@ const onNodeMove = (table_cell) => {
   if (is_moveable && !disable_btns) {
     table_cell.className = moving_class;
 
-    if (prev_nodes[0] != table_cell) {
-      prev_nodes.unshift(table_cell);
+    if (current_node != table_cell) {
+        prev_node = current_node;
+        current_node = table_cell;
     }
-    if (prev_nodes[1]) {
-      prev_nodes[1].className = CELL;
+    if (prev_node) {
+        prev_node.className = CELL;
     }
   }
 };
 
+// Convers the grid to a two dimensional array
 const gridToArray = () => {
   if (disable_btns) return;
   let table_arr = [];
@@ -140,6 +162,7 @@ const gridToArray = () => {
   return table_arr;
 };
 
+// setButtonClass used to disable / enable buttons during animation
 const setButtonClass = (class_name) => {
   let a = document.getElementsByTagName("a");
   for (let i = 0; i < a.length; i++) {

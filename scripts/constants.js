@@ -27,7 +27,14 @@ const END_COL = Math.floor((4 / 5) * SIZE_X);
 
 // Delays
 const PATH_DELAY = 50;
-const VISUALISATION_DELAY = 1;
+const VISUALISATION_DELAY = 10;
 
 // Algorithms
 const ALGORITHMS = ["dijstras", "a_star"];
+
+// Themes
+const THEMES = [
+    ['#9046cf','#cc59d2','#f487b6','#fff3f0','#fde12d'],
+    ['#002626','#0e4749','#95c623','#e55812','#efe7da'],
+    ['#ffc15e','#f7b05b','#f7934c','#cc5803','#cc5803']
+]
