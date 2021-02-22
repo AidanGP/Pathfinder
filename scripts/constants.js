@@ -1,11 +1,10 @@
-
 // Classes
-const CELL = 'cell';
-const WALL = 'wall';
-const S_NODE = 'node-start';
-const E_NODE = 'node-end';
-const PATH = 'node-shortest-path';
-const VISITED = 'node-visited';
+const CELL = "cell";
+const WALL = "wall";
+const S_NODE = "node-start";
+const E_NODE = "node-end";
+const PATH = "node-shortest-path";
+const VISITED = "node-visited";
 
 // Encodings
 const CELL_ENCODING = 0;
@@ -22,14 +21,13 @@ const SIZE_X = Math.floor($(window).width() / 50);
 const SIZE_Y = Math.floor($(window).height() / 50);
 
 // Default Start and End Positions
-const START_AND_FINISH_NODE_ROW = Math.floor(1/2 * SIZE_Y);
-const START_COL = Math.floor(1/5 * SIZE_X);
-const END_COL = Math.floor(4/5 * SIZE_X);
+const START_AND_FINISH_NODE_ROW = Math.floor((1 / 2) * SIZE_Y);
+const START_COL = Math.floor((1 / 5) * SIZE_X);
+const END_COL = Math.floor((4 / 5) * SIZE_X);
 
 // Delays
 const PATH_DELAY = 50;
 const VISUALISATION_DELAY = 1;
 
 // Algorithms
-const ALGORITHMS = ['dijstras', 'a_star'];
-
+const ALGORITHMS = ["dijstras", "a_star"];

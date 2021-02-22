@@ -32,11 +32,11 @@ body {
   height: 40px;
 }
 
-#table td:hover, li a:hover, select:hover {
+#table td:hover,
+li a:hover,
+select:hover {
   opacity: 0.75;
 }
-
-
 
 #table {
   background-color: var(--cell-color);
@@ -63,12 +63,12 @@ select {
   padding: 10px 12px;
   text-decoration: none;
   margin: 10px;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   text-transform: lowercase;
   font-size: 20px;
 }
 #path-btn {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 select {
@@ -92,7 +92,9 @@ select {
   background-color: var(--e-node-color) !important;
 }
 
-.wall:hover, .node-start:hover, .node-end:hover {
+.wall:hover,
+.node-start:hover,
+.node-end:hover {
   animation-name: tableHover;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;
@@ -113,7 +115,6 @@ select {
   animation-fill-mode: forwards;
   animation-play-state: running;
 }
-
 
 .disabled {
   color: currentColor;
@@ -152,17 +153,14 @@ select {
 @keyframes tableHover {
   0% {
     transform: scale(0.9);
-    
   }
 
   50% {
     transform: scale(1.1);
-    
   }
 
   100% {
     transform: scale(1);
-    
   }
 }
 @keyframes visitedAnimation {

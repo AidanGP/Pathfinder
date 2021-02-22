@@ -3,17 +3,21 @@
   <head>
     <link rel="stylesheet" href="styles/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap"
+      rel="stylesheet"
+    />
     <title>Pathfinder</title>
 
     <link rel="icon" href="img/favicon.ico" />
-
   </head>
 
   <body>
-
-    <h1 id="heading">< PATHFINDER ></h1>
+    <h1 id="heading">< PATHFINDER></h1>
 
     <div id="headingbar">
       <ul>
@@ -21,15 +25,18 @@
         <li><a href="javascript:restartBoard()">Restart</a></li>
         <li><a href="javascript:saveBoard()">Save</a></li>
         <li><a href="javascript:someFunction()">Import</a></li>
-        <li><select id="algorithms">
-          <option value="Dijstras">Dijstras</option>
-          <option value="A*">A*</option>
-        </select></li>
-        <li><a id="path-btn" href="javascript:startPathfinding()">Pathfind</a></li>
+        <li>
+          <select id="algorithms">
+            <option value="Dijstras">Dijstras</option>
+            <option value="A*">A*</option>
+          </select>
+        </li>
+        <li>
+          <a id="path-btn" href="javascript:startPathfinding()">Pathfind</a>
+        </li>
       </ul>
     </div>
-    
-    
+
     <table id="table" oncontextmenu="return!1"></table>
 
     <script src="scripts/constants.js"></script>
@@ -37,6 +44,5 @@
     <script src="scripts/main.js"></script>
     <script src="scripts/algorithms/dijstras.js"></script>
     <script src="scripts/algorithms/a_star.js"></script>
-
   </body>
 </html>
