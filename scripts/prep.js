@@ -1,31 +1,25 @@
 const getBlockedCells = (grid_board) => {
     let blocked_cells = [];
-    for (let i = 0; i < SIZE_Y; i ++) {
-        for (let j = 0; j < SIZE_X; j ++) {
-            if (grid_board[i][j] == BLOCK_ENCODING) {
-                blocked_cells.push(i * SIZE_X + j);
-            }
+    for (let i = 0; i < grid_board.length; i++) {
+        if (grid_board[i] == BLOCK_ENCODING) {
+            blocked_cells.push(i);
         }
     }
     return blocked_cells;
 }
-
 const getNodeCells = (grid_board) => {
     let start_node;
     let end_node;
-    for (let i = 0; i < SIZE_Y; i++) {
-        for (let j = 0; j < SIZE_X; j ++) {
-            if (grid_board[i][j] == S_NODE_ENCODING) {
-                start_node = i * SIZE_X + j;
-            }
-            else if (grid_board[i][j] == E_NODE_ENCODING) {
-                end_node = i * SIZE_X + j;
-            }
+    for (let i = 0; i < grid_board.length; i++) {
+        if (grid_board[i] == S_NODE_ENCODING) {
+            start_node = i;
+        }
+        else if (grid_board[i] == E_NODE_ENCODING) {
+            end_node = i;
         }
     }
     return [start_node, end_node];
 }
-
 const getEmptyGrid = () => {
     let grid = [];
     let counter = 0;
@@ -38,7 +32,6 @@ const getEmptyGrid = () => {
     }
     return grid;
 }
-
 const setWeights = (index, is_blocked, grid) => {
     const row = Math.floor(index / SIZE_X);
     const column = index - (SIZE_X * row);
@@ -65,11 +58,10 @@ const setWeights = (index, is_blocked, grid) => {
     }
     return affected;
 }
-
 const setGraph = (blocked, grid) => {
     let new_board = [];
     const blocked_cells = blocked;
-    for (let i = 0; i < (SIZE_X * SIZE_Y); i ++) {
+    for (let i = 0; i < (SIZE_X * SIZE_Y); i++) {
         const isBlocked = blocked_cells.includes(i);
         const affected = setWeights(i, isBlocked, grid);
         let posMass = {};

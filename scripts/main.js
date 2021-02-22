@@ -1,8 +1,8 @@
 let moving_node = false;
 let moving_class;
-let s_prev_nodes = [0, 0];
-let e_prev_nodes = [0, 0];
+let prev_nodes = [0, 0];
 let disable_btns = false;
+
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -18,7 +18,6 @@ const setGrid = () => {
         for (let j = 0; j < SIZE_X; j ++) {
             
             const table_cell = document.createElement('TD');
-
             const table_cell_ID = i + ',' + j;
             table_cell.id = table_cell_ID;
 
@@ -73,8 +72,8 @@ const setMouseListeners = () => {
             TABLE_CELL.onmouseup = function () {
                 moving_node = false;
                 moving_class = undefined;
-                s_prev_nodes = [0, 0];
-                e_prev_nodes = [0, 0];
+                prev_nodes = [0, 0];
+
             }
         }
     }
@@ -83,6 +82,7 @@ const setMouseListeners = () => {
 const onLeftClick = (table_cell) => {
 
     if (table_cell.className == CELL && !disable_btns) table_cell.className = WALL;
+
 }
 
 const onRightClick = (table_cell) => {
@@ -104,22 +104,12 @@ const onNodeMove = (table_cell) => {
     if (is_moveable && !disable_btns) {
         
         table_cell.className = moving_class;
-        if (moving_class == S_NODE) {
 
-            if (s_prev_nodes[0] != table_cell) {
-                s_prev_nodes.unshift(table_cell);
-            }
-            if (s_prev_nodes[1] != 0) {
-                s_prev_nodes[1].className = CELL;
-            }
-        } else if (moving_class == E_NODE) {
-    
-            if (e_prev_nodes[0] != table_cell) {
-                e_prev_nodes.unshift(table_cell);
-            }
-            if (e_prev_nodes[1] != 0) {
-                e_prev_nodes[1].className = CELL;
-            }
+        if (prev_nodes[0] != table_cell) {
+            prev_nodes.unshift(table_cell);
+        }
+        if (prev_nodes[1]) {
+            prev_nodes[1].className = CELL;
         }
     }
 }
@@ -127,12 +117,10 @@ const onNodeMove = (table_cell) => {
 const gridToArray = () => {
     if (disable_btns) return;
     let table_grid_array = [];
-    let idx = 0;
     const TABLE_GRID = document.getElementById('table');
-    for (let row = 0; row < TABLE_GRID.rows.length; row++) {
-        table_grid_array.push([]);
-        for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
-            const TABLE_CELL = TABLE_GRID.rows[row].cells[col].className;
+    for (let i = 0; i < TABLE_GRID.rows.length; i++) {
+        for (let j = 0; j < TABLE_GRID.rows[i].cells.length; j++) {
+            const TABLE_CELL = TABLE_GRID.rows[i].cells[j].className;
             let encoded_item;
             switch (TABLE_CELL) {
                 case CELL:
@@ -147,9 +135,8 @@ const gridToArray = () => {
                 case E_NODE:
                     encoded_item = E_NODE_ENCODING;
             }
-            table_grid_array[idx].push(encoded_item);
+            table_grid_array.push(encoded_item);
         }
-        idx ++;
     }
     return table_grid_array;
 }
@@ -174,9 +161,9 @@ async function startPathfinding() {
     const path_true = path.slice(1, path.length - 1);
 
     const v = [];
-    let temparray,chunk = Math.floor(path_true.length * 4/5);
+    let temparray,chunk = path_true.length + 1;
     for (let i = 0; i < visual.length; i += chunk) {
-        temparray = visual.slice(i, i + chunk);
+        temparray = visual.slice(i,i+chunk);
         v.push(temparray);
     }
     disable_btns = true;
@@ -238,23 +225,12 @@ const saveBoard = () => {
     if (disable_btns) return;
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const grid = gridToArray();
-        let csvRows = [];
-        for (let i = 0; i < grid.length; ++i) {
-            for (let j = 0; j < grid[i].length; ++j) {
-                grid[i][j] = '\"' + grid[i][j] + '\"';
-            }
-            csvRows.push(grid[i].join(','));
-        }
-    
-        let csvString = csvRows.join('\r\n');
-        let a         = document.createElement('a');
-        a.href        = 'data:attachment/csv,' + csvString;
-        a.target      = '_blank';
-        a.download    = file_name + '.csv';
-    
-        document.body.appendChild(a);
-        a.click();
+        const board_contents = gridToArray().toString();
+        const link = document.createElement('a');
+        const file = new Blob([board_contents]);
+        link.href = URL.createObjectURL(file);
+        link.download = file_name;
+        link.click();
     }
 }
 
