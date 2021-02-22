@@ -24,7 +24,8 @@
         <li><a href="javascript:clearBoard()">Clear</a></li>
         <li><a href="javascript:restartBoard()">Restart</a></li>
         <li><a href="javascript:saveBoard()">Save</a></li>
-        <li><a href="javascript:someFunction()">Import</a></li>
+        <li><a href="javascript:importToBoard()">Import</a>
+          <input id="file-input" type="file" name="name" style="display: none;" /></li>
         <li>
           <select id="algorithms">
             <option value="Dijstras">Dijstras</option>
@@ -35,6 +36,7 @@
           <a id="path-btn" href="javascript:startPathfinding()">Pathfind</a>
         </li>
       </ul>
+
     </div>
 
     <table id="table" oncontextmenu="return!1"></table>

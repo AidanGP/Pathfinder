@@ -247,9 +247,6 @@ const saveBoard = () => {
     const grid = gridToArray();
     var csvRows = [];
     for (var i = 0; i < grid.length; ++i) {
-      for (var j = 0; j < grid[i].length; ++j) {
-        grid[i][j] = '"' + grid[i][j] + '"';
-      }
       csvRows.push(grid[i].join(","));
     }
 
@@ -264,9 +261,74 @@ const saveBoard = () => {
   }
 };
 
+const csvToArr = (csv) => {
+  const rows = csv.split('\n');
+  let arr = [];
+  for (let i = 0; i < rows.length; i++) {
+    arr.push([]);
+    const row = rows[i].split(',');
+    for (let j = 0; j < row.length; j++) {
+      arr[i].push(parseInt(row[j]));
+    }
+  }
+  return arr;
+};
+
+const arrToGrid = (arr) => {
+  const table = document.getElementById("table");
+  for (let i = 0; i < table.rows.length; i++) {
+    for (let j = 0; j < table.rows[i].cells.length; j++) {
+      const table_cell = table.rows[i].cells[j];
+      const file_cell = arr[i][j];
+      let cell_class;
+      switch (file_cell) {
+        case CELL_ENCODING:
+          cell_class = CELL;
+          break;
+        case BLOCK_ENCODING:
+          cell_class = WALL;
+          break;
+        case S_NODE_ENCODING:
+          cell_class = S_NODE;
+          break;
+        case E_NODE_ENCODING:
+          cell_class = E_NODE;
+      }
+      table_cell.className = cell_class;
+    }
+  }
+}
+
 const importToBoard = () => {
   if (disable_btns) return;
   //start pathfinding SIZEX SIZEY save_file
+  const file_in = document.getElementById('file-input');
+
+  file_in.onchange = event => {
+    const file = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsText(file,'UTF-8');
+
+    // Check that the file is a csv
+    if (!file.name.includes('.csv')) {
+      alert('Sorry, that doesn\'t look like a csv file.');
+      return;
+    }
+    
+    reader.onload = readerEvent => {
+        const content = readerEvent.target.result;
+        const arr = csvToArr(content);
+
+        // Check imported arr dims match with screen
+        if (!(arr.length == SIZE_Y && arr[0].length == SIZE_X)) {
+          alert('Sorry, that file does not match the windows dimensions.')
+          return;
+        }
+        arrToGrid(arr);
+
+    }
+  }
+  file_in.click();
 };
 
 setGrid();
