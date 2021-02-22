@@ -28,19 +28,26 @@ body {
 
 #table td {
   color: transparent;
+  background-color: #e5e5e5;
   opacity: 1;
   width: 40px;
   height: 40px;
 }
-
-#table td:hover, li a:hover, select:hover {
-  opacity: 0.75;
+#table td:hover {
+  animation-name: tableHover;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
 }
 
 
 
 #table {
-  background-color: var(--cell-color);
+  background-color: #e5e5e5;
   width: 100%;
   border-spacing: 0;
   border-collapse: collapse;
@@ -77,6 +84,11 @@ select {
   outline: none;
 }
 
+li a:hover,
+select:hover {
+  opacity: 0.6;
+}
+
 .wall {
   background-color: var(--wall-color) !important;
 }
@@ -91,17 +103,6 @@ select {
 
 .node-end {
   background-color: var(--e-node-color) !important;
-}
-
-.wall:hover, .node-start:hover, .node-end:hover {
-  animation-name: tableHover;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
 }
 
 .node-visited {

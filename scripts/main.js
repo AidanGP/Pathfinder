@@ -238,23 +238,13 @@ const saveBoard = () => {
     if (disable_btns) return;
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
-        const grid = gridToArray();
-        let csvRows = [];
-        for (let i = 0; i < grid.length; ++i) {
-            for (let j = 0; j < grid[i].length; ++j) {
-                grid[i][j] = '\"' + grid[i][j] + '\"';
-            }
-            csvRows.push(grid[i].join(','));
-        }
-    
-        let csvString = csvRows.join('\r\n');
-        let a         = document.createElement('a');
-        a.href        = 'data:attachment/csv,' + csvString;
-        a.target      = '_blank';
-        a.download    = file_name + '.csv';
-    
-        document.body.appendChild(a);
-        a.click();
+        const board_contents = gridToArray().toString();
+        console.log(board_contents);
+        const link = document.createElement('a');
+        const file = new Blob([board_contents]);
+        link.href = URL.createObjectURL(file);
+        link.download = file_name;
+        link.click();
     }
 }
 
