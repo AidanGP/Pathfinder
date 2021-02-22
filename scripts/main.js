@@ -1,5 +1,5 @@
 var moving_node = false;
-var moving_color;
+var moving_class;
 var s_prev_nodes = [0, 0];
 var e_prev_nodes = [0, 0];
 var disable_btns = false;
@@ -8,11 +8,10 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const setGrid = () => {
     // Initialise the grid
-    const TABLE_DIV = document.getElementById('dynamic_table');
-    const TABLE_GRID = document.createElement('TABLE');
+    const TABLE = document.getElementById('table');
     const TABLE_BODY = document.createElement('TBODY');
-    TABLE_DIV.innerHTML = '';
-    TABLE_GRID.appendChild(TABLE_BODY);
+    TABLE.innerHTML = '';
+    TABLE.appendChild(TABLE_BODY);
     for (let i = 0; i < SIZE_Y; i ++) {
         const table_row_element = document.createElement('TR');
         TABLE_BODY.appendChild(table_row_element);
@@ -20,23 +19,22 @@ const setGrid = () => {
             const table_cell_ID = i + ',' + j;
             const table_cell = document.createElement('TD');
             table_cell.id = table_cell_ID;
-            table_cell.style.backgroundColor = CELL_COLOR;
+
+            table_cell.className = CELL;
 
             if (i == START_AND_FINISH_NODE_ROW && j == START_COL) {
-                table_cell.style.backgroundColor = S_NODE_COLOR;
+                table_cell.className = S_NODE;
             } else if (i == START_AND_FINISH_NODE_ROW && j == END_COL ) {
-                table_cell.style.backgroundColor = E_NODE_COLOR;
+                table_cell.className = E_NODE;
             }
             table_row_element.appendChild(table_cell);
         }
     }
-    TABLE_GRID.id = 'cell_grid';
-    TABLE_DIV.appendChild(TABLE_GRID);
 }
 
 const setMouseListeners = () => {
     // Apply all of the mouse listeners for the grid
-    const TABLE_GRID = document.getElementById('cell_grid');
+    const TABLE_GRID = document.getElementById('table');
     for (let row = 0; row < TABLE_GRID.rows.length; row++) {
         for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
             const TABLE_CELL = TABLE_GRID.rows[row].cells[col];
@@ -46,8 +44,8 @@ const setMouseListeners = () => {
                 const MOUSE_BTN = event.which;
                 
                 if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
-                    if (moving_color == undefined) {
-                        moving_color = TABLE_CELL.style.backgroundColor;
+                    if (!moving_class) {
+                        moving_class = TABLE_CELL.className;
                     }
                     onNodeMove(this)
                 } else if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
@@ -60,7 +58,7 @@ const setMouseListeners = () => {
  
             TABLE_CELL.onmousedown = function (event) {
                 const MOUSE_BTN = event.which;
-                const is_node = (TABLE_CELL.style.backgroundColor == S_NODE_COLOR) || (TABLE_CELL.style.backgroundColor == E_NODE_COLOR);
+                const is_node = (TABLE_CELL.className == S_NODE) || (TABLE_CELL.className == E_NODE);
                 if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) {
                     moving_node = true;
                 } else if (MOUSE_BTN == MOUSE_LEFT_CLICK) {
@@ -72,7 +70,7 @@ const setMouseListeners = () => {
 
             TABLE_CELL.onmouseup = function () {
                 moving_node = false;
-                moving_color = undefined;
+                moving_class = undefined;
                 s_prev_nodes = [0, 0];
                 e_prev_nodes = [0, 0];
             }
@@ -81,83 +79,77 @@ const setMouseListeners = () => {
 }
 
 const onLeftClick = (table_cell) => {
-    const cell_color = table_cell.style;
 
-    if (cell_color.backgroundColor == CELL_COLOR && !disable_btns) {
-        cell_color.backgroundColor = BLOCK_COLOR;
+    if (table_cell.className == CELL && !disable_btns) {
+        table_cell.className = WALL;
     }
 }
 
 const onRightClick = (table_cell) => {
-    const cell_color = table_cell.style;
 
-    if (cell_color.backgroundColor == BLOCK_COLOR && !disable_btns) {
-        cell_color.backgroundColor = CELL_COLOR;
+    if (table_cell.className == WALL && !disable_btns) {
+        table_cell.className = CELL;
     }
 }
 
 const onNodeMove = (table_cell) => {
-    const cell_color = table_cell.style;
     
     
     var other_node;
-    if (moving_color == S_NODE_COLOR) {
-        other_node = E_NODE_COLOR;
-    } else if (moving_color == E_NODE_COLOR) {
-        other_node = S_NODE_COLOR;
+    if (moving_class == S_NODE) {
+        other_node = E_NODE;
+    } else if (moving_class == E_NODE) {
+        other_node = S_NODE;
     }
-    
-    const is_moveable = cell_color.backgroundColor != BLOCK_COLOR && cell_color.backgroundColor != other_node;
+    const is_moveable = table_cell.className != WALL && table_cell.className != other_node;
 
     if (is_moveable && !disable_btns) {
         
-        cell_color.backgroundColor = moving_color;
-        if (moving_color == S_NODE_COLOR) {
+        table_cell.className = moving_class;
+        if (moving_class == S_NODE) {
 
             if (s_prev_nodes[0] != table_cell) {
                 s_prev_nodes.unshift(table_cell);
             }
             if (s_prev_nodes[1] != 0) {
-                s_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+                s_prev_nodes[1].className = CELL;
             }
-        } else if (moving_color == E_NODE_COLOR) {
+        } else if (moving_class == E_NODE) {
     
             if (e_prev_nodes[0] != table_cell) {
                 e_prev_nodes.unshift(table_cell);
             }
             if (e_prev_nodes[1] != 0) {
-                e_prev_nodes[1].style.backgroundColor = CELL_COLOR;
+                e_prev_nodes[1].className = CELL;
             }
         }
-    
     }
-
-
 }
 
 const gridToArray = () => {
     if (disable_btns) return;
     let table_grid_array = [];
-    $('table#cell_grid tr').each(function () {
-        const table_cell = $(this).find('td');
-        table_cell.each(function () {
-            var encoded_item;
-            switch ($(this).css('backgroundColor')) {
-                case CELL_COLOR:
+    const TABLE_GRID = document.getElementById('table');
+    for (let row = 0; row < TABLE_GRID.rows.length; row++) {
+        for (let col = 0; col < TABLE_GRID.rows[row].cells.length; col++) {
+            const TABLE_CELL = TABLE_GRID.rows[row].cells[col].className;
+            let encoded_item;
+            switch (TABLE_CELL) {
+                case CELL:
                     encoded_item = CELL_ENCODING;
                     break;
-                case BLOCK_COLOR:
+                case WALL:
                     encoded_item = BLOCK_ENCODING;
                     break;
-                case S_NODE_COLOR:
+                case S_NODE:
                     encoded_item = S_NODE_ENCODING;
                     break;
-                case E_NODE_COLOR:
+                case E_NODE:
                     encoded_item = E_NODE_ENCODING;
             }
             table_grid_array.push(encoded_item);
-        });
-    });
+        }
+    }
     return table_grid_array;
 }
 
@@ -186,7 +178,6 @@ async function startPathfinding() {
         temparray = visual.slice(i,i+chunk);
         v.push(temparray);
     }
-    console.log(v);
     disable_btns = true;
     await plotVisualisation(v, false);
 
@@ -198,7 +189,7 @@ async function startPathfinding() {
 }
 
 async function plotVisualisation(visual, is_path) {
-    const table = document.getElementById('cell_grid');
+    const table = document.getElementById('table');
     for (var i = 0; i < visual.length; i ++) {
         for (var j = 0; j < visual[i].length; j ++) {
             const cell_index = parseInt(visual[i][j]);
@@ -207,10 +198,10 @@ async function plotVisualisation(visual, is_path) {
             const cell = table.rows[row].cells[column];
             
             if (is_path) {
-                cell.className = 'node-shortest-path';
+                cell.className = PATH;
                 await sleep(PATH_DELAY);
             } else {
-                cell.className = 'node-visited';
+                cell.className = VISITED;
             }
             
         }
@@ -231,13 +222,12 @@ const clearBoard = () => {
 
 const restartBoard = () => {
     if (disable_btns) return;
-    const table_grid = document.getElementById('cell_grid');
+    const table_grid = document.getElementById('table');
     for (let row = 0; row < table_grid.rows.length; row++) {
         for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
             const table_cell = table_grid.rows[row].cells[col];
-            if (table_cell.className == 'node-visited' || table_cell.className == 'node-shortest-path') {
-                table_cell.style.backgroundColor = CELL_COLOR;
-                table_cell.className = '';
+            if (table_cell.className == VISITED || table_cell.className == PATH) {
+                table_cell.className = CELL;
             }
         }
     }

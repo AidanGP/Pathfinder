@@ -12,10 +12,10 @@
   </head>
 
   <body>
-    <h1 id="heading">< PATHFINDER ></h1>
-    <div id="headingbar">
-      
 
+    <h1 id="heading">< PATHFINDER ></h1>
+
+    <div id="headingbar">
       <ul>
         <li><a href="javascript:clearBoard()">Clear</a></li>
         <li><a href="javascript:restartBoard()">Restart</a></li>
@@ -23,11 +23,11 @@
         <li><a href="javascript:someFunction()">Import</a></li>
         <li><a id="path-btn" href="javascript:startPathfinding()">Pathfind</a></li>
       </ul>
-
     </div>
     
-
-    <div id="dynamic_table" oncontextmenu="return!1"></div>
+    
+    <table id="table" oncontextmenu="return!1">
+    </table>
 
     <script src="scripts/constants.js"></script>
     <script src="scripts/prep.js"></script>

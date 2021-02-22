@@ -1,10 +1,11 @@
 
-// Colors
-const CELL_COLOR = "rgb(229, 229, 229)";
-const BLOCK_COLOR = "rgb(0, 0, 0)";
-const S_NODE_COLOR = "rgb(252, 163, 17)";
-const E_NODE_COLOR = "rgb(0, 163, 17)";
-const PATH_COLOR = "rgb(255, 255, 255)";
+// Classes
+const CELL = 'cell';
+const WALL = 'wall';
+const S_NODE = 'node-start';
+const E_NODE = 'node-end';
+const PATH = 'node-shortest-path';
+const VISITED = 'node-visited';
 
 // Encodings
 const CELL_ENCODING = 0;

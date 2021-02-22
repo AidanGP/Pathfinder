@@ -1,8 +1,10 @@
 
 :root {
-  --main-font: #1ed760;
-  --bg: #F7A399;
-  --font: #EF6351;
+  --cell-color: rgb(229, 229, 229);
+  --wall-color: rgb(0, 0, 0);
+  --s-node-color: rgb(0, 232, 108);
+  --e-node-color: rgb(250, 133, 184);
+  --bg: rgb(255, 255, 255);
 }
 
 html,
@@ -11,12 +13,8 @@ body {
   padding: 0;
   text-align: center;
   overflow: hidden;
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
   user-select: none;
-  background-color: #ffffff;
+  background-color: var(--bg);
 }
 #heading {
   font-family: "Staatliches", sans-serif;
@@ -28,14 +26,14 @@ body {
   width: 100%;
 }
 
-#dynamic_table td {
+#table td {
   color: transparent;
   background-color: #e5e5e5;
   opacity: 1;
   width: 40px;
   height: 40px;
 }
-#dynamic_table td:hover {
+#table td:hover {
   animation-name: tableHover;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;
@@ -46,24 +44,9 @@ body {
   animation-play-state: running;
 }
 
-@keyframes tableHover {
-  0% {
-    transform: scale(0.9);
-    
-  }
 
-  50% {
-    transform: scale(1.1);
-    
-  }
 
-  100% {
-    transform: scale(1);
-    
-  }
-}
-
-#dynamic_table table {
+#table {
   background-color: #e5e5e5;
   width: 100%;
   border-spacing: 0;
@@ -105,6 +88,23 @@ li a:hover,
 select:hover {
   opacity: 0.6;
 }
+
+.wall {
+  background-color: var(--wall-color) !important;
+}
+
+.cell {
+  background-color: var(--cell-color) !important;
+}
+
+.node-start {
+  background-color: var(--s-node-color) !important;
+}
+
+.node-end {
+  background-color: var(--e-node-color) !important;
+}
+
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;
@@ -116,25 +116,12 @@ select:hover {
   animation-play-state: running;
 }
 
-@keyframes visitedAnimation {
-  0% {
-    transform: scale(0.9);
-    background-color: rgba(0, 0, 66, 0.75);
-  }
 
-  50% {
-    background-color: rgba(17, 104, 217, 0.75);
-  }
-
-  75% {
-    transform: scale(1.1);
-    background-color: rgba(0, 217, 159, 0.75);
-  }
-
-  100% {
-    transform: scale(1);
-    background-color: rgba(0, 190, 218, 0.75);
-  }
+.disabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
 }
 
 .node-shortest-path {
@@ -164,11 +151,39 @@ select:hover {
     background-color: rgb(255, 254, 106);
   }
 }
+@keyframes tableHover {
+  0% {
+    transform: scale(0.9);
+    
+  }
 
+  50% {
+    transform: scale(1.1);
+    
+  }
 
-.disabled {
-  color: currentColor;
-  cursor: not-allowed;
-  opacity: 0.5;
-  text-decoration: none;
+  100% {
+    transform: scale(1);
+    
+  }
+}
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.9);
+    background-color: rgba(0, 0, 66, 0.75);
+  }
+
+  50% {
+    background-color: rgba(17, 104, 217, 0.75);
+  }
+
+  75% {
+    transform: scale(1.1);
+    background-color: rgba(0, 217, 159, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(0, 190, 218, 0.75);
+  }
 }
