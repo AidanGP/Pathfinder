@@ -238,7 +238,6 @@ const saveBoard = () => {
     const file_name = prompt('Please enter a file name', 'File Name');
     if (file_name != null) {
         const board_contents = gridToArray().toString();
-        console.log(board_contents);
         const link = document.createElement('a');
         const file = new Blob([board_contents]);
         link.href = URL.createObjectURL(file);
