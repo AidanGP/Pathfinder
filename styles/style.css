@@ -33,15 +33,9 @@ body {
   width: 40px;
   height: 40px;
 }
-#table td:hover {
-  animation-name: tableHover;
-  animation-duration: 0.3s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
+
+#table td:hover, li a:hover, select:hover {
+  opacity: 0.6;
 }
 
 
