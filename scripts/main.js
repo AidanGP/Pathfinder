@@ -3,6 +3,7 @@ let moving_class;
 let prev_nodes = [0, 0];
 let disable_btns = false;
 
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const setGrid = () => {
@@ -72,6 +73,7 @@ const setMouseListeners = () => {
                 moving_node = false;
                 moving_class = undefined;
                 prev_nodes = [0, 0];
+
             }
         }
     }
@@ -159,7 +161,7 @@ async function startPathfinding() {
     const path_true = path.slice(1, path.length - 1);
 
     const v = [];
-    let temparray,chunk = path_true.length;
+    let temparray,chunk = path_true.length + 1;
     for (let i = 0; i < visual.length; i += chunk) {
         temparray = visual.slice(i,i+chunk);
         v.push(temparray);
