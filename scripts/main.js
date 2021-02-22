@@ -11,7 +11,7 @@ let moving_class; // Set to either S_NODE or E_NODE
 const rand_int = Math.floor(Math.random() * THEMES.length);
 const rand_theme = THEMES[rand_int];
 
-let root = document.documentElement;
+const root = document.documentElement;
 // Assign the 5 colors to their css elements
 for (let i = 0; i < 5; i ++) {
     root.style.setProperty('--visited-' + i, rand_theme[i]);
@@ -35,13 +35,14 @@ const setGrid = () => {
 
       const ID = i + "," + j;
       cell.id = ID;
-      cell.className = CELL;
 
       // Pre-place the start and end node at default location
-      if (i == START_AND_FINISH_NODE_ROW && j == START_COL) {
+      if (i == START_ROW && j == START_COL) {
         cell.className = S_NODE;
-      } else if (i == START_AND_FINISH_NODE_ROW && j == END_COL) {
+      } else if (i == END_ROW && j == END_COL) {
         cell.className = E_NODE;
+      } else {
+        cell.className = CELL;
       }
       row.appendChild(cell);
     }
@@ -50,12 +51,12 @@ const setGrid = () => {
 
 // Start mouse listeners in the grid
 const setMouseListeners = () => {
-  const TABLE = document.getElementById("table");
-  for (let row = 0; row < TABLE.rows.length; row++) {
-    for (let col = 0; col < TABLE.rows[row].cells.length; col++) {
-      const TABLE_CELL = TABLE.rows[row].cells[col];
+  const table = document.getElementById("table");
+  for (let i = 0; i < table.rows.length; i++) {
+    for (let j = 0; j < table.rows[i].cells.length; j++) {
+      const cell = table.rows[i].cells[j];
 
-      TABLE_CELL.onmousemove = function (event) {
+      cell.onmousemove = function (event) {
         const MOUSE_BTN = event.which;
 
         if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
@@ -72,9 +73,9 @@ const setMouseListeners = () => {
         }
       };
 
-      TABLE_CELL.onmousedown = function (event) {
+      cell.onmousedown = function (event) {
         const MOUSE_BTN = event.which;
-        const is_node = TABLE_CELL.className == S_NODE || TABLE_CELL.className == E_NODE;
+        const is_node = cell.className == S_NODE || cell.className == E_NODE;
 
         if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) moving_node = true;
 
@@ -87,7 +88,7 @@ const setMouseListeners = () => {
         }
       };
 
-      TABLE_CELL.onmouseup = function () {
+      cell.onmouseup = function () {
         moving_node = false;
         moving_class = undefined;
         current_node = undefined;
@@ -99,14 +100,12 @@ const setMouseListeners = () => {
 
 // Changes an empty cell to a wall
 const onLeftClick = (table_cell) => {
-  if (table_cell.className == CELL && !disable_btns)
-    table_cell.className = WALL;
+  if (table_cell.className == CELL && !disable_btns) table_cell.className = WALL;
 };
 
 // Changes a wall to an empty cell
 const onRightClick = (table_cell) => {
-  if (table_cell.className == WALL && !disable_btns)
-    table_cell.className = CELL;
+  if (table_cell.className == WALL && !disable_btns) table_cell.className = CELL;
 };
 
 // Support for dragging and dropping the start / end nodes
@@ -117,8 +116,7 @@ const onNodeMove = (table_cell) => {
   } else if (moving_class == E_NODE) {
     other_node = S_NODE;
   }
-  const is_moveable =
-    table_cell.className != WALL && table_cell.className != other_node;
+  const is_moveable = table_cell.className != WALL && table_cell.className != other_node;
 
   if (is_moveable && !disable_btns) {
     table_cell.className = moving_class;
@@ -137,13 +135,13 @@ const onNodeMove = (table_cell) => {
 const gridToArray = () => {
   if (disable_btns) return;
   let table_arr = [];
-  const TABLE = document.getElementById("table");
-  for (let i = 0; i < TABLE.rows.length; i++) {
+  const table = document.getElementById("table");
+  for (let i = 0; i < table.rows.length; i++) {
     table_arr.push([]);
-    for (let j = 0; j < TABLE.rows[i].cells.length; j++) {
-      const TABLE_CELL = TABLE.rows[i].cells[j].className;
+    for (let j = 0; j < table.rows[i].cells.length; j++) {
       let encoded_item;
-      switch (TABLE_CELL) {
+      const cell = table.rows[i].cells[j].className;
+      switch (cell) {
         case CELL:
           encoded_item = CELL_ENCODING;
           break;
@@ -231,12 +229,12 @@ const clearBoard = () => {
 
 const restartBoard = () => {
   if (disable_btns) return;
-  const table_grid = document.getElementById("table");
-  for (let row = 0; row < table_grid.rows.length; row++) {
-    for (let col = 0; col < table_grid.rows[row].cells.length; col++) {
-      const table_cell = table_grid.rows[row].cells[col];
-      if (table_cell.className == VISITED || table_cell.className == PATH) {
-        table_cell.className = CELL;
+  const table = document.getElementById("table");
+  for (let i = 0; i < table.rows.length; i++) {
+    for (let j = 0; j < table.rows[i].cells.length; j++) {
+      const cell = table.rows[i].cells[j];
+      if (cell.className == VISITED || cell.className == PATH) {
+        cell.className = CELL;
       }
     }
   }

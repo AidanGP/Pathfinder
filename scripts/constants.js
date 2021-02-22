@@ -21,7 +21,8 @@ const SIZE_X = Math.floor($(window).width() / 50);
 const SIZE_Y = Math.floor($(window).height() / 50);
 
 // Default Start and End Positions
-const START_AND_FINISH_NODE_ROW = Math.floor((1 / 2) * SIZE_Y);
+const START_ROW = Math.floor((1 / 2) * SIZE_Y);
+const END_ROW = Math.floor((1 / 2) * SIZE_Y);
 const START_COL = Math.floor((1 / 5) * SIZE_X);
 const END_COL = Math.floor((4 / 5) * SIZE_X);
 
