@@ -46,7 +46,8 @@ select:hover {
 
 #table {
   background-color: var(--cell-color);
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
   border-spacing: 0;
   border-collapse: collapse;
 }

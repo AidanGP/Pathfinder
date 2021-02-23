@@ -6,7 +6,6 @@ let current_node; // Stores the current node being dragged over
 let prev_node; // Stores the previous node that was dragged over
 let moving_class; // Set to either S_NODE or E_NODE
 
-
 // Choose a random theme (5 colors) for the visited nodes
 const rand_int = Math.floor(Math.random() * THEMES.length);
 const rand_theme = THEMES[rand_int];
@@ -20,8 +19,28 @@ for (let i = 0; i < 5; i ++) {
 // Waits for a number of milliseconds
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+
+const getDefaultGrid = () => {
+  let arr = [];
+  for (let i = 0; i < SIZE_Y; i ++) {
+    arr.push([]);
+    for (let j = 0; j < SIZE_X; j ++) {
+      if (i == START_ROW && j == START_COL) {
+        arr[i].push(2);
+      } else if (i == END_ROW && j == END_COL) {
+        arr[i].push(3);
+      } else {
+        arr[i].push(0);
+      }
+    }
+  }
+  return arr;
+}
+
 // Initialise the grid with empty cells and the starting spots for nodes
-const setGrid = () => {
+const setGrid = (arr) => {
+  SIZE_X = arr[0].length;
+  SIZE_Y = arr.length;
   const table = document.getElementById("table");
   table.innerHTML = "";
   for (let i = 0; i < SIZE_Y; i++) {
@@ -32,18 +51,26 @@ const setGrid = () => {
     for (let j = 0; j < SIZE_X; j++) {
     
       const cell = document.createElement("TD");
-
       const ID = i + "," + j;
       cell.id = ID;
 
-      // Pre-place the start and end node at default location
-      if (i == START_ROW && j == START_COL) {
-        cell.className = S_NODE;
-      } else if (i == END_ROW && j == END_COL) {
-        cell.className = E_NODE;
-      } else {
-        cell.className = CELL;
+      const encoding = arr[i][j];
+
+      let cell_class;
+      switch (encoding) {
+        case CELL_ENCODING:
+          cell_class = CELL;
+          break;
+        case BLOCK_ENCODING:
+          cell_class = WALL;
+          break;
+        case S_NODE_ENCODING:
+          cell_class = S_NODE;
+          break;
+        case E_NODE_ENCODING:
+          cell_class = E_NODE;
       }
+      cell.className = cell_class;
       row.appendChild(cell);
     }
   }
@@ -52,12 +79,12 @@ const setGrid = () => {
 // Start mouse listeners in the grid
 const setMouseListeners = () => {
   const table = document.getElementById("table");
-  for (let i = 0; i < table.rows.length; i++) {
-    for (let j = 0; j < table.rows[i].cells.length; j++) {
+  for (let i = 0; i < SIZE_Y; i++) {
+    for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
 
-      cell.onmousemove = function (event) {
-        const MOUSE_BTN = event.which;
+      cell.onmousemove = function (e) {
+        const MOUSE_BTN = e.which;
 
         if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
           if (!moving_class) moving_class = this.className;
@@ -73,8 +100,8 @@ const setMouseListeners = () => {
         }
       };
 
-      cell.onmousedown = function (event) {
-        const MOUSE_BTN = event.which;
+      cell.onmousedown = function (e) {
+        const MOUSE_BTN = e.which;
         const is_node = cell.className == S_NODE || cell.className == E_NODE;
 
         if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) moving_node = true;
@@ -136,9 +163,9 @@ const gridToArray = () => {
   if (disable_btns) return;
   let table_arr = [];
   const table = document.getElementById("table");
-  for (let i = 0; i < table.rows.length; i++) {
+  for (let i = 0; i < SIZE_Y; i++) {
     table_arr.push([]);
-    for (let j = 0; j < table.rows[i].cells.length; j++) {
+    for (let j = 0; j < SIZE_X; j++) {
       let encoded_item;
       const cell = table.rows[i].cells[j].className;
       switch (cell) {
@@ -222,16 +249,18 @@ async function plotVisualisation(visual, is_path) {
 const clearBoard = () => {
   if (disable_btns) return;
   disable_btns = false;
+  SIZE_X = Math.floor($(window).width() / 50);
+  SIZE_Y = Math.floor($(window).height() / 50);
   setButtonClass("");
-  setGrid();
+  setGrid(getDefaultGrid());
   setMouseListeners();
 };
 
 const restartBoard = () => {
   if (disable_btns) return;
   const table = document.getElementById("table");
-  for (let i = 0; i < table.rows.length; i++) {
-    for (let j = 0; j < table.rows[i].cells.length; j++) {
+  for (let i = 0; i < SIZE_Y; i++) {
+    for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
       if (cell.className == VISITED || cell.className == PATH) {
         cell.className = CELL;
@@ -274,38 +303,12 @@ const csvToArr = (csv) => {
   return arr;
 };
 
-const arrToGrid = (arr) => {
-  const table = document.getElementById("table");
-  for (let i = 0; i < table.rows.length; i++) {
-    for (let j = 0; j < table.rows[i].cells.length; j++) {
-      const table_cell = table.rows[i].cells[j];
-      const file_cell = arr[i][j];
-      let cell_class;
-      switch (file_cell) {
-        case CELL_ENCODING:
-          cell_class = CELL;
-          break;
-        case BLOCK_ENCODING:
-          cell_class = WALL;
-          break;
-        case S_NODE_ENCODING:
-          cell_class = S_NODE;
-          break;
-        case E_NODE_ENCODING:
-          cell_class = E_NODE;
-      }
-      table_cell.className = cell_class;
-    }
-  }
-}
-
 const importToBoard = () => {
   if (disable_btns) return;
-  //start pathfinding SIZEX SIZEY save_file
-  const file_in = document.getElementById('file-input');
+  var file_in = document.getElementById('file-input');
 
-  file_in.onchange = event => {
-    const file = event.target.files[0];
+  file_in.onchange = e => {
+    const file = e.target.files[0];
     var reader = new FileReader();
     reader.readAsText(file,'UTF-8');
 
@@ -319,17 +322,12 @@ const importToBoard = () => {
         const content = readerEvent.target.result;
         const arr = csvToArr(content);
 
-        // Check imported arr dims match with screen
-        if (!(arr.length == SIZE_Y && arr[0].length == SIZE_X)) {
-          alert('Sorry, that file does not match the windows dimensions.')
-          return;
-        }
-        arrToGrid(arr);
-
+        setGrid(arr);
+        setMouseListeners();
     }
   }
   file_in.click();
 };
 
-setGrid();
+setGrid(getDefaultGrid());
 setMouseListeners();

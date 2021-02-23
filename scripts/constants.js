@@ -17,8 +17,8 @@ const MOUSE_LEFT_CLICK = 1;
 const MOUSE_RIGHT_CLICK = 3;
 
 // Window Sizes
-const SIZE_X = Math.floor($(window).width() / 50);
-const SIZE_Y = Math.floor($(window).height() / 50);
+var SIZE_X = Math.floor($(window).width() / 50);
+var SIZE_Y = Math.floor($(window).height() / 50);
 
 // Default Start and End Positions
 const START_ROW = Math.floor((1 / 2) * SIZE_Y);
