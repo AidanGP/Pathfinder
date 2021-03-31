@@ -19,145 +19,6 @@ for (let i = 0; i < 5; i ++) {
 // Waits for a number of milliseconds
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-
-const getDefaultGrid = () => {
-  let arr = [];
-  for (let i = 0; i < SIZE_Y; i ++) {
-    arr.push([]);
-    for (let j = 0; j < SIZE_X; j ++) {
-      if (i == START_ROW && j == START_COL) {
-        arr[i].push(2);
-      } else if (i == END_ROW && j == END_COL) {
-        arr[i].push(3);
-      } else {
-        arr[i].push(0);
-      }
-    }
-  }
-  return arr;
-}
-
-// Initialise the grid with empty cells and the starting spots for nodes
-const setGrid = (arr) => {
-  SIZE_X = arr[0].length;
-  SIZE_Y = arr.length;
-  const table = document.getElementById("table");
-  table.innerHTML = "";
-  for (let i = 0; i < SIZE_Y; i++) {
-
-    const row = document.createElement("TR");
-    table.appendChild(row);
-
-    for (let j = 0; j < SIZE_X; j++) {
-    
-      const cell = document.createElement("TD");
-      const ID = i + "," + j;
-      cell.id = ID;
-
-      const encoding = arr[i][j];
-
-      let cell_class;
-      switch (encoding) {
-        case CELL_ENCODING:
-          cell_class = CELL;
-          break;
-        case BLOCK_ENCODING:
-          cell_class = WALL;
-          break;
-        case S_NODE_ENCODING:
-          cell_class = S_NODE;
-          break;
-        case E_NODE_ENCODING:
-          cell_class = E_NODE;
-      }
-      cell.className = cell_class;
-      row.appendChild(cell);
-    }
-  }
-};
-
-// Start mouse listeners in the grid
-const setMouseListeners = () => {
-  const table = document.getElementById("table");
-  for (let i = 0; i < SIZE_Y; i++) {
-    for (let j = 0; j < SIZE_X; j++) {
-      const cell = table.rows[i].cells[j];
-
-      cell.onmousemove = function (e) {
-        const MOUSE_BTN = e.which;
-
-        if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
-          if (!moving_class) moving_class = this.className;
-          onNodeMove(this);
-        }
-
-        switch (MOUSE_BTN) {
-          case MOUSE_LEFT_CLICK:
-            onLeftClick(this);
-            break;
-          case MOUSE_RIGHT_CLICK:
-            onRightClick(this);
-        }
-      };
-
-      cell.onmousedown = function (e) {
-        const MOUSE_BTN = e.which;
-        const is_node = cell.className == S_NODE || cell.className == E_NODE;
-
-        if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) moving_node = true;
-
-        switch (MOUSE_BTN) {
-          case MOUSE_LEFT_CLICK:
-            onLeftClick(this);
-            break;
-          case MOUSE_RIGHT_CLICK:
-            onRightClick(this);
-        }
-      };
-
-      cell.onmouseup = function () {
-        moving_node = false;
-        moving_class = undefined;
-        current_node = undefined;
-        prev_node = undefined;
-      };
-    }
-  }
-};
-
-// Changes an empty cell to a wall
-const onLeftClick = (table_cell) => {
-  if (table_cell.className == CELL && !disable_btns) table_cell.className = WALL;
-};
-
-// Changes a wall to an empty cell
-const onRightClick = (table_cell) => {
-  if (table_cell.className == WALL && !disable_btns) table_cell.className = CELL;
-};
-
-// Support for dragging and dropping the start / end nodes
-const onNodeMove = (table_cell) => {
-  let other_node;
-  if (moving_class == S_NODE) {
-    other_node = E_NODE;
-  } else if (moving_class == E_NODE) {
-    other_node = S_NODE;
-  }
-  const is_moveable = table_cell.className != WALL && table_cell.className != other_node;
-
-  if (is_moveable && !disable_btns) {
-    table_cell.className = moving_class;
-
-    if (current_node != table_cell) {
-        prev_node = current_node;
-        current_node = table_cell;
-    }
-    if (prev_node) {
-        prev_node.className = CELL;
-    }
-  }
-};
-
 // Convers the grid to a two dimensional array
 const gridToArray = () => {
   if (disable_btns) return;
@@ -246,6 +107,23 @@ async function plotVisualisation(visual, is_path) {
   }
 }
 
+const getDefaultGrid = () => {
+  let arr = [];
+  for (let i = 0; i < SIZE_Y; i ++) {
+    arr.push([]);
+    for (let j = 0; j < SIZE_X; j ++) {
+      if (i == START_ROW && j == START_COL) {
+        arr[i].push(2);
+      } else if (i == END_ROW && j == END_COL) {
+        arr[i].push(3);
+      } else {
+        arr[i].push(0);
+      }
+    }
+  }
+  return arr;
+}
+
 const clearBoard = () => {
   if (disable_btns) return;
   disable_btns = false;
@@ -269,65 +147,11 @@ const restartBoard = () => {
   }
 };
 
-const saveBoard = () => {
-  if (disable_btns) return;
-  const file_name = prompt("Please enter a file name", "File Name");
-  if (file_name != null) {
-    const grid = gridToArray();
-    var csvRows = [];
-    for (var i = 0; i < grid.length; ++i) {
-      csvRows.push(grid[i].join(","));
-    }
 
-    var csvString = csvRows.join("\r\n");
-    var a = document.createElement("a");
-    a.href = "data:attachment/csv," + csvString;
-    a.target = "_blank";
-    a.download = file_name + ".csv";
 
-    document.body.appendChild(a);
-    a.click();
-  }
-};
 
-const csvToArr = (csv) => {
-  const rows = csv.split('\n');
-  let arr = [];
-  for (let i = 0; i < rows.length; i++) {
-    arr.push([]);
-    const row = rows[i].split(',');
-    for (let j = 0; j < row.length; j++) {
-      arr[i].push(parseInt(row[j]));
-    }
-  }
-  return arr;
-};
 
-const importToBoard = () => {
-  if (disable_btns) return;
-  var file_in = document.getElementById('file-input');
 
-  file_in.onchange = e => {
-    const file = e.target.files[0];
-    var reader = new FileReader();
-    reader.readAsText(file,'UTF-8');
-
-    // Check that the file is a csv
-    if (!file.name.includes('.csv')) {
-      alert('Sorry, that doesn\'t look like a csv file.');
-      return;
-    }
-    
-    reader.onload = readerEvent => {
-        const content = readerEvent.target.result;
-        const arr = csvToArr(content);
-
-        setGrid(arr);
-        setMouseListeners();
-    }
-  }
-  file_in.click();
-};
 
 setGrid(getDefaultGrid());
 setMouseListeners();

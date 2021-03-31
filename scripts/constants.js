@@ -35,7 +35,7 @@ const ALGORITHMS = ["dijstras", "a_star"];
 
 // Themes
 const THEMES = [
-    ['#9046cf','#cc59d2','#f487b6','#fff3f0','#fde12d'],
-    ['#002626','#0e4749','#95c623','#e55812','#efe7da'],
+    //['#9046cf','#cc59d2','#f487b6','#fff3f0','#fde12d'],
+    // ['#002626','#0e4749','#95c623','#e55812','#efe7da'],
     ['#ffc15e','#f7b05b','#f7934c','#cc5803','#cc5803']
 ]
