@@ -1,7 +1,7 @@
 # Pathfinder
 Pathfinding Algorithm Utility
 
-![Pathfinder Software](img/title_img.jpg?raw=true "Pathfinder Example")
+![Pathfinder Software](img/title_img2.jpg?raw=true "Pathfinder Example")
 
 [Pathfinder Site](https://aidangp.github.io/Pathfinder)
 
