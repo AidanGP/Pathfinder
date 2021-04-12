@@ -1,5 +1,7 @@
 # Pathfinder
 Pathfinding Algorithm Utility
+*Add Image*
+[Pathfinder](https://aidangp.github.io/Pathfinder)
 
 ## Guide
 ###### Using the Pathfinder software is as easy as...
