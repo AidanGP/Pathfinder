@@ -1,3 +1,9 @@
+// Algorithms
+const ALGORITHMS = {
+  Dijstras: dijstras,
+  "A*": a_star,
+};
+
 async function startPathfinding() {
   if (disable_btns) return;
   restartBoard();
@@ -8,7 +14,16 @@ async function startPathfinding() {
   const nodes = getNodeCells(board);
   const empty_board = getEmptyGrid();
   const graph = setGraph(blocked, empty_board);
-  const result = dijstras(graph, nodes, blocked);
+
+  //
+
+  const selector = document.getElementById("algorithms");
+  const alg_name = selector.options[selector.selectedIndex].innerHTML;
+  const alg_file = ALGORITHMS[alg_name];
+
+  const result = alg_file(graph, nodes, blocked);
+
+  //
   const visualisation = result["visual"];
   const path = result["path"];
 
