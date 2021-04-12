@@ -3,7 +3,7 @@ Pathfinding Algorithm Utility
 
 ![Pathfinder Software](img/title_img.jpg?raw=true "Pathfinder Example")
 
-[Pathfinder](https://aidangp.github.io/Pathfinder)
+[Pathfinder Site](https://aidangp.github.io/Pathfinder)
 
 ## Guide
 ###### Using the Pathfinder software is as easy as...
