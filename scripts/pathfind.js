@@ -50,4 +50,3 @@ async function plotVisualisation(visual, is_path) {
     await sleep(VISUALISATION_DELAY);
   }
 }
-
