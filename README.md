@@ -1,6 +1,6 @@
 # Pathfinder
 Pathfinding Algorithm Utility
-*Add Image*
+![Pathfinder Software](img/title_img.jpg?raw=true "Pathfinder Example")
 [Pathfinder](https://aidangp.github.io/Pathfinder)
 
 ## Guide
