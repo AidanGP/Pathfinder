@@ -5,11 +5,11 @@
   --e-node-color: rgb(250, 133, 184);
   --bg: rgb(255, 255, 255);
 
-  --visited-0: '';
-  --visited-1: '';
-  --visited-2: '';
-  --visited-3: '';
-  --visited-4: '';
+  --visited-0: "";
+  --visited-1: "";
+  --visited-2: "";
+  --visited-3: "";
+  --visited-4: "";
 }
 
 html,
@@ -23,6 +23,7 @@ body {
 }
 #heading {
   font-family: "Staatliches", sans-serif;
+  margin-bottom: 0;
 }
 #headingbar {
   display: flex;

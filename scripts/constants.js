@@ -16,15 +16,11 @@ const E_NODE_ENCODING = 3;
 const MOUSE_LEFT_CLICK = 1;
 const MOUSE_RIGHT_CLICK = 3;
 
-// Window Sizes
-var SIZE_X = Math.floor($(window).width() / 50);
-var SIZE_Y = Math.floor($(window).height() / 50);
-
 // Default Start and End Positions
-const START_ROW = Math.floor((1 / 2) * SIZE_Y);
-const END_ROW = Math.floor((1 / 2) * SIZE_Y);
-const START_COL = Math.floor((1 / 5) * SIZE_X);
-const END_COL = Math.floor((4 / 5) * SIZE_X);
+const START_ROW = (y) => Math.floor((1 / 2) * y);
+const START_COL = (x) => Math.floor((1 / 5) * x);
+const END_ROW = (y) => Math.floor((1 / 2) * y);
+const END_COL = (x) => Math.floor((4 / 5) * x);
 
 // Delays
 const PATH_DELAY = 50;
@@ -35,7 +31,7 @@ const ALGORITHMS = ["dijstras", "a_star"];
 
 // Themes
 const THEMES = [
-    //['#9046cf','#cc59d2','#f487b6','#fff3f0','#fde12d'],
-    // ['#002626','#0e4749','#95c623','#e55812','#efe7da'],
-    ['#ffc15e','#f7b05b','#f7934c','#cc5803','#cc5803']
-]
+  //['#9046cf','#cc59d2','#f487b6','#fff3f0','#fde12d'],
+  // ['#002626','#0e4749','#95c623','#e55812','#efe7da'],
+  ["#ffc15e", "#f7b05b", "#f7934c", "#cc5803", "#cc5803"],
+];
