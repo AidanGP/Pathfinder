@@ -9,9 +9,6 @@ const gridToArray = () => {
       let encoded_item;
       const cell = table.rows[i].cells[j].className;
       switch (cell) {
-        case CELL:
-          encoded_item = CELL_ENCODING;
-          break;
         case WALL:
           encoded_item = BLOCK_ENCODING;
           break;
@@ -20,6 +17,13 @@ const gridToArray = () => {
           break;
         case E_NODE:
           encoded_item = E_NODE_ENCODING;
+          break;
+        case CELL:
+          encoded_item = CELL_ENCODING;
+          break;
+        default:
+          encoded_item = CELL_ENCODING;
+
       }
       table_arr[i].push(encoded_item);
     }

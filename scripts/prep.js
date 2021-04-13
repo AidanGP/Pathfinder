@@ -32,38 +32,38 @@ const getEmptyGrid = () => {
   }
   return grid;
 };
-const setWeights = (index, is_blocked, grid) => {
+const setWeights = (index, is_blocked) => {
   const row = Math.floor(index / SIZE_X);
   const column = index - SIZE_X * row;
+  const empty_grid = getEmptyGrid();
   let affected = [];
   let weight = 1;
   if (is_blocked) {
     weight = Infinity;
   }
   if (row != SIZE_Y - 1) {
-    affected.push(grid[row + 1][column]);
+    affected.push(empty_grid[row + 1][column]);
     affected.push(weight);
   }
   if (row != 0) {
-    affected.push(grid[row - 1][column]);
+    affected.push(empty_grid[row - 1][column]);
     affected.push(weight);
   }
   if (column != 0) {
-    affected.push(grid[row][column - 1]);
+    affected.push(empty_grid[row][column - 1]);
     affected.push(weight);
   }
   if (column != SIZE_X - 1) {
-    affected.push(grid[row][column + 1]);
+    affected.push(empty_grid[row][column + 1]);
     affected.push(weight);
   }
   return affected;
 };
-const setGraph = (blocked, grid) => {
+const setGraph = (blocked_cells) => {
   let new_board = [];
-  const blocked_cells = blocked;
   for (let i = 0; i < SIZE_X * SIZE_Y; i++) {
     const isBlocked = blocked_cells.includes(i);
-    const affected = setWeights(i, isBlocked, grid);
+    const affected = setWeights(i, isBlocked);
     let posMass = {};
     for (let counter = 0; counter < affected.length; counter += 2) {
       posMass[affected[counter].toString()] = affected[counter + 1];

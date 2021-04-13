@@ -55,5 +55,5 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     currentNode = predecessor[currentNode];
   }
   path.unshift(start);
-  return { visual: visualisation, path: path };
+  return { visited: visualisation, path: path };
 };

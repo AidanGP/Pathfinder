@@ -1,5 +1,5 @@
-// Algorithms
-const ALGORITHMS = {
+// Translates the name of an algorithm to its respective function
+const algorithm_name_to_function = {
   Dijstras: dijstras,
   "A*": a_star,
 };
@@ -7,52 +7,60 @@ const ALGORITHMS = {
 async function startPathfinding() {
   if (disable_btns) return;
   restartBoard();
-
   setButtonClass("disabled");
-  const board = gridToArray();
-  const blocked = getBlockedCells(board);
-  const nodes = getNodeCells(board);
-  const empty_board = getEmptyGrid();
-  const graph = setGraph(blocked, empty_board);
+
+  const current_board = gridToArray();
+
+  const blocked = getBlockedCells(current_board);
+  const nodes = getNodeCells(current_board);
+
+  const graph = setGraph(blocked);
 
   //
 
   const selector = document.getElementById("algorithms");
-  const alg_name = selector.options[selector.selectedIndex].innerHTML;
-  const alg_file = ALGORITHMS[alg_name];
-
-  const result = alg_file(graph, nodes, blocked);
+  const algorithm_name = selector.options[selector.selectedIndex].innerHTML;
+  const algorithm = algorithm_name_to_function[algorithm_name];
 
   //
-  const visualisation = result["visual"];
-  const path = result["path"];
 
-  const visual = visualisation.slice(1, visualisation.length - 1);
+  const result = algorithm(graph, nodes, blocked);
 
-  const path_true = path.slice(1, path.length - 1);
+  const visited_cells = result["visited"];
+  const shortest_path = result["path"];
 
-  const v = [];
-  let temparray;
-  let chunk = path_true.length + 1;
-  for (let i = 0; i < visual.length; i += chunk) {
-    temparray = visual.slice(i, i + chunk);
-    v.push(temparray);
+  // Trim the first and last element out of the visited cells and paths lists.
+  const visited_cells_trim = visited_cells.slice(1, visited_cells.length - 1);
+  const shortest_path_trim = shortest_path.slice(1, shortest_path.length - 1);
+
+  // Break the visited cells list into chunks for visualisation
+  const visited_cells_to_chunks = [];
+  const chunk_size = shortest_path_trim.length + 1;
+  for (let i = 0; i < visited_cells_trim.length; i += chunk_size) {
+    const visualisation_chunk = visited_cells_trim.slice(i, i + chunk_size);
+    visited_cells_to_chunks.push(visualisation_chunk);
   }
-  disable_btns = true;
-  await plotVisualisation(v, false);
 
-  await plotVisualisation([path_true], true);
+  disable_btns = true;
+
+  // Grey the buttons and draw all visualisations
+  await visualise(visited_cells_to_chunks, is_path=false);
+  await visualise([shortest_path_trim], is_path=true);
+
   disable_btns = false;
   setButtonClass("");
 }
 
-async function plotVisualisation(visual, is_path) {
+async function visualise(cells, is_path) {
   const table = document.getElementById("table");
-  for (let i = 0; i < visual.length; i++) {
-    for (let j = 0; j < visual[i].length; j++) {
-      const cell_index = parseInt(visual[i][j]);
+  for (let i = 0; i < cells.length; i++) {
+    for (let j = 0; j < cells[i].length; j++) {
+      
+      const cell_index = parseInt(cells[i][j]);
+
       const row = Math.floor(cell_index / SIZE_X);
       const column = cell_index - SIZE_X * row;
+
       const cell = table.rows[row].cells[column];
 
       if (is_path) {
