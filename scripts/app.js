@@ -17,7 +17,7 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // setButtonClass used to disable / enable buttons during animations
 const setButtonClass = (class_name) => {
-  let a = document.getElementsByTagName("a");
+  const a = document.getElementsByTagName("a");
   for (let i = 0; i < a.length; i++) {
     a[i].className = class_name;
   }
