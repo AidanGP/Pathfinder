@@ -1,5 +1,9 @@
 # Pathfinder
-Pathfinding Algorithm Utility
+###### A Pathfinding Algorithm Utility that will...
+* Give the option of various pathfinding algorithms such as Dijstra's algorithm and A8
+* Find the shortest distance between two points, ie. the start (green) and end (pink) nodes
+* Avoid barrier blocks (black)
+* Visualise the visited / previously searched cells as well as the shortest path
 
 ![Pathfinder Software](img/title_img2.jpg?raw=true "Pathfinder Example")
 
