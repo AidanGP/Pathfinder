@@ -1,7 +1,7 @@
 // Convers the grid to a two dimensional array
 const gridToArray = () => {
   if (disable_btns) return;
-  let table_arr = [];
+  const table_arr = [];
   const table = document.getElementById("table");
   for (let i = 0; i < SIZE_Y; i++) {
     table_arr.push([]);
@@ -36,13 +36,13 @@ const saveBoard = () => {
   const file_name = prompt("Please enter a file name", "File Name");
   if (file_name != null) {
     const grid = gridToArray();
-    var csvRows = [];
+    const csvRows = [];
     for (var i = 0; i < grid.length; ++i) {
       csvRows.push(grid[i].join(","));
     }
 
-    var csvString = csvRows.join("\r\n");
-    var a = document.createElement("a");
+    const csvString = csvRows.join("\r\n");
+    const a = document.createElement("a");
     a.href = "data:attachment/csv," + csvString;
     a.target = "_blank";
     a.download = file_name + ".csv";
