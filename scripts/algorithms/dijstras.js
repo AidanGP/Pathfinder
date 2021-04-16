@@ -1,53 +1,43 @@
 const dijstras = (graph, node_cells, blocked_cells) => {
-  let nodes = node_cells;
-  const start = nodes[0].toString();
-  const goal = nodes[1].toString();
-  let shortest_distance = {};
-  let predecessor = {};
-  let unseenNodes = graph;
-  let bDict = graph;
-  let path = [];
-  for (let node in unseenNodes) {
+  const start = node_cells[0].toString();
+  const goal = node_cells[1].toString();
+  const shortest_distance = {};
+  const predecessor = {};
+  const path = [];
+  for (let node in graph) {
     shortest_distance[node] = Infinity;
   }
   shortest_distance[start] = 0;
-  let visualisation = [];
-  while (Object.keys(unseenNodes).length !== 0) {
-    let minNode = undefined;
-    for (let node in unseenNodes) {
-      if (minNode === undefined) {
+  const visited = [];
+  
+  while (Object.keys(graph).length != 0) {
+    let minNode;
+    
+    for (const node in graph) {
+      if (minNode == undefined || shortest_distance[node] < shortest_distance[minNode]) {
         minNode = node;
-        if (
-          !(
-            minNode === start ||
-            visualisation.includes(goal) ||
-            blocked_cells.includes(parseInt(minNode))
-          )
-        ) {
-          visualisation.push(minNode);
-        }
-      } else if (shortest_distance[node] < shortest_distance[minNode]) {
-        minNode = node;
-        if (
-          !(
-            minNode === start ||
-            visualisation.includes(goal) ||
-            blocked_cells.includes(parseInt(minNode))
-          )
-        ) {
-          visualisation.push(minNode);
-        }
       }
+      
     }
-    Object.entries(bDict[minNode]).forEach(function (v) {
-      let weight = v[1];
-      let childNode = v[0];
+    Object.entries(graph[minNode]).forEach(function (v) {
+      const weight = v[1];
+      const childNode = v[0];
       if (weight + shortest_distance[minNode] < shortest_distance[childNode]) {
         shortest_distance[childNode] = weight + shortest_distance[minNode];
         predecessor[childNode] = minNode;
       }
     });
-    delete unseenNodes[minNode];
+
+    if (
+      !(
+        visited.includes(goal) ||
+        blocked_cells.includes(parseInt(minNode))
+      )
+    ) {
+      visited.push(minNode);
+    }
+    delete graph[minNode];
+    
   }
   let currentNode = goal;
   while (currentNode !== start) {
@@ -55,5 +45,5 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     currentNode = predecessor[currentNode];
   }
   path.unshift(start);
-  return { visited: visualisation, path: path };
+  return { visited: visited, path: path };
 };
