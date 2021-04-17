@@ -1,7 +1,7 @@
 :root {
   --cell-color: rgb(229, 229, 229);
   --wall-color: rgb(0, 0, 0);
-  --s-node-color: rgb(0, 232, 108);
+  --s-node-color: #00ff95;
   --e-node-color: rgb(250, 133, 184);
   --bg: rgb(255, 255, 255);
 
@@ -23,8 +23,11 @@ body {
   background-color: var(--bg);
 }
 #heading {
-  font-family: "Staatliches", sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   margin-bottom: 0;
+  background: -webkit-linear-gradient(70deg, #09009f, #00ff95 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 #headingbar {
   display: flex;

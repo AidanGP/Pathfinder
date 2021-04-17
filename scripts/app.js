@@ -1,4 +1,4 @@
-let disable_btns = false; // Should the buttons be disabled
+let is_disabled = false; // Should the buttons be disabled
 
 // Choose a random theme (5 colors) for the visited nodes
 const rand_int = Math.floor(Math.random() * THEMES.length);
@@ -23,14 +23,15 @@ const setButtonClass = (class_name) => {
   }
 };
 
-const defaultGrid = (x, y) => {
+// get a 2d array that is empty aside from the start and end nodes
+const defaultGrid = (width, height) => {
   let arr = [];
-  for (let i = 0; i < y; i++) {
+  for (let i = 0; i < height; i++) {
     arr.push([]);
-    for (let j = 0; j < x; j++) {
-      if (i == START_ROW(y) && j == START_COL(x)) {
+    for (let j = 0; j < width; j++) {
+      if (i == START_ROW(height) && j == START_COL(width)) {
         arr[i].push(S_NODE_ENCODING);
-      } else if (i == END_ROW(y) && j == END_COL(x)) {
+      } else if (i == END_ROW(height) && j == END_COL(width)) {
         arr[i].push(E_NODE_ENCODING);
       } else {
         arr[i].push(CELL_ENCODING);
@@ -40,9 +41,10 @@ const defaultGrid = (x, y) => {
   return arr;
 };
 
+// Erase the board back to the default grid (empty aside from 2 nodes)
 const clearBoard = () => {
-  if (disable_btns) return;
-  disable_btns = false;
+  if (is_disabled) return;
+  is_disabled = false;
   SIZE_X = Math.floor(window.innerWidth / 50);
   SIZE_Y = Math.floor(window.innerHeight / 50);
   setButtonClass("");
@@ -51,8 +53,9 @@ const clearBoard = () => {
   setMouseListeners();
 };
 
+// Clear all visualisations from the board
 const restartBoard = () => {
-  if (disable_btns) return;
+  if (is_disabled) return;
   const table = document.getElementById("table");
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {

@@ -28,6 +28,7 @@ const dijstras = (graph, node_cells, blocked_cells) => {
       }
     });
 
+    // Append to the list of visited cells (this is for visualisation)
     if (
       !(
         visited.includes(goal) ||
@@ -36,6 +37,8 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     ) {
       visited.push(minNode);
     }
+    //
+
     delete graph[minNode];
     
   }
@@ -45,5 +48,5 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     currentNode = predecessor[currentNode];
   }
   path.unshift(start);
-  return { visited: visited, path: path };
+  return [visited, path];
 };

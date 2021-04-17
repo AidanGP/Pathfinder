@@ -17,14 +17,14 @@ const MOUSE_LEFT_CLICK = 1;
 const MOUSE_RIGHT_CLICK = 3;
 
 // Default Start and End Positions
-const START_ROW = (y) => Math.floor((1 / 2) * y);
-const START_COL = (x) => Math.floor((1 / 5) * x);
-const END_ROW = (y) => Math.floor((1 / 2) * y);
-const END_COL = (x) => Math.floor((4 / 5) * x);
+const START_ROW = (height) => Math.floor((1 / 2) * height);
+const START_COL = (width) => Math.floor((1 / 5) * width);
+const END_ROW = (height) => Math.floor((1 / 2) * height);
+const END_COL = (width) => Math.floor((4 / 5) * width);
 
 // Delays
 const PATH_DELAY = 50;
-const VISUALISATION_DELAY = 10;
+const VISUALISATION_DELAY = 18;
 
 // Themes
 const THEMES = [
