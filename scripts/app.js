@@ -6,7 +6,7 @@ const rand_theme = THEMES[rand_int];
 
 const root = document.documentElement;
 // Assign the 5 colors to their css elements
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 4; i++) {
   root.style.setProperty("--visited-" + i, rand_theme[i]);
 }
 
