@@ -64,8 +64,8 @@ const setMouseListeners = () => {
         // Reset these variables to their default values
         moving_node = false;
         moving_class = undefined;
-        current_node = undefined;
-        prev_node = undefined;
+        current_cell = undefined;
+        prev_cell = undefined;
       };
     }
   }
