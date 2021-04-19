@@ -73,14 +73,12 @@ const setMouseListeners = () => {
 
 // Changes an empty cell to a wall
 const onLeftClick = (table_cell) => {
-  if (table_cell.className == CELL && !is_disabled)
-    table_cell.className = WALL;
+  if (table_cell.className == CELL && !is_disabled) table_cell.className = WALL;
 };
 
 // Changes a wall to an empty cell
 const onRightClick = (table_cell) => {
-  if (table_cell.className == WALL && !is_disabled)
-    table_cell.className = CELL;
+  if (table_cell.className == WALL && !is_disabled) table_cell.className = CELL;
 };
 
 // Support for dragging and dropping the start / end nodes

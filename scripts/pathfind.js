@@ -23,8 +23,8 @@ async function startPathfinding() {
   const nodes = getNodeCells(current_board);
 
   // Get a graph of the board
-  // This is essentially a big dictionary where each key is a 'parent' cell on the board
-  // and each corresponding value is another dictionary where each key is a 'child' cell that 
+  // This is essentially a big list where each index is a 'parent' cell on the board
+  // and each corresponding value is another dictionary where each key is a 'child' cell that
   // can be moved to from the parent cell. The value pair of the child cells is the weighting of
   // moving to this cell: 1 for moving to an empty cell, infinity for moving to a wall.
   const graph = setGraph(blocked);
@@ -47,7 +47,7 @@ async function startPathfinding() {
 
   // Break the visited cells list into chunks for visualisation
   const visited_cells_to_chunks = [];
-  const chunk_size = shortest_path_trim.length + 1;
+  const chunk_size = 10;
   for (let i = 0; i < visited_cells_trim.length; i += chunk_size) {
     const visualisation_chunk = visited_cells_trim.slice(i, i + chunk_size);
     visited_cells_to_chunks.push(visualisation_chunk);
@@ -56,8 +56,8 @@ async function startPathfinding() {
   is_disabled = true;
 
   // Grey the buttons and draw both visualisations
-  await visualise(visited_cells_to_chunks, is_path=false);
-  await visualise([shortest_path_trim], is_path=true);
+  await visualise(visited_cells_to_chunks, (is_path = false));
+  await visualise([shortest_path_trim], (is_path = true));
 
   is_disabled = false;
   setButtonClass("");
@@ -68,7 +68,6 @@ async function visualise(cells, is_path) {
   const table = document.getElementById("table");
   for (let i = 0; i < cells.length; i++) {
     for (let j = 0; j < cells[i].length; j++) {
-      
       const cell_index = cells[i][j];
 
       // Determine the row and colum of the given cell

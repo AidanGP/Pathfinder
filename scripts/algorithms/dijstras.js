@@ -9,15 +9,17 @@ const dijstras = (graph, node_cells, blocked_cells) => {
   }
   shortest_distance[start] = 0;
   const visited = [];
-  
+
   while (Object.keys(graph).length != 0) {
     let minNode;
-    
+
     for (const node in graph) {
-      if (minNode == undefined || shortest_distance[node] < shortest_distance[minNode]) {
+      if (
+        minNode == undefined ||
+        shortest_distance[node] < shortest_distance[minNode]
+      ) {
         minNode = node;
       }
-      
     }
     Object.entries(graph[minNode]).forEach(function (v) {
       const weight = v[1];
@@ -30,17 +32,13 @@ const dijstras = (graph, node_cells, blocked_cells) => {
 
     // Append to the list of visited cells (this is for visualisation)
     if (
-      !(
-        visited.includes(goal) ||
-        blocked_cells.includes(parseInt(minNode))
-      )
+      !(visited.includes(goal) || blocked_cells.includes(parseInt(minNode)))
     ) {
       visited.push(minNode);
     }
     //
 
     delete graph[minNode];
-    
   }
   let currentNode = goal;
   while (currentNode !== start) {

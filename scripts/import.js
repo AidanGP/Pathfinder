@@ -12,7 +12,6 @@ const csvToArr = (csv) => {
   return arr;
 };
 
-
 const importToBoard = () => {
   // Check if the buttons are disabled
   if (is_disabled) return;

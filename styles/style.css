@@ -2,7 +2,7 @@
   --cell-color: rgb(229, 229, 229);
   --wall-color: rgb(0, 0, 0);
   --s-node-color: #00ff95;
-  --e-node-color: #FF0F7B;
+  --e-node-color: #ff0f7b;
   --bg: rgb(255, 255, 255);
 
   --visited-0: "";
@@ -22,18 +22,30 @@ body {
   background-color: var(--bg);
 }
 #heading {
-  font-family: 'Josefin Sans', sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   font-size: 46px;
   margin-bottom: 0;
-  
+
   background: hsla(155, 100%, 50%, 1);
 
-  background: linear-gradient(0deg, hsla(155, 100%, 50%, 1) 43%, hsla(333, 100%, 53%, 1) 57%);
-  
-  background: -moz-linear-gradient(0deg, hsla(155, 100%, 50%, 1) 43%, hsla(333, 100%, 53%, 1) 57%);
-  
-  background: -webkit-linear-gradient(0deg, hsla(155, 100%, 50%, 1) 43%, hsla(333, 100%, 53%, 1) 57%);
-  
+  background: linear-gradient(
+    0deg,
+    hsla(155, 100%, 50%, 1) 43%,
+    hsla(333, 100%, 53%, 1) 57%
+  );
+
+  background: -moz-linear-gradient(
+    0deg,
+    hsla(155, 100%, 50%, 1) 43%,
+    hsla(333, 100%, 53%, 1) 57%
+  );
+
+  background: -webkit-linear-gradient(
+    0deg,
+    hsla(155, 100%, 50%, 1) 43%,
+    hsla(333, 100%, 53%, 1) 57%
+  );
+
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#00FF95", endColorstr="#FF0F7B", GradientType=1 );
   -webkit-background-clip: text;
   background-clip: text;
@@ -53,7 +65,7 @@ body {
   height: 40px;
 }
 
-#table td:hover,  
+#table td:hover,
 li a:hover,
 select:hover {
   opacity: 0.75;

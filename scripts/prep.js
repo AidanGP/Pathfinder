@@ -7,13 +7,15 @@ const getBlockedCells = (grid_board) => {
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
       if (grid_board[i][j] == BLOCK_ENCODING) {
-        // HERE: the i * SIZE_X + j 
+        // HERE: the i * SIZE_X + j
         // Instead of storing the coordinates of each cell like this: [i, j]
         // I multiply the row number by the number of rows and add the column number
         // This produces a singular integer that represents a cell in the grid
         // This number can be decoded back into coordinates later on
         // This method is used for ease of storage, the arrays stay as 2 dimensional
         // and arent 3 dimensional since a 3d array is just a pain.
+        // Also the integer can be used as a key in a dictionary or an index in a list
+        // tldr: makes it easier to do things
         blocked_cells.push(i * SIZE_X + j);
       }
     }
@@ -37,63 +39,50 @@ const getNodeCells = (grid_board) => {
   }
   return [start_node, end_node];
 };
-
-const getEmptyGrid = () => {
-  let grid = [];
-  for (let i = 0; i < SIZE_Y; i++) {
-    grid.push([]);
-    for (let j = 0; j < SIZE_X; j++) {
-      grid[i].push(i * SIZE_X + j);
-    }
-  }
-  return grid;
-};
 const setWeights = (index, is_blocked) => {
+  // This is an example of when I decode the index
+  // back into a row and a column
   const row = Math.floor(index / SIZE_X);
   const column = index - SIZE_X * row;
-  const empty_grid = getEmptyGrid();
-  const affected = [];
+
+  const weights = {};
+
+  // Account for when the cell in question is a wall
   let weight = 1;
   if (is_blocked) {
     weight = Infinity;
   }
+
+  // Account for when the cell in question is
+  // on the border of the grid
   if (row != SIZE_Y - 1) {
-    affected.push(empty_grid[row + 1][column]);
-    affected.push(weight);
+    weights[index + SIZE_X] = weight;
   }
   if (row != 0) {
-    affected.push(empty_grid[row - 1][column]);
-    affected.push(weight);
-  }
-  if (column != 0) {
-    affected.push(empty_grid[row][column - 1]);
-    affected.push(weight);
+    weights[index - SIZE_X] = weight;
   }
   if (column != SIZE_X - 1) {
-    affected.push(empty_grid[row][column + 1]);
-    affected.push(weight);
+    weights[index + 1] = weight;
   }
-  return affected;
+  if (column != 0) {
+    weights[index - 1] = weight;
+  }
+
+  return weights;
 };
 
 // function for generating the graph (graphs explained in greater detail at function call)
 const setGraph = (blocked_cells) => {
-  const new_board = [];
+  const graph = [];
   // Iterate through all the cells in the grid
-  for (let i = 0; i < SIZE_X * SIZE_Y; i++) {
+  for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {
     // is the cell a wall or not
-    const isBlocked = blocked_cells.includes(i);
-    const affected = setWeights(i, isBlocked);
-    const posMass = {};
-    for (let counter = 0; counter < affected.length; counter += 2) {
-      posMass[affected[counter].toString()] = affected[counter + 1];
-    }
-    new_board.push(i.toString());
-    new_board.push(posMass);
+    const isBlocked = blocked_cells.includes(cell);
+    // generate where you can move to from the current cell as well as
+    // each of the moves respective weights ie. {move1: weight1, move2: weight2}
+    const affected = setWeights(cell, isBlocked);
+
+    graph.push(affected);
   }
-  const bDict = {};
-  for (let counter = 0; counter < new_board.length; counter += 2) {
-    bDict[new_board[counter]] = new_board[counter + 1];
-  }
-  return bDict;
+  return graph;
 };

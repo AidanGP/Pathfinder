@@ -26,7 +26,6 @@ const gridToArray = () => {
           break;
         default:
           encoded_item = CELL_ENCODING;
-
       }
       table_arr[i].push(encoded_item);
     }
