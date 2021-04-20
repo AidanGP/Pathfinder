@@ -14,7 +14,7 @@ const E_NODE_ENCODING = 3;
 
 // Mouse Values
 const MOUSE_LEFT_CLICK = 1;
-const MOUSE_RIGHT_CLICK = 3;
+const MOUSE_RIGHT_CLICK = 2;
 
 // Default Start and End Positions
 const START_ROW = (height) => Math.floor((1 / 2) * height);

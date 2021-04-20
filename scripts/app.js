@@ -50,6 +50,8 @@ const clearBoard = () => {
   setButtonClass("");
   const default_grid = defaultGrid(SIZE_X, SIZE_Y);
   setGrid(default_grid);
+  // Remove the old mouse listeners
+  removeMouseListeners();
   setMouseListeners();
 };
 

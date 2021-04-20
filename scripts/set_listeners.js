@@ -9,66 +9,60 @@ let moving_node = false; // Is a node being moved
 const setMouseListeners = () => {
   // Iterate through the grid
   const table = document.getElementById("table");
-  for (let i = 0; i < SIZE_Y; i++) {
-    for (let j = 0; j < SIZE_X; j++) {
-      // Assign the variable 'cell' to each cell iteratively
-      const cell = table.rows[i].cells[j];
 
-      // When the mouse is moved
-      cell.onmousemove = function (e) {
-        // Determine which mouse button is being pressed (if any)
-        const MOUSE_BTN = e.which;
+  table.addEventListener("mousedown", onMouseDown);
 
-        // If the LMB is being pressed and moving_node is true
-        // then the node will be dragged around
-        if (MOUSE_BTN == MOUSE_LEFT_CLICK && moving_node) {
-          if (!moving_class) moving_class = this.className;
-          onNodeMove(this);
-        }
+  table.addEventListener("mousemove", onMouseMove);
 
-        // Switch statement to assign the LMB and RMB to their
-        // respective functions
-        switch (MOUSE_BTN) {
-          case MOUSE_LEFT_CLICK:
-            onLeftClick(this);
-            break;
-          case MOUSE_RIGHT_CLICK:
-            onRightClick(this);
-        }
-      };
+  table.addEventListener("mouseup", onMouseUp);
+};
 
-      // When a mouse button is pressed
-      cell.onmousedown = function (e) {
-        // Determine which mouse button is being pressed
-        const MOUSE_BTN = e.which;
+const removeMouseListeners = () => {
+  const table = document.querySelector("table");
+  table.removeEventListener("mousedown", onMouseDown);
+  table.removeEventListener("mousemove", onMouseMove);
+  table.removeEventListener("mouseup", onMouseUp);
+}
 
-        // Determine if the mouse is pressed on a start or end node
-        const is_node = cell.className == S_NODE || cell.className == E_NODE;
+const onMouseDown = (e) => {
+  const MOUSE_BTN = e.buttons;
 
-        // Set moving_node to true if the LMB is pressed and is_node is true
-        if (MOUSE_BTN == MOUSE_LEFT_CLICK && is_node) moving_node = true;
+  // Determine if the mouse is pressed on a start or end node
+  const is_node = e.target.className == S_NODE || e.target.className == E_NODE;
 
-        // Switch statement to assign the LMB and RMB to their
-        // respective functions
-        switch (MOUSE_BTN) {
-          case MOUSE_LEFT_CLICK:
-            onLeftClick(this);
-            break;
-          case MOUSE_RIGHT_CLICK:
-            onRightClick(this);
-        }
-      };
+  // Set moving_node to true if the LMB is pressed and is_node is true
+  if (is_node) moving_node = true;
 
-      // When the mouse is released
-      cell.onmouseup = function () {
-        // Reset these variables to their default values
-        moving_node = false;
-        moving_class = undefined;
-        current_cell = undefined;
-        prev_cell = undefined;
-      };
-    }
+  switch (MOUSE_BTN) {
+    case MOUSE_LEFT_CLICK:
+      onLeftClick(e.target);
+      break;
+    case MOUSE_RIGHT_CLICK:
+      onRightClick(e.target);
   }
+};
+
+const onMouseMove = (e) => {
+  const MOUSE_BTN = e.buttons;
+  if (moving_node) {
+    if (!moving_class) moving_class = e.target.className;
+    onNodeMove(e.target);
+  }
+
+  switch (MOUSE_BTN) {
+    case MOUSE_LEFT_CLICK:
+      onLeftClick(e.target);
+      break;
+    case MOUSE_RIGHT_CLICK:
+      onRightClick(e.target);
+  }
+};
+
+const onMouseUp = (e) => {
+  moving_node = false;
+  moving_class = undefined;
+  current_cell = undefined;
+  prev_cell = undefined;
 };
 
 // Changes an empty cell to a wall

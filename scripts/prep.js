@@ -47,13 +47,13 @@ const setWeights = (index, is_blocked) => {
 
   const weights = {};
 
-  // Account for when the cell in question is a wall
+  // Account for when the cell is a wall
   let weight = 1;
   if (is_blocked) {
     weight = Infinity;
   }
 
-  // Account for when the cell in question is
+  // Account for when the cell is
   // on the border of the grid
   if (row != SIZE_Y - 1) {
     weights[index + SIZE_X] = weight;
