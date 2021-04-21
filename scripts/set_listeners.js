@@ -5,26 +5,32 @@ let moving_class; // Set to either S_NODE or E_NODE
 
 let moving_node = false; // Is a node being moved
 
-// Start mouse listeners in the grid
+
 const setMouseListeners = () => {
-  // Iterate through the grid
+  /* 
+  
+  */
   const table = document.getElementById("table");
-
   table.addEventListener("mousedown", onMouseDown);
-
   table.addEventListener("mousemove", onMouseMove);
-
   table.addEventListener("mouseup", onMouseUp);
+
 };
 
 const removeMouseListeners = () => {
+  /* 
+  
+  */
   const table = document.querySelector("table");
   table.removeEventListener("mousedown", onMouseDown);
   table.removeEventListener("mousemove", onMouseMove);
   table.removeEventListener("mouseup", onMouseUp);
-}
+};
 
 const onMouseDown = (e) => {
+  /* 
+  
+  */
   const MOUSE_BTN = e.buttons;
 
   // Determine if the mouse is pressed on a start or end node
@@ -43,8 +49,12 @@ const onMouseDown = (e) => {
 };
 
 const onMouseMove = (e) => {
+  /* 
+  
+  */
   const MOUSE_BTN = e.buttons;
   if (moving_node) {
+    // Determine the class of the node we are moving
     if (!moving_class) moving_class = e.target.className;
     onNodeMove(e.target);
   }
@@ -59,6 +69,10 @@ const onMouseMove = (e) => {
 };
 
 const onMouseUp = (e) => {
+  // Reset some variables back to default values
+  /* 
+  
+  */
   moving_node = false;
   moving_class = undefined;
   current_cell = undefined;
@@ -67,16 +81,25 @@ const onMouseUp = (e) => {
 
 // Changes an empty cell to a wall
 const onLeftClick = (table_cell) => {
+  /* 
+  
+  */
   if (table_cell.className == CELL && !is_disabled) table_cell.className = WALL;
 };
 
 // Changes a wall to an empty cell
 const onRightClick = (table_cell) => {
+  /* 
+  
+  */
   if (table_cell.className == WALL && !is_disabled) table_cell.className = CELL;
 };
 
 // Support for dragging and dropping the start / end nodes
 const onNodeMove = (table_cell) => {
+  /* 
+  
+  */
   // Assign other_node to the 'other' type of node
   let other_node;
   if (moving_class == S_NODE) {

@@ -1,4 +1,7 @@
 const dijstras = (graph, node_cells, blocked_cells) => {
+  /* 
+  
+  */
   const start = node_cells[0].toString();
   const goal = node_cells[1].toString();
   const shortest_distance = {};

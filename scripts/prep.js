@@ -3,6 +3,9 @@
 
 // get a list of the location of all blocked cells
 const getBlockedCells = (grid_board) => {
+  /* 
+  
+  */
   const blocked_cells = [];
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
@@ -25,6 +28,9 @@ const getBlockedCells = (grid_board) => {
 
 // Get a list of the location of both nodes: [start_node, end_node]
 const getNodeCells = (grid_board) => {
+  /* 
+  
+  */
   let start_node, end_node;
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
@@ -40,6 +46,9 @@ const getNodeCells = (grid_board) => {
   return [start_node, end_node];
 };
 const setWeights = (index, is_blocked) => {
+  /* 
+  
+  */
   // This is an example of when I decode the index
   // back into a row and a column
   const row = Math.floor(index / SIZE_X);
@@ -73,6 +82,9 @@ const setWeights = (index, is_blocked) => {
 
 // function for generating the graph (graphs explained in greater detail at function call)
 const setGraph = (blocked_cells) => {
+  /* 
+  
+  */
   const graph = [];
   // Iterate through all the cells in the grid
   for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {

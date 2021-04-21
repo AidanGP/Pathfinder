@@ -1,11 +1,18 @@
 // Translates the name of an algorithm to its respective function
 // string -> function
+// This would be in the constants file but due to the order
+// that files are loaded in, its gotta be here
 const algorithm_name_to_function = {
   Dijstras: dijstras,
   "A*": a_star,
 };
 
 async function startPathfinding() {
+  /* 
+  Called when the user presses the 'pathfind' button
+  Finishes when all of the visualisations are drawn
+  */
+
   // Return if the buttons are disabled
   if (is_disabled) return;
 
@@ -64,6 +71,9 @@ async function startPathfinding() {
 }
 
 async function visualise(cells, is_path) {
+  /* 
+  Draw a series of cells onto the grid as either path or visited cells
+  */
   // Iterate through the cells that we want to be drawn
   const table = document.getElementById("table");
   for (let i = 0; i < cells.length; i++) {

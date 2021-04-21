@@ -1,5 +1,8 @@
 // Initialise the grid with empty cells and the starting spots for nodes
 const setGrid = (arr) => {
+  /* 
+  
+  */
   SIZE_X = arr[0].length;
   SIZE_Y = arr.length;
   const table = document.getElementById("table");

@@ -1,5 +1,8 @@
 // csv -> 2d array
 const csvToArr = (csv) => {
+  /* 
+  
+  */
   const rows = csv.split("\n");
   let arr = [];
   for (let i = 0; i < rows.length; i++) {
@@ -13,6 +16,9 @@ const csvToArr = (csv) => {
 };
 
 const importToBoard = () => {
+  /* 
+  
+  */
   // Check if the buttons are disabled
   if (is_disabled) return;
   var file_in = document.getElementById("file-input");
