@@ -1,7 +1,7 @@
-// csv -> 2d array
 const csvToArr = (csv) => {
   /* 
-  
+    Converts a given csv file to a 2D array
+    .CSV -> Array
   */
   const rows = csv.split("\n");
   let arr = [];
@@ -17,7 +17,7 @@ const csvToArr = (csv) => {
 
 const importToBoard = () => {
   /* 
-  
+    Get a .csv file and display it on the board
   */
   // Check if the buttons are disabled
   if (is_disabled) return;
@@ -45,6 +45,9 @@ const importToBoard = () => {
       const arr = csvToArr(content);
       // Set the grid to said array
       setGrid(arr);
+
+      // Reset the listeners for memory reasons i think
+      removeMouseListeners();
       setMouseListeners();
     };
   };

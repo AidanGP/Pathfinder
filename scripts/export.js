@@ -1,19 +1,23 @@
-// Convers the grid to a two dimensional array
 const gridToArray = () => {
   /* 
-  
+    Convert the current grid to a 2D array
+    Grid -> Array
   */
+
   // Check if the buttons are enabled
   if (is_disabled) return;
-  const table_arr = [];
   const table = document.getElementById("table");
+  const grid = [];
   // Iterate through the grid
   for (let i = 0; i < table.rows.length; i++) {
-    table_arr.push([]);
+    grid.push([]);
     for (let j = 0; j < table.rows[i].cells.length; j++) {
-      let encoded_item;
+      
+      // The class of a cell in the grid
       const cell = table.rows[i].cells[j].className;
+
       // Switch statement: cell classname -> encoded value from 0-3
+      let encoded_item;
       switch (cell) {
         case WALL:
           encoded_item = BLOCK_ENCODING;
@@ -30,18 +34,19 @@ const gridToArray = () => {
         default:
           encoded_item = CELL_ENCODING;
       }
-      table_arr[i].push(encoded_item);
+      grid[i].push(encoded_item);
     }
   }
   // Return the encoded table
-  return table_arr;
+  return grid;
 };
 
-// Save a 2d array as a csv file
 const saveBoard = () => {
   /* 
-  
+    Save a copy of the current grid as a .csv file
+    Grid -> .CSV
   */
+
   // Return if the buttons are disabled
   if (is_disabled) return;
   // Prompt for a file name

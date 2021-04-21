@@ -1,32 +1,7 @@
 let is_disabled = false; // Should the buttons be disabled
 
-
-// Choose a random theme (5 colors) for the visited nodes
-const rand_int = Math.floor(Math.random() * THEMES.length);
-const rand_theme = THEMES[rand_int];
-
-const root = document.documentElement;
-// Assign the 5 colors to their css elements
-for (let i = 0; i < 4; i++) {
-  root.style.setProperty("--visited-" + i, rand_theme[i]);
-}
-
-const reportWindowSize = () => {
-
-  const current_board = gridToArray();
-  const n_walls = getBlockedCells(current_board).length;
-
-  if (n_walls === 0) {
-    clearBoard();
-  }
-}
-
-window.addEventListener('resize', reportWindowSize);
-
-
 // HELPER FUNCTIONS
 
-//
 /* 
   Sleep for a number of milliseconds
 */
@@ -41,6 +16,22 @@ const setButtonClass = (class_name) => {
     a[i].className = class_name;
   }
 };
+
+const changeTableDims = () => {
+  /*
+    ok so basically
+    if there is information on the board i cant resize it without losing said information
+    So if the board is empty i can automatically resize it
+  */
+
+  const current_board = gridToArray();
+  const n_walls = getBlockedCells(current_board).length;
+
+  if (n_walls === 0) {
+    clearBoard();
+  }
+}
+
 
 const defaultGrid = () => {
   /* 
@@ -96,4 +87,7 @@ const restartBoard = () => {
 
 // MAINLINE
 
+// Initialise the board and all that
 clearBoard();
+// Start checking if they resize the window
+window.addEventListener('resize', changeTableDims);

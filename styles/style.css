@@ -5,10 +5,10 @@
   --e-node-color: #ff0f7b;
   --bg: rgb(255, 255, 255);
 
-  --visited-0: "";
-  --visited-1: "";
-  --visited-2: "";
-  --visited-3: "";
+  --visited-0: #ffc15e;
+  --visited-1: #f7b05b;
+  --visited-2: #f7934c;
+  --visited-3: #cc5803;
 }
 
 html,
