@@ -45,6 +45,13 @@ async function startPathfinding() {
   // Returs a 2d list: [visited_cells, shortest_path]
   const result = algorithm(graph, nodes, blocked);
 
+  // -1 is returned if there is no path
+  if (result === -1) {
+    alert("sorry bruh there is no path");
+    setButtonClass("");
+    return;
+  }
+
   const visited_cells = result[0];
   const shortest_path = result[1];
 

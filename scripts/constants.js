@@ -25,3 +25,4 @@ const END_COL = (width) => Math.floor((4 / 5) * width);
 // Delays
 const PATH_DELAY = 40;
 const VISUALISATION_DELAY = 25;
+

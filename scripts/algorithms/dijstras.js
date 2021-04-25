@@ -35,6 +35,8 @@ const dijstras = (graph, node_cells, blocked_cells) => {
 
     // Append to the list of visited cells (this is for visualisation)
     if (
+      // Visited wont include the end node or any of the blocked cells because
+      // that would look bad
       !(visited.includes(goal) || blocked_cells.includes(parseInt(minNode)))
     ) {
       visited.push(minNode);
@@ -43,10 +45,22 @@ const dijstras = (graph, node_cells, blocked_cells) => {
 
     delete graph[minNode];
   }
+
+  // longest possible path
+  // We dont want the current path to excede or reach the longest possible path
+  
+  let current_path_size = 0;
+  const max_path_size = SIZE_X * SIZE_Y;
   let currentNode = goal;
   while (currentNode !== start) {
+    // Account for there being no valid path
+    if (current_path_size === max_path_size) {
+      return -1;
+    }
+
     path.unshift(currentNode);
     currentNode = predecessor[currentNode];
+    current_path_size += 1;
   }
   path.unshift(start);
   return [visited, path];

@@ -4,11 +4,16 @@
   --s-node-color: #00ff95;
   --e-node-color: #ff0f7b;
   --bg: rgb(255, 255, 255);
-
+/* 
   --visited-0: #ffc15e;
   --visited-1: #f7b05b;
   --visited-2: #f7934c;
-  --visited-3: #cc5803;
+  --visited-3: #cc5803; */
+
+  --visited-0: #ff0f7b;
+  --visited-1: #F0B67F;
+  --visited-2: #D6D1B1;
+  --visited-3: #76ffc6;
 }
 
 html,

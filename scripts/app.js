@@ -32,6 +32,11 @@ const changeTableDims = () => {
   }
 }
 
+const getCoords = (cell) => {
+  const row = Math.floor(cell / SIZE_X);
+  const col = cell - SIZE_X * row;
+  return [col, row];
+}
 
 const defaultGrid = () => {
   /* 
