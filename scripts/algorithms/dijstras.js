@@ -2,17 +2,17 @@ const dijstras = (graph, node_cells, blocked_cells) => {
   /* 
   
   */
+
   const start = node_cells[0].toString();
   const goal = node_cells[1].toString();
-  const shortest_distance = {};
+  const shortest_distance = [];
   const predecessor = {};
+  const visited = [];
   const path = [];
-  for (let node in graph) {
-    shortest_distance[node] = Infinity;
+  for (const _ in graph) {
+    shortest_distance.push(Infinity);
   }
   shortest_distance[start] = 0;
-  const visited = [];
-
   while (Object.keys(graph).length != 0) {
     let minNode;
 
@@ -24,14 +24,19 @@ const dijstras = (graph, node_cells, blocked_cells) => {
         minNode = node;
       }
     }
-    Object.entries(graph[minNode]).forEach(function (v) {
-      const weight = v[1];
-      const childNode = v[0];
-      if (weight + shortest_distance[minNode] < shortest_distance[childNode]) {
-        shortest_distance[childNode] = weight + shortest_distance[minNode];
-        predecessor[childNode] = minNode;
+
+    for (let neighbour in graph[minNode]) {
+      neighbour = graph[minNode][neighbour];
+
+      let weight = 1;
+      if (blocked_cells.includes(neighbour)) {
+        weight = Infinity;
       }
-    });
+      if (weight + shortest_distance[minNode] < shortest_distance[neighbour]) {
+        shortest_distance[neighbour] = weight + shortest_distance[minNode];
+        predecessor[neighbour] = minNode;
+      }
+    }
 
     // Append to the list of visited cells (this is for visualisation)
     if (
@@ -41,14 +46,12 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     ) {
       visited.push(minNode);
     }
-    //
 
     delete graph[minNode];
   }
 
   // longest possible path
   // We dont want the current path to excede or reach the longest possible path
-  
   let current_path_size = 0;
   const max_path_size = SIZE_X * SIZE_Y;
   let currentNode = goal;

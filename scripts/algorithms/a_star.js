@@ -4,6 +4,7 @@ const get_dist = (a, b) => {
 
 const a_star = (graph, node_cells, blocked_cells) => {
 
+
   const preds = {};
   const visited = [];
   const path = [];
@@ -16,8 +17,6 @@ const a_star = (graph, node_cells, blocked_cells) => {
   // G-cost : distance from starting node
   // H-cost : distance from end node
   // F-cost : G-cost + H-cost
-
-  // distance formula = root((x2-x1)^2 + (y2-y1)^2)
 
   const cost = [];
   for (let i = 0; i < SIZE_X * SIZE_Y; i++) {
@@ -32,28 +31,29 @@ const a_star = (graph, node_cells, blocked_cells) => {
     cost.push(cell_costs);
   }
 
-  let open = [];
-  open.push(start);
+  let open_set = [];
+  open_set.push(start);
   const closed = [];
 
-  while (open.length !== 0) {
+  while (Object.keys(open_set).length !== 0) {
 
-    let current = open[0];
+    let current = open_set[0];
     let current_cost = cost[current];
 
-    for (let i = 1; i < open.length; i ++) {
-      if (cost[open[i]].f < current_cost.f) {
-        current = open[i];
+    for (let i = 1; i < open_set.length; i ++) {
+      if (cost[open_set[i]].f < current_cost.f) {
+        current = open_set[i];
         current_cost = cost[current];
       }
-      if (cost[open[i]].f === current_cost.f && cost[open[i]].h < current_cost.h) {
-        current = open[i];
+      if (cost[open_set[i]].f === current_cost.f && cost[open_set[i]].h < current_cost.h) {
+        current = open_set[i];
         current_cost = cost[current];
       }
     }
 
     // remove the current cell from the open list
-    open = open.filter(e => e !== current);
+    const ind = open_set.indexOf(current);
+    open_set.splice(ind, 1);
     closed.push(current);
     
     if (current_cost.h === 0) {
@@ -76,14 +76,14 @@ const a_star = (graph, node_cells, blocked_cells) => {
       const current_coords = getCoords(current);
       const move_cost = current.g + get_dist(current_coords, neighbour_coords);
 
-      if (move_cost < neighbour_cost.g || !open.includes(neighbour_cost)) {
+      if (move_cost < neighbour_cost.g || !open_set.includes(neighbour_cost)) {
         neighbour_cost.g = move_cost;
         neighbour_cost.h = get_dist(neighbour_coords, g_coords);
 
         preds[neighbour] = current;
 
-        if (!open.includes(neighbour)) {
-          open.push(neighbour);
+        if (!open_set.includes(neighbour)) {
+          open_set.push(neighbour);
         }
       }
     }

@@ -42,8 +42,8 @@ const defaultGrid = () => {
   /* 
     get a 2d array that is empty aside from the start and end nodes
   */
-  SIZE_X = Math.floor(window.innerWidth / 50);
-  SIZE_Y = Math.floor(window.innerHeight / 50);
+  SIZE_X = Math.floor(window.innerWidth / 35);
+  SIZE_Y = Math.floor(window.innerHeight / 35);
   let arr = [];
   for (let i = 0; i < SIZE_Y; i++) {
     arr.push([]);

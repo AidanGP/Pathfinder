@@ -1,4 +1,3 @@
-// 
 const setGrid = (arr) => {
   /* 
     Initialise the grid with empty cells and the starting spots for nodes
@@ -26,8 +25,6 @@ const setGrid = (arr) => {
 
       // Making cell elements and giving them the desired properties
       const cell = document.createElement("TD");
-      const ID = i + "," + j;
-      cell.id = ID;
 
       // Get the corresponding value in the given array
       // This is encoded from about 0-3 not really sure at this point

@@ -66,8 +66,8 @@ body {
 #table td {
   color: transparent;
   opacity: 1;
-  width: 50px;
-  height: 40px;
+  width: 35px;
+  height: 28px;
 }
 
 #table td:hover,

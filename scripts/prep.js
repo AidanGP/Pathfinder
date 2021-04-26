@@ -43,64 +43,47 @@ const getNodeCells = (grid_board) => {
   }
   return [start_node, end_node];
 };
-const setWeights = (index, is_blocked) => {
+const getNeighbours = (index) => {
   /* 
-    Returns a dictionary that is best explained with an example:
-
-    weights = {possible_move_1: weight_that_corresponds_to_this_move_1,
-              possible_move_2: weight_that_corresponds_to_this_move_2}
-
-    A weight of 1 would indicate that we are moving from one cell to another
-    A weight of Infinity would indicate that we are moving from a cell into a wall
-
-    The algorithm will pick the move with the lowest weight so you do the math
-            
+  Returns a list of neighbouring cells
   */
   // This is an example of when I decode the index
   // back into a row and a column
   const row = Math.floor(index / SIZE_X);
   const column = index - SIZE_X * row;
 
-  const weights = {};
-
-  // Account for when the cell is a wall
-  let weight = 1;
-  if (is_blocked) {
-    weight = Infinity;
-  }
+  const neighbours = []
 
   // Account for when the cell is
   // on the border of the grid
   if (row != SIZE_Y - 1) {
-    weights[index + SIZE_X] = weight;
+    neighbours.push(index + SIZE_X);
   }
   if (row != 0) {
-    weights[index - SIZE_X] = weight;
+    neighbours.push(index - SIZE_X);
   }
   if (column != SIZE_X - 1) {
-    weights[index + 1] = weight;
+    neighbours.push(index + 1);
   }
   if (column != 0) {
-    weights[index - 1] = weight;
+    neighbours.push(index - 1);
   }
 
-  return weights;
+  return neighbours;
 };
 
-const setGraph = (blocked_cells) => {
+const setGraph = () => {
   /* 
     function for generating the graph (graphs explained in greater detail at function call)
   */
   const graph = [];
   // Iterate through all the cells in the grid
   for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {
-    // is the cell a wall or not
-    const is_blocked = blocked_cells.includes(cell);
-    // generate where you can move to from the current cell as well as
-    // each of the moves respective weights ie. {move1: weight1, move2: weight2}
-    const affected = setWeights(cell, is_blocked);
 
-    graph.push(affected);
+    // generate where you can move to from the current cell as well as
+    const neighbours = getNeighbours(cell);
+
+    graph.push(neighbours);
   }
   return graph;
 };
