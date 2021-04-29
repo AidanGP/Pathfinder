@@ -52,7 +52,7 @@ const getNeighbours = (index) => {
   const row = Math.floor(index / SIZE_X);
   const column = index - SIZE_X * row;
 
-  const neighbours = []
+  const neighbours = [];
 
   // Account for when the cell is
   // on the border of the grid
@@ -79,8 +79,7 @@ const setGraph = () => {
   const graph = [];
   // Iterate through all the cells in the grid
   for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {
-
-    // generate where you can move to from the current cell as well as
+    // generate where you can move to from the current cell
     const neighbours = getNeighbours(cell);
 
     graph.push(neighbours);

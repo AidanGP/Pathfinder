@@ -1,10 +1,17 @@
 const get_dist = (a, b) => {
-  return Math.abs(a[0] - b[0]) + Math.abs(a[0] - b[0]);
-}
+  return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+  //return Math.sqrt(Math.pow((a[0]-b[0]), 2) + Math.pow((a[1]-b[1]), 2));
+};
+
+const deep_index = (arr, item) => {
+  for (let i in arr) {
+    if ((arr[i] = item)) {
+      return i;
+    }
+  }
+};
 
 const a_star = (graph, node_cells, blocked_cells) => {
-
-
   const preds = {};
   const visited = [];
   const path = [];
@@ -20,74 +27,85 @@ const a_star = (graph, node_cells, blocked_cells) => {
 
   const cost = [];
   for (let i = 0; i < SIZE_X * SIZE_Y; i++) {
-
     const coords = getCoords(i);
 
     const g_cost = get_dist(coords, s_coords);
     const h_cost = get_dist(coords, g_coords);
     const f_cost = g_cost + h_cost;
 
-    const cell_costs = { g: g_cost, h: h_cost, f: f_cost };
+    const cell_costs = { g: g_cost, h: h_cost, f: f_cost, id: i };
     cost.push(cell_costs);
   }
+  //
 
-  let open_set = [];
-  open_set.push(start);
-  const closed = [];
+  var open_set = [cost[start]];
+  var closed_set = [];
+  
+  var currentNode;
+  var prevNode;
 
-  while (Object.keys(open_set).length !== 0) {
-
-    let current = open_set[0];
-    let current_cost = cost[current];
-
-    for (let i = 1; i < open_set.length; i ++) {
-      if (cost[open_set[i]].f < current_cost.f) {
-        current = open_set[i];
-        current_cost = cost[current];
-      }
-      if (cost[open_set[i]].f === current_cost.f && cost[open_set[i]].h < current_cost.h) {
-        current = open_set[i];
-        current_cost = cost[current];
+  while (open_set.length > 0) {
+    var lowInd = 0;
+    for (var i = 0; i < open_set.length; i++) {
+      if (open_set[i].f < open_set[lowInd].f || open_set[i].f === open_set[lowInd].f && open_set[i].h < open_set[lowInd].h) {
+        lowInd = i;
       }
     }
 
-    // remove the current cell from the open list
-    const ind = open_set.indexOf(current);
-    open_set.splice(ind, 1);
-    closed.push(current);
+    currentNode = open_set[lowInd];
+    preds[currentNode.id] = prevNode;
     
-    if (current_cost.h === 0) {
-      let currentNode = goal;
-      while (currentNode !== start) {
-        path.unshift(currentNode);
-        currentNode = preds[currentNode];
-      }
+
+    if (currentNode.id.toString() === goal) {
+      // console.log(start, goal);
+      // console.table(preds);
+      // let current_node = goal;
+      // //console.log(preds[goal]);
+      // while (current_node.toString() !== start) {
+      //   // Account for there being no valid path
+      //   path.unshift(current_node);
+      //   // Get the predecessor of the current node
+      //   current_node = preds[current_node];
+      // }
+      // console.log(path);
+      return [visited, path];
     }
 
-    //console.log(current);
-    for (let i = 1; i < Object.keys(graph[current]).length; i++ ) {
-      const neighbour = Object.keys(graph[current])[i];
-      const neighbour_cost = cost[neighbour];
-      if (blocked_cells.includes(neighbour) || closed.includes(neighbour)) {
+    open_set.splice(lowInd, 1);
+    closed_set.push(currentNode);
+    var neighbours = graph[currentNode.id];
+
+    for (var i = 0; i < neighbours.length; i++) {
+      var neighbour = neighbours[i];
+
+      if (
+        closed_set.includes(neighbour) ||
+        blocked_cells.includes(neighbour)
+      ) {
         continue;
       }
-      
-      const neighbour_coords = getCoords(neighbour);
-      const current_coords = getCoords(current);
-      const move_cost = current.g + get_dist(current_coords, neighbour_coords);
 
-      if (move_cost < neighbour_cost.g || !open_set.includes(neighbour_cost)) {
-        neighbour_cost.g = move_cost;
-        neighbour_cost.h = get_dist(neighbour_coords, g_coords);
+      var gScore = currentNode.g + 1;
+      var gScoreIsBest = false;
 
-        preds[neighbour] = current;
+      if (!open_set.includes(cost[neighbour])) {
+        gScoreIsBest = true;
+        cost[neighbour].h = get_dist(getCoords(neighbour), g_coords);
+        open_set.push(cost[neighbour]);
+        visited.push(neighbour);
 
-        if (!open_set.includes(neighbour)) {
-          open_set.push(neighbour);
-        }
+        
+      } else if (gScore < cost[neighbour].g) {
+        gScoreIsBest = true;
+      }
+
+      if (gScoreIsBest) {
+        cost[neighbour].g = gScore;
+        cost[neighbour].f = cost[neighbour].g + cost[neighbour].h;
+        
       }
     }
+    prevNode = currentNode.id;
   }
-  path.unshift(start);
-  return [visited, path];
+  return -1;
 };

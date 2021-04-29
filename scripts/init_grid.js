@@ -10,19 +10,17 @@ const setGrid = (arr) => {
 
   // Get the table element
   const table = document.getElementById("table");
-  
+
   // Reset the table just in case
   table.innerHTML = "";
 
   // Here we iterate through and create the table
   for (let i = 0; i < SIZE_Y; i++) {
-
     // Making row elements
     const row = document.createElement("TR");
     table.appendChild(row);
 
     for (let j = 0; j < SIZE_X; j++) {
-
       // Making cell elements and giving them the desired properties
       const cell = document.createElement("TD");
 
