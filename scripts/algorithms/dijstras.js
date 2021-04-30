@@ -1,4 +1,4 @@
-const dijstras = (graph, node_cells, blocked_cells) => {
+const dijstras = (graph, node_cells) => {
   /* 
   Dijstras is an algorithm for getting from one point to another
   It will always find the shortest path and a fun fact is that
@@ -35,10 +35,7 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     }
 
     for (const neighbour of graph[current_node]) {
-      let weight = 1;
-      if (blocked_cells.includes(neighbour)) {
-        weight = Infinity;
-      }
+      const weight = 1;
       if (
         weight + shortest_distance[current_node] <
         shortest_distance[neighbour]
@@ -51,11 +48,7 @@ const dijstras = (graph, node_cells, blocked_cells) => {
     // Append to the list of visited cells (this is for visualisation)
     // Visited wont include the end node or any of the blocked cells because
     // that would look bad
-    if (
-      !(
-        visited.includes(goal) || blocked_cells.includes(parseInt(current_node))
-      )
-    ) {
+    if (!visited.includes(goal)) {
       visited.push(current_node);
     }
 

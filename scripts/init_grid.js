@@ -23,6 +23,8 @@ const setGrid = (arr) => {
     for (let j = 0; j < SIZE_X; j++) {
       // Making cell elements and giving them the desired properties
       const cell = document.createElement("TD");
+      const id = i * SIZE_X + j;
+      cell.innerHTML = id.toString();
 
       // Get the corresponding value in the given array
       // This is encoded from about 0-3 not really sure at this point

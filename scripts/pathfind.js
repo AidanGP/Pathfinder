@@ -34,7 +34,7 @@ async function startPathfinding() {
   // and each corresponding value is another dictionary where each key is a 'child' cell that
   // can be moved to from the parent cell. The value pair of the child cells is the weighting of
   // moving to this cell: 1 for moving to an empty cell, infinity for moving to a wall.
-  const graph = setGraph();
+  const graph = setGraph(blocked);
 
   // Get the function that corresponds to the users choice of algorithm
   const selector = document.getElementById("algorithms");
@@ -43,7 +43,7 @@ async function startPathfinding() {
 
   // Get the result of the pathfinding algorithm
   // Returs a 2d list: [visited_cells, shortest_path]
-  const result = algorithm(graph, nodes, blocked);
+  const result = algorithm(graph, nodes);
 
   // -1 is returned if there is no path
   if (result === -1) {

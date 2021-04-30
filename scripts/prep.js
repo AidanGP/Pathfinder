@@ -43,7 +43,7 @@ const getNodeCells = (grid_board) => {
   }
   return [start_node, end_node];
 };
-const getNeighbours = (index) => {
+const getNeighbors = (index, blocked_cells) => {
   /* 
   Returns a list of neighbouring cells
   */
@@ -51,28 +51,33 @@ const getNeighbours = (index) => {
   // back into a row and a column
   const row = Math.floor(index / SIZE_X);
   const column = index - SIZE_X * row;
+  const neighbors = [];
 
-  const neighbours = [];
-
+  const pending_neighbors = [];
   // Account for when the cell is
   // on the border of the grid
   if (row != SIZE_Y - 1) {
-    neighbours.push(index + SIZE_X);
+    pending_neighbors.push(index + SIZE_X);
   }
   if (row != 0) {
-    neighbours.push(index - SIZE_X);
+    pending_neighbors.push(index - SIZE_X);
   }
   if (column != SIZE_X - 1) {
-    neighbours.push(index + 1);
+    pending_neighbors.push(index + 1);
   }
   if (column != 0) {
-    neighbours.push(index - 1);
+    pending_neighbors.push(index - 1);
   }
 
-  return neighbours;
+  for (const pending_neighbor of pending_neighbors) {
+    if (!blocked_cells.includes(pending_neighbor)) {
+      neighbors.push(pending_neighbor)
+    }
+  }
+  return neighbors;
 };
 
-const setGraph = () => {
+const setGraph = (blocked_cells) => {
   /* 
     function for generating the graph (graphs explained in greater detail at function call)
   */
@@ -80,9 +85,9 @@ const setGraph = () => {
   // Iterate through all the cells in the grid
   for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {
     // generate where you can move to from the current cell
-    const neighbours = getNeighbours(cell);
+    const neighbors = getNeighbors(cell, blocked_cells);
 
-    graph.push(neighbours);
+    graph.push(neighbors);
   }
   return graph;
 };
