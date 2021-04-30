@@ -14,8 +14,12 @@ const deep_index = (arr, item) => {
 };
 
 const a_star = (graph, node_cells) => {
-  const [ start, goal ] = node_cells;
+  const [start, goal] = node_cells;
+
+  const path = [];
+  const visited = [];
   const open_set = [start];
+  const came_from = {};
   const g_score = {};
   const f_score = {};
   g_score[start] = 0;
@@ -24,26 +28,39 @@ const a_star = (graph, node_cells) => {
   while (open_set.length > 0) {
     let current_node;
     for (const node of open_set) {
-      if (current_node === undefined || f_score[node] < f_score[current_node]) {
+      if (
+        current_node === undefined ||
+        f_score[node] < f_score[current_node] ||
+        (f_score[node] === f_score[current_node] &&
+          g_score[node] < g_score[current_node])
+      ) {
         current_node = node;
       }
     }
 
     if (current_node === goal) {
-      console.log('Path Found');
-      return -1;
+      let backtracking_node = goal;
+      while (backtracking_node != start) {
+        path.unshift(backtracking_node);
+        backtracking_node = came_from[backtracking_node];
+      }
+      path.unshift(start);
+      return [visited, path];
     }
 
     const index_to_remove = deep_index(open_set, current_node);
     open_set.splice(index_to_remove, 1);
 
     for (const neighbor of graph[current_node]) {
+      
       const tentative_g_score = g_score[current_node] + 1;
       if (!(neighbor in g_score) || tentative_g_score < g_score[neighbor]) {
+        came_from[neighbor] = current_node;
         g_score[neighbor] = tentative_g_score;
         f_score[neighbor] = g_score[neighbor] + get_dist(neighbor, goal);
         if (!(neighbor in open_set)) {
           open_set.push(neighbor);
+          visited.push(neighbor);
         }
       }
     }
