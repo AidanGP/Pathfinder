@@ -62,5 +62,5 @@ const a_star = (neighbors, node_cells) => {
     }
   }
   // No path found
-  return [visited, path];
+  return -1;
 };

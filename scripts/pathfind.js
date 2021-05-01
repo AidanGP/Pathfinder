@@ -118,7 +118,7 @@ const update_path = () => {
   const result = a_star(neighbors, nodes);
 
   if (result === -1) {
-    alert("sorry bruh there is no path");
+    path_found = true;
     return;
   }
 
