@@ -66,6 +66,7 @@ const clearBoard = () => {
     Erase the board back to the default grid (empty aside from 2 nodes)
   */
   if (is_disabled) return;
+  path_found = false;
   is_disabled = false;
   setButtonClass("");
   const default_grid = defaultGrid();
@@ -80,11 +81,12 @@ const restartBoard = () => {
     Clear all visualisations from the board
   */
   if (is_disabled) return;
+  path_found = false;
   const table = document.getElementById("table");
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
-      if (cell.className == VISITED || cell.className == PATH) {
+      if ([VISITED, PATH, VISITED_UPDATE, PATH_UPDATE].includes(cell.className)) {
         cell.className = CELL;
       }
     }

@@ -173,6 +173,13 @@ select {
   animation-play-state: running;
 }
 
+.node-shortest-path-update {
+  background-color: #f48803;
+}
+.node-visited-update {
+  background-color: var(--visited-3);
+}
+
 @keyframes shortestPath {
   0% {
     transform: scale(0.6);

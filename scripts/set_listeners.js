@@ -3,6 +3,7 @@ let current_cell; // Stores the current cell being dragged over
 let prev_cell; // Stores the previous cell that was dragged over
 let moving_class; // Set to either S_NODE or E_NODE
 
+let path_found = false;
 let moving_node = false; // Is a node being moved
 
 const setMouseListeners = () => {
@@ -96,7 +97,12 @@ const onLeftClick = (table_cell) => {
   /* 
     Changes an empty cell to a wall
   */
-  if (table_cell.className == CELL && !is_disabled) table_cell.className = WALL;
+  if (
+    (table_cell.className == CELL || table_cell.className == PATH_UPDATE) &&
+    !is_disabled
+  )
+    table_cell.className = WALL;
+  if (path_found) update_path();
 };
 
 const onRightClick = (table_cell) => {
@@ -104,6 +110,7 @@ const onRightClick = (table_cell) => {
     Changes a wall to an empty cell
   */
   if (table_cell.className == WALL && !is_disabled) table_cell.className = CELL;
+  if (path_found) update_path();
 };
 
 const onNodeMove = (table_cell) => {
@@ -139,4 +146,5 @@ const onNodeMove = (table_cell) => {
       prev_cell.className = CELL;
     }
   }
+  if (path_found) update_path();
 };

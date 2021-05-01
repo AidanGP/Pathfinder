@@ -29,12 +29,7 @@ async function startPathfinding() {
   // Get the location of all node cells (start and end)
   const nodes = getNodeCells(current_board);
 
-  // Get a graph of the board
-  // This is essentially a big list where each index is a 'parent' cell on the board
-  // and each corresponding value is another dictionary where each key is a 'child' cell that
-  // can be moved to from the parent cell. The value pair of the child cells is the weighting of
-  // moving to this cell: 1 for moving to an empty cell, infinity for moving to a wall.
-  const graph = setGraph(blocked);
+  const neighbors = get_neighbors(blocked);
 
   // Get the function that corresponds to the users choice of algorithm
   const selector = document.getElementById("algorithms");
@@ -43,7 +38,7 @@ async function startPathfinding() {
 
   // Get the result of the pathfinding algorithm
   // Returs a 2d list: [visited_cells, shortest_path]
-  const result = algorithm(graph, nodes);
+  const result = algorithm(neighbors, nodes);
 
   // -1 is returned if there is no path
   if (result === -1) {
@@ -52,12 +47,11 @@ async function startPathfinding() {
     return;
   }
 
-  const visited_cells = result[0];
-  const shortest_path = result[1];
+  const [visited_cells, shortest_path] = result;
 
   // Trim the first and last element out of the visited cells and paths lists.
   const visited_cells_trim = visited_cells.slice(1, visited_cells.length - 1);
-  const shortest_path_trim = shortest_path.slice(1, shortest_path.length - 1);
+  shortest_path.pop();
 
   // Break the visited cells list into chunks for visualisation
   const visited_cells_to_chunks = [];
@@ -71,12 +65,12 @@ async function startPathfinding() {
 
   // Grey the buttons and draw both visualisations
   await visualise(visited_cells_to_chunks, (is_path = false));
-  await visualise([shortest_path_trim], (is_path = true));
+  await visualise([shortest_path], (is_path = true));
 
   is_disabled = false;
+  path_found = true;
   setButtonClass("");
 }
-
 async function visualise(cells, is_path) {
   /* 
   Draw a series of cells onto the grid as either path or visited cells
@@ -106,3 +100,45 @@ async function visualise(cells, is_path) {
     await sleep(VISUALISATION_DELAY);
   }
 }
+
+const update_path = () => {
+  /*
+  Called when a path is found and then the user moves a node or places/removes a wall
+  Basically provides a live updating path
+  */
+  restartBoard();
+
+  const current_board = gridToArray();
+
+  const blocked = getBlockedCells(current_board);
+  const nodes = getNodeCells(current_board);
+
+  const neighbors = get_neighbors(blocked);
+
+  const result = a_star(neighbors, nodes);
+
+  if (result === -1) {
+    alert("sorry bruh there is no path");
+    return;
+  }
+
+  // we ignore the visited cells now because dijstras is laggy
+  const [_, shortest_path] = result;
+
+  shortest_path.pop();
+
+  const table = document.getElementById("table");
+  for (let i = 0; i < shortest_path.length; i++) {
+    const cell_index = shortest_path[i];
+
+    // Determine the row and colum of the given cell
+    const [col, row] = coords_of(cell_index);
+
+    // Get the cell itself
+    const cell = table.rows[row].cells[col];
+
+    // Change the cell to either path or a visited cell
+    cell.className = PATH_UPDATE;
+  }
+  path_found = true;
+};

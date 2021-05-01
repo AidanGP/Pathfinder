@@ -47,15 +47,13 @@ const getNeighbors = (index, blocked_cells) => {
   /* 
   Returns a list of neighbouring cells
   */
-  // This is an example of when I decode the index
-  // back into a row and a column
-  const row = Math.floor(index / SIZE_X);
-  const column = index - SIZE_X * row;
+
+  const [column, row] = coords_of(index);
   const neighbors = [];
 
   const pending_neighbors = [];
   // Account for when the cell is
-  // on the border of the grid
+  // on the border of the grid with these checks
   if (row != SIZE_Y - 1) {
     pending_neighbors.push(index + SIZE_X);
   }
@@ -69,6 +67,7 @@ const getNeighbors = (index, blocked_cells) => {
     pending_neighbors.push(index - 1);
   }
 
+  // Remove any walls from the list of neighbors
   for (const pending_neighbor of pending_neighbors) {
     if (!blocked_cells.includes(pending_neighbor)) {
       neighbors.push(pending_neighbor)
@@ -77,17 +76,17 @@ const getNeighbors = (index, blocked_cells) => {
   return neighbors;
 };
 
-const setGraph = (blocked_cells) => {
+const get_neighbors = (blocked_cells) => {
   /* 
-    function for generating the graph (graphs explained in greater detail at function call)
+    function for generating the neighbors of all cells in the grid
   */
-  const graph = [];
+  const neighbors = [];
   // Iterate through all the cells in the grid
   for (let cell = 0; cell < SIZE_X * SIZE_Y; cell++) {
     // generate where you can move to from the current cell
-    const neighbors = getNeighbors(cell, blocked_cells);
+    const neighbors_of_cell = getNeighbors(cell, blocked_cells);
 
-    graph.push(neighbors);
+    neighbors.push(neighbors_of_cell);
   }
-  return graph;
+  return neighbors;
 };

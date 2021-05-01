@@ -5,6 +5,8 @@ const S_NODE = "node-start";
 const E_NODE = "node-end";
 const PATH = "node-shortest-path";
 const VISITED = "node-visited";
+const PATH_UPDATE = "node-shortest-path-update";
+const VISITED_UPDATE = "node-visited-update";
 
 // Encodings
 const CELL_ENCODING = 0;
