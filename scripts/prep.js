@@ -90,3 +90,15 @@ const get_neighbors = (blocked_cells) => {
   }
   return neighbors;
 };
+
+const get_shortest_path = (predecessor_dict, start, goal) => {
+  const path = [];
+  let backtracking_node = goal;
+  while (backtracking_node != start) {
+    path.unshift(backtracking_node);
+    backtracking_node = predecessor_dict[backtracking_node];
+    // If there is no node to backtrack to then there is no valid path
+    if (!backtracking_node) return -1;
+  }
+  return path;
+}

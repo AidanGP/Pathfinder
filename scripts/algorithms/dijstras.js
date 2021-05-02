@@ -9,10 +9,10 @@ const dijstras = (neighbors, node_cells) => {
 
   const start = node_cells[0].toString();
   const goal = node_cells[1].toString();
-  const predecessor_of = {};
+  const predecessor = {};
   const shortest_distance = [];
   const visited = [];
-  const path = [];
+
 
   // Initialise all of the distances as infinite
   for (const _ in neighbors) {
@@ -33,21 +33,19 @@ const dijstras = (neighbors, node_cells) => {
 
     // We think we found a valid path
     if (current_node === goal) {
-      let backtracking_node = goal;
-      while (backtracking_node != start) {
-        path.unshift(backtracking_node);
-        backtracking_node = predecessor_of[backtracking_node];
-        // If there is no node to backtrack to then there is no valid path
-        if (!backtracking_node) return -1;
+      const path = get_shortest_path(predecessor, start, goal);
+      if (path !== -1) {
+        return [visited, path];
+      } else {
+        return -1;
       }
-      return [visited, path];
     }
 
     for (const neighbor of neighbors[current_node]) {
       const estimated_distance = shortest_distance[current_node] + 1;
       if (estimated_distance < shortest_distance[neighbor]) {
         shortest_distance[neighbor] = estimated_distance;
-        predecessor_of[neighbor] = current_node;
+        predecessor[neighbor] = current_node;
       }
     }
 

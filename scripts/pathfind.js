@@ -5,6 +5,9 @@
 const algorithm_name_to_function = {
   Dijstras: dijstras,
   "A*": a_star,
+  "Breadth First Search": breadth_first_search,
+  "Depth First Search": depth_first_search,
+  "Best First Search": best_first_search,
 };
 
 async function startPathfinding() {
