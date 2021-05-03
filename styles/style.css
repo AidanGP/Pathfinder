@@ -1,114 +1,117 @@
 :root {
   --cell-color: rgb(229, 229, 229);
-  --wall-color: rgb(0, 0, 0);
+  --wall-color: #212529;
   --s-node-color: #00ff95;
   --e-node-color: #ff0f7b;
   --bg: rgb(255, 255, 255);
-/* 
-  --visited-0: #ffc15e;
-  --visited-1: #f7b05b;
-  --visited-2: #f7934c;
-  --visited-3: #cc5803; */
 
   --visited-0: #ff0f7b;
   --visited-1: #F0B67F;
-  --visited-2: #D6D1B1;
-  --visited-3: #76ffc6;
+  --visited-2: #76ffc6;
+}
+
+html:not(.dropdown-menu, .table) {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
-  text-align: center;
   overflow: hidden;
   height: 100%;
   user-select: none;
   background-color: var(--bg);
 }
+#help {
+  padding-right: 1vw;
+  font-family: "Josefin Sans", sans-serif;
+  font-size: 32px;
+  color: var(--e-node-color);
+}
+
 #heading {
   font-family: "Josefin Sans", sans-serif;
-  font-size: 46px;
-  margin-bottom: 0;
-
+  font-size: 32px;
   background: hsla(155, 100%, 50%, 1);
 
   background: linear-gradient(
     0deg,
-    hsla(155, 100%, 50%, 1) 43%,
-    hsla(333, 100%, 53%, 1) 57%
+    hsla(155, 100%, 50%, 1) 30%,
+    hsla(333, 100%, 53%, 1) 70%
   );
 
   background: -moz-linear-gradient(
     0deg,
-    hsla(155, 100%, 50%, 1) 43%,
-    hsla(333, 100%, 53%, 1) 57%
+    hsla(155, 100%, 50%, 1) 30%,
+    hsla(333, 100%, 53%, 1) 70%
   );
 
   background: -webkit-linear-gradient(
     0deg,
-    hsla(155, 100%, 50%, 1) 43%,
-    hsla(333, 100%, 53%, 1) 57%
+    hsla(155, 100%, 50%, 1) 30%,
+    hsla(333, 100%, 53%, 1) 70%
   );
 
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#00FF95", endColorstr="#FF0F7B", GradientType=1 );
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; 
 }
-#headingbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.nav-item {
+  /* padding-left: 2.75vw; */
+  margin-left: 1vw;
+  margin-right: 1vw;
+}
+nav {
+  /* use this to maybe move the navbar */
+}
+
+#overlay {
+  position: fixed;
+  display: none;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 2;
+  cursor: pointer;
+}
+
+#description{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 24px;
+  font-family: "Source Sans Pro", sans-serif;
+  color: white;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
 }
 
 #table td {
-  color: red;
+  color: transparent;
   opacity: 1;
   width: 35px;
   height: 28px;
 }
 
-#table td:hover,
-li a:hover,
-select:hover {
+#table td:hover {
   opacity: 0.75;
 }
 
 #table {
+  overflow: hidden;
+  height: 90%;
+  user-select: none;
   background-color: var(--cell-color);
-  margin-left: auto;
-  margin-right: auto;
   border-spacing: 0;
   border-collapse: collapse;
 }
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
 
-li {
-  display: inline-block;
-}
-
-li a,
-select {
-  display: block;
-  color: #000;
-  text-align: center;
-  border: none;
-  padding: 10px 12px;
-  text-decoration: none;
-  margin: 10px;
-  font-family: "Source Sans Pro", sans-serif;
-  text-transform: lowercase;
-  font-size: 20px;
-}
-#path-btn {
-  font-weight: bold;
-}
 
 select {
   background-color: transparent;
@@ -198,11 +201,11 @@ select {
 }
 @keyframes tableHover {
   0% {
-    transform: scale(0.9);
+    transform: scale(0.6);
   }
 
   50% {
-    transform: scale(1.1);
+    transform: scale(1.2);
   }
 
   100% {
@@ -215,16 +218,12 @@ select {
     background-color: var(--visited-0);
   }
 
-  40% {
+  50% {
     background-color: var(--visited-1);
   }
 
-  70% {
+  100% {
     transform: scale(1.1);
     background-color: var(--visited-2);
-  }
-
-  100% {
-    background-color: var(--visited-3);
   }
 }

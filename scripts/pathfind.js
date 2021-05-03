@@ -10,7 +10,7 @@ const algorithm_name_to_function = {
   "Best First Search": best_first_search,
 };
 
-async function startPathfinding() {
+async function startPathfinding(algorithm) {
   /* 
   Called when the user presses the 'pathfind' button
   Finishes when all of the visualisations are drawn
@@ -22,7 +22,7 @@ async function startPathfinding() {
   // Remove any visualisations that are already on the board
   restartBoard();
   // Disable the buttons
-  setButtonClass("disabled");
+  //setButtonClass("disabled");
 
   // Get the current state of the board as a 2d array
   const current_board = gridToArray();
@@ -34,11 +34,6 @@ async function startPathfinding() {
 
   const neighbors = get_neighbors(blocked);
 
-  // Get the function that corresponds to the users choice of algorithm
-  const selector = document.getElementById("algorithms");
-  const algorithm_name = selector.options[selector.selectedIndex].innerHTML;
-  const algorithm = algorithm_name_to_function[algorithm_name];
-
   // Get the result of the pathfinding algorithm
   // Returs a 2d list: [visited_cells, shortest_path]
   const result = algorithm(neighbors, nodes);
@@ -46,7 +41,7 @@ async function startPathfinding() {
   // -1 is returned if there is no path
   if (result === -1) {
     alert("sorry bruh there is no path");
-    setButtonClass("");
+    //setButtonClass("");
     return;
   }
 
@@ -72,7 +67,7 @@ async function startPathfinding() {
 
   is_disabled = false;
   path_found = true;
-  setButtonClass("");
+  //setButtonClass("");
 }
 async function visualise(cells, is_path) {
   /* 

@@ -1,8 +1,8 @@
 const get_dist = (a, b) => {
   a = coords_of(a);
   b = coords_of(b);
-  //return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
-  return Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2);
+  return Math.abs(a[0] - b[0]) + Math.abs(a[1] - b[1]);
+  //return Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2);
 };
 
 const deep_index = (arr, item) => {

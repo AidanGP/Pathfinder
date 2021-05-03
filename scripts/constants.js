@@ -28,3 +28,8 @@ const END_COL = (width) => Math.floor((4 / 5) * width);
 const PATH_DELAY = 40;
 const VISUALISATION_DELAY = 0;
 
+// Algorithm Description
+const DIJSTRAS_DESCRIPTION = `Dijstras algorithm is the father of pathfinding algorithms.The algorithm is quite slow but will always find the shortest path.`;
+const A_STAR_DESCRIPTION = ``;
+const BREADTH_FIRST_SEARCH_DESCRIPTION = ``;
+const BEST_FIRST_SEARCH_DESCRIPTION = ``;

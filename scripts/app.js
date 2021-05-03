@@ -7,15 +7,16 @@ let is_disabled = false; // Should the buttons be disabled
 */
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const setButtonClass = (class_name) => {
-  /* 
-    Used to disable / enable buttons during animations
-  */
-  const a = document.getElementsByTagName("a");
-  for (let i = 0; i < a.length; i++) {
-    a[i].className = class_name;
-  }
-};
+// const setButtonClass = (class_name) => {
+//   /* 
+//     Used to disable / enable buttons during animations
+//   */
+//   const a = document.getElementsByTagName("a");
+//   for (let i = 0; i < a.length; i++) {
+//     a[i].className = class_name;
+//   }
+//   document.getElementById("algorithms").className = class_name;
+// };
 
 const changeTableDims = () => {
   /*
@@ -30,14 +31,37 @@ const changeTableDims = () => {
   if (n_walls === 0) {
     clearBoard();
   }
-}
+};
+
+// Information overlay
+const algorithm_descriptions = {
+  Dijstras: DIJSTRAS_DESCRIPTION,
+  "A*": A_STAR_DESCRIPTION,
+  "Breadth First Search": BREADTH_FIRST_SEARCH_DESCRIPTION,
+  "Best First Search": BEST_FIRST_SEARCH_DESCRIPTION
+};
+
+const overlay_on = (algorithm) => {
+  const description_heading = document.getElementById("algorithm_name");
+  const description_body = document.getElementById("algorithm_description");
+
+  const algorithm_description = algorithm_descriptions[algorithm];
+
+  description_heading.innerHTML = algorithm;
+  description_body.innerHTML = algorithm_description;
+
+  document.getElementById("overlay").style.display = "block";
+};
+
+const overlay_off = () => {
+  document.getElementById("overlay").style.display = "none";
+};
 
 const coords_of = (cell) => {
-  
   const row = Math.floor(cell / SIZE_X);
   const col = cell - SIZE_X * row;
   return [col, row];
-}
+};
 
 const defaultGrid = () => {
   /* 
@@ -68,7 +92,7 @@ const clearBoard = () => {
   if (is_disabled) return;
   path_found = false;
   is_disabled = false;
-  setButtonClass("");
+  //setButtonClass("");
   const default_grid = defaultGrid();
   setGrid(default_grid);
   // Remove the old mouse listeners
@@ -86,7 +110,9 @@ const restartBoard = () => {
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
-      if ([VISITED, PATH, VISITED_UPDATE, PATH_UPDATE].includes(cell.className)) {
+      if (
+        [VISITED, PATH, VISITED_UPDATE, PATH_UPDATE].includes(cell.className)
+      ) {
         cell.className = CELL;
       }
     }
@@ -98,4 +124,4 @@ const restartBoard = () => {
 // Initialise the board and all that
 clearBoard();
 // Start checking if they resize the window
-window.addEventListener('resize', changeTableDims);
+window.addEventListener("resize", changeTableDims);

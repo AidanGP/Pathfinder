@@ -2,49 +2,91 @@
 <html>
 
 <head>
-  <link rel="stylesheet" href="styles/style.css" />
+
   <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Source+Sans+Pro:wght@300&display=swap"
     rel="stylesheet" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="styles/style.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pathfinder</title>
 
   <link rel="icon" href="img/favicon.ico" />
 </head>
 
 <body>
-  <h1 id="heading">
-    [ pathfinder ]
-  </h1>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li>
+            <a class="navbar-brand" id="heading">[ Pathfinder ]</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="clearBoard()">reset</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="restartBoard()">clear animation</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="saveBoard()">save</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="importToBoard()">import</a>
+            <input id="file-input" type="file" name="name" style="display: none;" />
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              information
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" onclick="overlay_on('Dijstras')">dijstras</a></li>
+              <li><a class="dropdown-item" onclick="overlay_on('A*')">a*</a></li>
+              <li><a class="dropdown-item" onclick="overlay_on('Breadth First Search')">breadth first search</a></li>
+              <li><a class="dropdown-item" onclick="overlay_on('Best First Search')">best first search</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              pathfind
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" onclick="startPathfinding(dijstras)">dijstras</a></li>
+              <li><a class="dropdown-item" onclick="startPathfinding(a_star)">a*</a></li>
+              <li><a class="dropdown-item" onclick="startPathfinding(breadth_first_search)">breadth first search</a>
+              </li>
+              <li><a class="dropdown-item" onclick="startPathfinding(best_first_search)">best first search</a></li>
+            </ul>
+          </li>
+          <li>
+            <a class="navbar-brand" onclick="//A guide" id="help">?</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-  <div id="headingbar">
-    <ul>
-      <li><a href="javascript:clearBoard()">Erase All</a></li>
-      <li><a href="javascript:restartBoard()">Retry</a></li>
-      <li><a href="javascript:saveBoard()">Save</a></li>
-      <li><a href="javascript:importToBoard()">Import</a>
-        <input id="file-input" type="file" name="name" style="display: none;" />
-      </li>
-      <li>
-        <select id="algorithms">
-          <option value="Dijstras">Dijstras</option>
-          <option value="A*">A*</option>
-          <option value="Breadth First Search">Breadth First Search</option>
-          <option value="Depth First Search">Depth First Search</option>
-          <option value="Best First Search">Best First Search</option>
-        </select>
-      </li>
-      <li>
-        <a id="path-btn" href="javascript:startPathfinding()">Pathfind</a>
-      </li>
-    </ul>
-
+  <div id="overlay" onclick="overlay_off()">
+    <div id="description">
+      <h1 id="algorithm_name"></h1>
+      <p id="algorithm_description"></p>
+    </div>
   </div>
 
-  <table id="table" oncontextmenu="return!1">
-  </table>
-
+  <table class="table" id="table" oncontextmenu="return!1"></table>
 
   <script src="scripts/constants.js"></script>
   <script src="scripts/init_grid.js"></script>
