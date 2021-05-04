@@ -22,7 +22,7 @@ async function startPathfinding(algorithm) {
   // Remove any visualisations that are already on the board
   restartBoard();
   // Disable the buttons
-  //setButtonClass("disabled");
+  disable_bts(true);
 
   // Get the current state of the board as a 2d array
   const current_board = gridToArray();
@@ -40,8 +40,7 @@ async function startPathfinding(algorithm) {
 
   // -1 is returned if there is no path
   if (result === -1) {
-    alert("sorry bruh there is no path");
-    //setButtonClass("");
+    $('#path_failed').modal('show');
     return;
   }
 
@@ -65,9 +64,8 @@ async function startPathfinding(algorithm) {
   await visualise(visited_cells_to_chunks, (is_path = false));
   await visualise([shortest_path], (is_path = true));
 
-  is_disabled = false;
   path_found = true;
-  //setButtonClass("");
+  disable_bts(false);
 }
 async function visualise(cells, is_path) {
   /* 

@@ -7,16 +7,29 @@ let is_disabled = false; // Should the buttons be disabled
 */
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// const setButtonClass = (class_name) => {
-//   /* 
-//     Used to disable / enable buttons during animations
-//   */
-//   const a = document.getElementsByTagName("a");
-//   for (let i = 0; i < a.length; i++) {
-//     a[i].className = class_name;
-//   }
-//   document.getElementById("algorithms").className = class_name;
-// };
+const disable_bts = (disable) => {
+  /* 
+    Used to disable / enable buttons during animations
+  */
+  const nav_items = document.getElementsByClassName("nav-item");
+  const dropdown_items = document.getElementsByClassName("dropdown-item");
+  if (disable) {
+    for (const nav_item of nav_items) {
+      nav_item.classList.add("disabled");
+    }
+    for (const dropdown_item of dropdown_items) {
+      dropdown_item.classList.add("disabled");
+    }
+  } else {
+    is_disabled = false;
+    for (const nav_item of nav_items) {
+      nav_item.classList.remove("disabled");
+    }
+    for (const dropdown_item of dropdown_items) {
+      dropdown_item.classList.remove("disabled");
+    }
+  }
+};
 
 const changeTableDims = () => {
   /*
@@ -38,7 +51,7 @@ const algorithm_descriptions = {
   Dijstras: DIJSTRAS_DESCRIPTION,
   "A*": A_STAR_DESCRIPTION,
   "Breadth First Search": BREADTH_FIRST_SEARCH_DESCRIPTION,
-  "Best First Search": BEST_FIRST_SEARCH_DESCRIPTION
+  "Best First Search": BEST_FIRST_SEARCH_DESCRIPTION,
 };
 
 const overlay_on = (algorithm) => {
@@ -91,8 +104,7 @@ const clearBoard = () => {
   */
   if (is_disabled) return;
   path_found = false;
-  is_disabled = false;
-  //setButtonClass("");
+  disable_bts(false);
   const default_grid = defaultGrid();
   setGrid(default_grid);
   // Remove the old mouse listeners

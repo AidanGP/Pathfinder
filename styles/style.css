@@ -26,13 +26,17 @@ body {
   background-color: var(--bg);
 }
 #help {
-  padding-right: 1vw;
-  font-family: "Josefin Sans", sans-serif;
-  font-size: 32px;
+  margin-right: 1vw;
   color: var(--e-node-color);
+}
+#help:hover {
+  cursor:pointer;
+  opacity: 0.7;
 }
 
 #heading {
+  margin-left: 1vw;
+  margin-right: 11vw;
   font-family: "Josefin Sans", sans-serif;
   font-size: 32px;
   background: hsla(155, 100%, 50%, 1);
@@ -62,11 +66,14 @@ body {
 }
 .nav-item {
   /* padding-left: 2.75vw; */
-  margin-left: 1vw;
-  margin-right: 1vw;
+  /* margin-left: 1vw;
+  margin-right: 1vw; */
+  padding-left: 1.5vw;
+  padding-right: 1.5vw;
 }
 nav {
   /* use this to maybe move the navbar */
+  background-color: #212529;
 }
 
 #overlay {
