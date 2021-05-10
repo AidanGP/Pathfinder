@@ -41,6 +41,7 @@ async function startPathfinding(algorithm) {
   // -1 is returned if there is no path
   if (result === -1) {
     $('#path_failed').modal('show');
+    disable_bts(false);
     return;
   }
 
@@ -134,7 +135,7 @@ const update_path = () => {
     const cell = table.rows[row].cells[col];
 
     // Change the cell to either path or a visited cell
-    cell.className = PATH_UPDATE;
+    cell.className = PATH;
   }
   path_found = true;
 };

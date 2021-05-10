@@ -64,7 +64,7 @@ const onMouseMove = (e) => {
   // Which mouse button was it
   const MOUSE_BTN = e.buttons;
   // If the user has previously 'mouse downed' on a node
-  if (moving_node && MOUSE_BTN === MOUSE_LEFT_CLICK) {
+  if (moving_node) {// && MOUSE_BTN === MOUSE_LEFT_CLICK) {
     // Determine the class of the node we are moving
     if (!moving_class) moving_class = e.target.className;
     // Now move the node
@@ -98,7 +98,7 @@ const onLeftClick = (table_cell) => {
     Changes an empty cell to a wall
   */
   if (
-    (table_cell.className == CELL || table_cell.className == PATH_UPDATE) &&
+    (table_cell.className == CELL || table_cell.className == PATH) &&
     !is_disabled
   )
     table_cell.className = WALL;

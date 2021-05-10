@@ -18,8 +18,6 @@ html:not(.dropdown-menu, .table) {
 
 html,
 body {
-  margin: 0;
-  padding: 0;
   overflow: hidden;
   height: 100%;
   user-select: none;
@@ -28,17 +26,20 @@ body {
 #help {
   margin-right: 1vw;
   color: var(--e-node-color);
+  
 }
 #help:hover {
   cursor:pointer;
   opacity: 0.7;
 }
+#bold {
+  font-weight: bold;
+}
 
 #heading {
   margin-left: 1vw;
-  margin-right: 11vw;
   font-family: "Josefin Sans", sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   background: hsla(155, 100%, 50%, 1);
 
   background: linear-gradient(
@@ -65,15 +66,11 @@ body {
   -webkit-text-fill-color: transparent; 
 }
 .nav-item {
-  /* padding-left: 2.75vw; */
-  /* margin-left: 1vw;
-  margin-right: 1vw; */
   padding-left: 1.5vw;
   padding-right: 1.5vw;
 }
-nav {
-  /* use this to maybe move the navbar */
-  background-color: #212529;
+.dropdown-menu {
+  overflow: inherit !important;
 }
 
 #overlay {
@@ -88,7 +85,7 @@ nav {
   cursor: pointer;
 }
 
-#description{
+#description {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -141,10 +138,20 @@ select {
   background-color: var(--e-node-color) !important;
 }
 
-.wall:hover,
 .node-start:hover,
 .node-end:hover {
-  animation-name: tableHover;
+  animation-name: nodeHover;
+  animation-duration: 0.7s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.wall:hover {
+  animation-name: wallHover;
   animation-duration: 0.3s;
   animation-timing-function: ease-out;
   animation-delay: 0;
@@ -155,14 +162,7 @@ select {
 }
 
 .node-visited {
-  animation-name: visitedAnimation;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
+  background-color: #F0B67F;
 }
 
 .disabled {
@@ -173,21 +173,7 @@ select {
 }
 
 .node-shortest-path {
-  animation-name: shortestPath;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-out;
-  animation-delay: 0;
-  animation-direction: alternate;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-  animation-play-state: running;
-}
-
-.node-shortest-path-update {
   background-color: #f48803;
-}
-.node-visited-update {
-  background-color: var(--visited-3);
 }
 
 @keyframes shortestPath {
@@ -206,9 +192,9 @@ select {
     background-color: #f48803;
   }
 }
-@keyframes tableHover {
+@keyframes nodeHover {
   0% {
-    transform: scale(0.6);
+    transform: scale(0.9);
   }
 
   50% {
@@ -219,18 +205,16 @@ select {
     transform: scale(1);
   }
 }
-@keyframes visitedAnimation {
+@keyframes wallHover {
   0% {
-    transform: scale(0.9);
-    background-color: var(--visited-0);
+    transform: scale(0.4);
   }
 
   50% {
-    background-color: var(--visited-1);
+    transform: scale(1.6);
   }
 
   100% {
-    transform: scale(1.1);
-    background-color: var(--visited-2);
+    transform: scale(1);
   }
 }

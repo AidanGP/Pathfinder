@@ -27,12 +27,12 @@
 </head>
 
 <body>
-
+  <!-- Main Navbar, cointains about 99% of the interface except the grid itself -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a id="heading">[ Pathfinder ]</a>
-    <div class="container-md">
+    <a id="heading">[Pathfinder]</a>
+    <div class="container-fluid">
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav position-absolute top-50 start-50 translate-middle">
           <li class="nav-item">
             <a class="nav-link" onclick="clearBoard()">reset</a>
           </li>
@@ -46,24 +46,32 @@
             <a class="nav-link" onclick="importToBoard()">import</a>
             <input id="file-input" type="file" name="name" style="display: none;" />
           </li>
+          <!-- Algorithm Information dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
               aria-expanded="false">
               information
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li>
+                <h6 class="dropdown-header">learn about an algorithm</h6>
+              </li>
               <li><a class="dropdown-item" onclick="overlay_on('Dijstras')">dijstras</a></li>
               <li><a class="dropdown-item" onclick="overlay_on('A*')">a*</a></li>
               <li><a class="dropdown-item" onclick="overlay_on('Breadth First Search')">breadth first search</a></li>
               <li><a class="dropdown-item" onclick="overlay_on('Best First Search')">best first search</a></li>
             </ul>
           </li>
+          <!-- Pathfinding algorithm selector -->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              pathfind  <span class="badge bg-secondary">4</span>
+            <a class="nav-link dropdown-toggle" id="bold" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              pathfind <span class="badge bg-secondary">4</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li>
+                <h6 class="dropdown-header">supported algorithms</h6>
+              </li>
               <li><a class="dropdown-item" onclick="startPathfinding(dijstras)">dijstras</a></li>
               <li><a class="dropdown-item" onclick="startPathfinding(a_star)">a*</a></li>
               <li><a class="dropdown-item" onclick="startPathfinding(breadth_first_search)">breadth first search</a>
@@ -74,9 +82,14 @@
         </ul>
       </div>
     </div>
-    <a class="nav-link" onclick="$('#guide').modal('show');" id="help">what's this?</a>
+    <!-- Help Button -->
+    <a onclick="$('#guide').modal('show');" id="help">huh?</a>
   </nav>
 
+  
+  <table class="table" id="table" oncontextmenu="return!1"></table>
+
+  <!-- Overlay which is shown when a user wants to read about one of the algorithms -->
   <div id="overlay" onclick="overlay_off()">
     <div id="description">
       <h1 id="algorithm_name"></h1>
@@ -111,7 +124,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p class="font-monospace">* Drag the green (start) and pink (goal) around the grid
+          <p class="font-monospace">* Drag the green (start) and pink (end) around the grid
             <br>* Left clicking or clicking and dragging will draw walls which cannot be traversed
             <br>* Right clicking will erase walls
             <br>* Choose a pathfinding algorithm from the dropdown
@@ -127,8 +140,6 @@
       </div>
     </div>
   </div>
-
-  <table class="table" id="table" oncontextmenu="return!1"></table>
 
   <script src="scripts/constants.js"></script>
   <script src="scripts/init_grid.js"></script>

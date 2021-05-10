@@ -5,7 +5,6 @@ const breadth_first_search = (neighbors, node_cells) => {
   const [start, goal] = node_cells;
   const open_set = [start]; // queue
   const visited = [start];
-  const path = [];
   const predecessor = {};
   while (open_set.length > 0) {
     const current_node = open_set.shift();

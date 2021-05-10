@@ -123,7 +123,7 @@ const restartBoard = () => {
     for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
       if (
-        [VISITED, PATH, VISITED_UPDATE, PATH_UPDATE].includes(cell.className)
+        [VISITED, PATH].includes(cell.className)
       ) {
         cell.className = CELL;
       }

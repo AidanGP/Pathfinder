@@ -16,17 +16,14 @@ const deep_index = (arr, item) => {
 const a_star = (neighbors, node_cells) => {
   const [start, goal] = node_cells;
 
-  const path = [];
-  const visited = [];
+  let visited = [];
   const open_set = [start];
   const predecessor = {};
   const g_score = {};
   const f_score = {};
   g_score[start] = 0;
   f_score[start] = get_dist(start, goal);
-
   while (open_set.length > 0) {
-
     // Find the node in the open set with the lowest f-score
     let current_node;
     for (const node of open_set) {
@@ -39,6 +36,7 @@ const a_star = (neighbors, node_cells) => {
     if (current_node === goal) {
       const path = get_shortest_path(predecessor, start, goal);
       if (path !== -1) {
+        visited = visited.filter((item) => item !== goal);
         return [visited, path];
       } else {
         return -1;
@@ -49,13 +47,13 @@ const a_star = (neighbors, node_cells) => {
     open_set.splice(index_to_remove, 1);
 
     for (const neighbor of neighbors[current_node]) {
-      visited.push(neighbor);
       const tentative_g_score = g_score[current_node] + 1;
       if (!(neighbor in g_score) || tentative_g_score < g_score[neighbor]) {
         predecessor[neighbor] = current_node;
         g_score[neighbor] = tentative_g_score;
         f_score[neighbor] = g_score[neighbor] + get_dist(neighbor, goal);
         if (!(neighbor in open_set)) {
+          visited.push(neighbor);
           open_set.push(neighbor);
         }
       }
