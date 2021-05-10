@@ -5,7 +5,7 @@
 * Avoid barrier blocks (black)
 * Visualise the visited / previously searched cells as well as the shortest path
 
-![Pathfinder Software](img/sample.png?raw=true "Pathfinder Example")
+![Pathfinder Software](img/sample.PNG?raw=true "Pathfinder Example")
 
 [Pathfinder Site](https://aidangp.github.io/Pathfinder)
 
