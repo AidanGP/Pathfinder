@@ -19,8 +19,7 @@ const importToBoard = () => {
   /* 
     Get a .csv file and display it on the board
   */
-  // Check if the buttons are disabled
-  if (is_disabled) return;
+  if (is_disabled) return; // Check if the buttons are disabled
   var file_in = document.getElementById("file-input");
 
   // Check when the contents of the file input is changed
@@ -46,7 +45,7 @@ const importToBoard = () => {
       // Set the grid to said array
       setGrid(arr);
 
-      // Reset the listeners for memory reasons i think
+      // Reset the listeners
       removeMouseListeners();
       setMouseListeners();
     };

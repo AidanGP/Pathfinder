@@ -3,12 +3,9 @@ const gridToArray = () => {
     Convert the current grid to a 2D array
     Grid -> Array
   */
-
-  // Check if the buttons are enabled
-  if (is_disabled) return;
   const table = document.getElementById("table");
   const grid = [];
-  // Iterate through the grid
+  // Iterate through the grid and encode the current cell as a digit from 0-3
   for (let i = 0; i < table.rows.length; i++) {
     grid.push([]);
     for (let j = 0; j < table.rows[i].cells.length; j++) {

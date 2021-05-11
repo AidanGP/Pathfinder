@@ -9,7 +9,7 @@ let moving_node = false; // Is a node being moved
 const setMouseListeners = () => {
   /* 
     Initialise the mouse listeners - this is for 
-    draggin the nodes and adding/removing walls
+    dragging the nodes and adding/removing walls
   */
   const table = document.getElementById("table");
   table.addEventListener("mousedown", onMouseDown);

@@ -11,9 +11,13 @@ const disable_bts = (disable) => {
   /* 
     Used to disable / enable buttons during animations
   */
+
+  // Get all buttons and drop down elements
   const nav_items = document.getElementsByClassName("nav-item");
   const dropdown_items = document.getElementsByClassName("dropdown-item");
+
   if (disable) {
+    // Iteratively disable the buttons and the dropdown items
     for (const nav_item of nav_items) {
       nav_item.classList.add("disabled");
     }
@@ -21,6 +25,7 @@ const disable_bts = (disable) => {
       dropdown_item.classList.add("disabled");
     }
   } else {
+    // Iteratively enable the buttons and the dropdown items
     is_disabled = false;
     for (const nav_item of nav_items) {
       nav_item.classList.remove("disabled");
@@ -33,20 +38,21 @@ const disable_bts = (disable) => {
 
 const changeTableDims = () => {
   /*
-    ok so basically
     if there is information on the board i cant resize it without losing said information
     So if the board is empty i can automatically resize it
   */
 
+  // Get the number of walls in the current board
   const current_board = gridToArray();
   const n_walls = getBlockedCells(current_board).length;
 
+  // If nothing has been placed on the board, then reset it
   if (n_walls === 0) {
     clearBoard();
   }
 };
 
-// Information overlay
+// Information overlay convert the name of an algorithm to its respective description
 const algorithm_descriptions = {
   Dijstras: DIJSTRAS_DESCRIPTION,
   "A*": A_STAR_DESCRIPTION,
@@ -55,22 +61,38 @@ const algorithm_descriptions = {
 };
 
 const overlay_on = (algorithm) => {
+  /*
+  Toggle the overlay on, writing the appropriate headings and descriptions
+  to the overlay
+  */
+
+  // Get the heading and description elements
   const description_heading = document.getElementById("algorithm_name");
   const description_body = document.getElementById("algorithm_description");
 
+  // Translate the name of the algorithm to its respective description
   const algorithm_description = algorithm_descriptions[algorithm];
 
+  // Write the description and heading to the overlay
   description_heading.innerHTML = algorithm;
   description_body.innerHTML = algorithm_description;
 
+  // Display the overlay
   document.getElementById("overlay").style.display = "block";
 };
 
 const overlay_off = () => {
+  /*
+  Toggle the overlay off
+  */
   document.getElementById("overlay").style.display = "none";
 };
 
 const coords_of = (cell) => {
+  /*
+  Given the 'id' of a cell in the grid, return the x and y coordinates of it
+  */
+  // Some maths to get the row and col values
   const row = Math.floor(cell / SIZE_X);
   const col = cell - SIZE_X * row;
   return [col, row];
@@ -80,22 +102,24 @@ const defaultGrid = () => {
   /* 
     get a 2d array that is empty aside from the start and end nodes
   */
+  // The number of cells in the grid
   SIZE_X = Math.floor(window.innerWidth / 35);
   SIZE_Y = Math.floor(window.innerHeight / 35);
-  let arr = [];
+  const grid = [];
+  // Iteratively create the grid, inserting the start and end nodes where needed
   for (let i = 0; i < SIZE_Y; i++) {
-    arr.push([]);
+    grid.push([]);
     for (let j = 0; j < SIZE_X; j++) {
       if (i == START_ROW(SIZE_Y) && j == START_COL(SIZE_X)) {
-        arr[i].push(S_NODE_ENCODING);
+        grid[i].push(S_NODE_ENCODING);
       } else if (i == END_ROW(SIZE_Y) && j == END_COL(SIZE_X)) {
-        arr[i].push(E_NODE_ENCODING);
+        grid[i].push(E_NODE_ENCODING);
       } else {
-        arr[i].push(CELL_ENCODING);
+        grid[i].push(CELL_ENCODING);
       }
     }
   }
-  return arr;
+  return grid;
 };
 
 const clearBoard = () => {
@@ -103,13 +127,13 @@ const clearBoard = () => {
     Erase the board back to the default grid (empty aside from 2 nodes)
   */
   if (is_disabled) return;
-  path_found = false;
-  disable_bts(false);
+  path_found = false; // Disable the live pathfinding
+  disable_bts(false); // Re-enable the buttons
+  // Reset the grid
   const default_grid = defaultGrid();
   setGrid(default_grid);
-  // Remove the old mouse listeners
-  removeMouseListeners();
-  setMouseListeners();
+  removeMouseListeners(); // Remove the old mouse listeners
+  setMouseListeners(); // Initialise the grid mouse listeners
 };
 
 const restartBoard = () => {
@@ -117,14 +141,13 @@ const restartBoard = () => {
     Clear all visualisations from the board
   */
   if (is_disabled) return;
-  path_found = false;
+  path_found = false; // Disable live pathfinding
   const table = document.getElementById("table");
+  // Iterativeley clear the grid of any visited cells or shortest path cells
   for (let i = 0; i < SIZE_Y; i++) {
     for (let j = 0; j < SIZE_X; j++) {
       const cell = table.rows[i].cells[j];
-      if (
-        [VISITED, PATH].includes(cell.className)
-      ) {
+      if ([VISITED, PATH].includes(cell.className)) {
         cell.className = CELL;
       }
     }

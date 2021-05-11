@@ -31,6 +31,10 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a id="heading">[Pathfinder]</a>
     <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav position-absolute top-50 start-50 translate-middle">
           <li class="nav-item">
@@ -86,7 +90,7 @@
     <a onclick="$('#guide').modal('show');" id="help">help</a>
   </nav>
 
-  
+
   <table class="table" id="table" oncontextmenu="return!1"></table>
 
   <!-- Overlay which is shown when a user wants to read about one of the algorithms -->
@@ -124,7 +128,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p class="font-monospace">* Drag the green (start) and pink (end) around the grid
+          <p class="font-monospace">* Drag the start (green) and end (pink) nodes around the grid
             <br>* Left clicking or clicking and dragging will draw walls which cannot be traversed
             <br>* Right clicking will erase walls
             <br>* Choose a pathfinding algorithm from the dropdown
@@ -153,7 +157,6 @@
   <script src="scripts/algorithms/dijstras.js"></script>
   <script src="scripts/algorithms/a_star.js"></script>
   <script src="scripts/algorithms/bfs.js"></script>
-  <script src="scripts/algorithms/dfs.js"></script>
   <script src="scripts/algorithms/best_fs.js"></script>
   <script src="scripts/pathfind.js"></script>
 

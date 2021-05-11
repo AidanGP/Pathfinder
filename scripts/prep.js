@@ -92,6 +92,9 @@ const get_neighbors = (blocked_cells) => {
 };
 
 const get_shortest_path = (predecessor_dict, start, goal) => {
+  /*
+  Backtrack through the predecessor_dict to generate the shortest path.
+  */
   const path = [];
   let backtracking_node = goal;
   while (backtracking_node != start) {

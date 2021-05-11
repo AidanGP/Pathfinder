@@ -6,7 +6,6 @@ const algorithm_name_to_function = {
   Dijstras: dijstras,
   "A*": a_star,
   "Breadth First Search": breadth_first_search,
-  "Depth First Search": depth_first_search,
   "Best First Search": best_first_search,
 };
 
@@ -35,11 +34,12 @@ async function startPathfinding(algorithm) {
   const neighbors = get_neighbors(blocked);
 
   // Get the result of the pathfinding algorithm
-  // Returs a 2d list: [visited_cells, shortest_path]
+  // Returs a list: [visited_cells, shortest_path]
   const result = algorithm(neighbors, nodes);
 
   // -1 is returned if there is no path
   if (result === -1) {
+    // Display the alert for if a pathfind fails
     $('#path_failed').modal('show');
     disable_bts(false);
     return;
@@ -47,8 +47,9 @@ async function startPathfinding(algorithm) {
 
   const [visited_cells, shortest_path] = result;
 
-  // Trim the first and last element out of the visited cells and paths lists.
-  const visited_cells_trim = visited_cells.slice(1, visited_cells.length - 1);
+  // Trim the start and end node out of the visited cells.
+  const visited_cells_trim = visited_cells.filter((item) => ! (nodes.includes(item)));
+  // Remove the goal from the shortest path list
   shortest_path.pop();
 
   // Break the visited cells list into chunks for visualisation
@@ -102,6 +103,7 @@ const update_path = () => {
   /*
   Called when a path is found and then the user moves a node or places/removes a wall
   Basically provides a live updating path
+
   */
   restartBoard();
 
@@ -112,14 +114,15 @@ const update_path = () => {
 
   const neighbors = get_neighbors(blocked);
 
-  const result = a_star(neighbors, nodes);
+  // Using best first search for live pathfinding because it is likley to be the fastest
+  const result = best_first_search(neighbors, nodes);
 
   if (result === -1) {
     path_found = true;
     return;
   }
 
-  // we ignore the visited cells now because dijstras is laggy
+  // we ignore the visited cells now because we just want the shortest path
   const [_, shortest_path] = result;
 
   shortest_path.pop();

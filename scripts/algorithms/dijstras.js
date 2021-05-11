@@ -11,7 +11,7 @@ const dijstras = (neighbors, node_cells) => {
   const goal = node_cells[1].toString();
   const predecessor = {};
   const shortest_distance = [];
-  const visited = [];
+  let visited = [];
 
 
   // Initialise all of the distances as infinite
@@ -34,6 +34,7 @@ const dijstras = (neighbors, node_cells) => {
     // We think we found a valid path
     if (current_node === goal) {
       const path = get_shortest_path(predecessor, start, goal);
+      visited = visited.filter((item) => (item !== start));
       if (path !== -1) {
         return [visited, path];
       } else {

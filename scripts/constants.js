@@ -28,15 +28,24 @@ const VISUALISATION_DELAY = 15;
 
 // Algorithm Description
 const DIJSTRAS_DESCRIPTION = `
-Dijstras algorithm is the father of pathfinding algorithms. The algorithm is quite slow but will always find the shortest path.
+Dijstras algorithm, designed in 1956 is the father of pathfinding algorithms. The algorithm is quite slow but will always find the shortest path.
+Dijstras doesnt use any distance heuristics and is generally considered to be worse than A*. Dijstras algorithm uses a distance metric based
+on how many iterations the current node is away from the starting node as well as a weighting between each node.
 `;
 const A_STAR_DESCRIPTION = `
-The A* algorithm is commonly implemented in video games and used distance heuristics to imrpove its efficiency. The algorithm
-is faster than Dijstras algorithm and will always find the shortest path`;
+The A* algorithm is commonly implemented in video games, it uses distance heuristics to imrpove its efficiency, this is
+known as an informed search. The algorithm is faster than Dijstras algorithm and will always find the shortest path.
+A* features a heavy use of distance heuristics such as the g-cost which measures the distance from the current node to the start,
+h-cost which measures the distance from the current node to the end node and f-cost which is the sum of g-cost and h-cost.`;
 const BREADTH_FIRST_SEARCH_DESCRIPTION = `
 Breath first search was initially designed for searching binary trees. As the name suggests, the algorithm priorities searching
 horizontally across the grid over vertically. The algorithm will always find the shortest path and is visually similar to Dijstras
-algorithm in the way it searches.
+algorithm in the way it searches. The algorithm does not use any distance heuristics.
 `;
 const BEST_FIRST_SEARCH_DESCRIPTION = `
+Best first seach, similarly to breath first search was conceptualised for use in searching binary trees. Best first search uses
+a distance heuristic so that it can predict the immediately best move. Best first search is a 'greedy' algorithm and as such it
+will make the best short term decision as opposed to a better long term decision. The algorithm would rather get $1000 today than
+$2000 tomorrow. As a result of it being greedy, the best first search algorithm will not choose the shortest path in some specific
+cases.
 `;
