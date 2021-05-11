@@ -18,7 +18,8 @@
 
 ## Additional Features
 ###### Additional features include...
+* Learning about a specific algorithm through the information dropdown
 * Clearing or resetting the grid
 * Saving / Exporting your grids as `.csv` files
 * Importing valid `.csv` files to be used as grids
-* Learning about a specific algorithm through the information dropdown
+
