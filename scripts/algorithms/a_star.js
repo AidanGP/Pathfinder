@@ -61,7 +61,7 @@ const a_star = (neighbors, node_cells) => {
 
     // Iterate through the neighbors of the current node
     for (const neighbor of neighbors[current_node]) {
-      const tentative_g_score = g_score[current_node] + 0.9;
+      const tentative_g_score = g_score[current_node] + 0.9; // With the way that I am visualising, this has to be less than 1
       // If the neighbor looks like it will be better than the current node based on its g score
       if (!(neighbor in g_score) || tentative_g_score < g_score[neighbor]) {
         predecessor[neighbor] = current_node;

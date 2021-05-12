@@ -114,8 +114,8 @@ const update_path = () => {
 
   const neighbors = get_neighbors(blocked);
 
-  // Using best first search for live pathfinding because it is likley to be the fastest
-  const result = best_first_search(neighbors, nodes);
+  // Using a* for live pathfinding because it is likley to be the fastest and always the shortest path
+  const result = a_star(neighbors, nodes);
 
   if (result === -1) {
     path_found = true;
