@@ -8,6 +8,7 @@
 ![Pathfinder Software](img/sample.PNG?raw=true "Pathfinder Example")
 
 [Pathfinder Site](https://aidangp.github.io/Pathfinder)
+[Beta Test Feedback](https://docs.google.com/document/d/15XOFM1E2YLElrtgTOxSfUZUp092F2CDAQP-XCqm3Ja0/edit?usp=sharing)
 
 ## Guide
 ###### Using the Pathfinder software is as easy as...
