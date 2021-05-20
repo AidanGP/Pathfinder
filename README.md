@@ -18,6 +18,8 @@
 * Right clicking / right clicking and dragging to erase the barrier blocks
 * Choosing a pathfinding algorithm from the pathfinding dropdown
 
+or, alternatively, check the official [user manual](https://docs.google.com/document/d/1WBZ_LR7uRWKcieo_6fYzqHRyGkj8Rri6gmoB0qmEDA4/edit?usp=sharing)
+
 ## Additional Features
 ###### Additional features include...
 * Learning about a specific algorithm through the information dropdown
