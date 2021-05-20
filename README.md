@@ -9,12 +9,16 @@
 
 [Pathfinder Site](https://aidangp.github.io/Pathfinder)
 
+[Beta Test Feedback](https://docs.google.com/document/d/15XOFM1E2YLElrtgTOxSfUZUp092F2CDAQP-XCqm3Ja0/edit?usp=sharing)
+
 ## Guide
 ###### Using the Pathfinder software is as easy as...
 * Dragging the start and end (green and pink) nodes around the grid
 * Left clicking / clicking and dragging to draw barriers which cannot be navigated through
 * Right clicking / right clicking and dragging to erase the barrier blocks
 * Choosing a pathfinding algorithm from the pathfinding dropdown
+
+or, alternatively, check the official [user manual](https://docs.google.com/document/d/1WBZ_LR7uRWKcieo_6fYzqHRyGkj8Rri6gmoB0qmEDA4/edit?usp=sharing)
 
 ## Additional Features
 ###### Additional features include...
