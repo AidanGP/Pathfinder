@@ -1,0 +1,40 @@
+"use strict";
+(function () {
+	window.LCG_TRACKING_DEBUG = _coalesce (window.LCG_TRACKING_DEBUG, false);
+	window.LCG_TRACKING_PUSH_URL = _coalesce (window.LCG_TRACKING_PUSH_URL, "/track/v1/p");
+	window.LCG_TRACKING_DELAY = _coalesce (window.LCG_TRACKING_DELAY, 500);
+	window.LCG_TRACKING_SESSION = _coalesce (window.LCG_TRACKING_SESSION, "42face9813df7546afb84fcf4383da87");
+	window.LCG_TRACKING_TRANSACTION = _coalesce (window.LCG_TRACKING_TRANSACTION, "9996d93ac3410bca17a33706734ec4b6");
+	window.LCG_TRACKING_CONTEXT_INCLUDE = _coalesce (window.LCG_TRACKING_CONTEXT_INCLUDE, false);
+	window.LCG_TRACKING_DOCUMENT_INCLUDE = _coalesce (window.LCG_TRACKING_DOCUMENT_INCLUDE, false);
+	window.LCG_TRACKING_VIEWPORT_INCLUDE = _coalesce (window.LCG_TRACKING_VIEWPORT_INCLUDE, false);
+	window.LCG_TRACKING_INITIALIZED_ENABLED = _coalesce (window.LCG_TRACKING_INITIALIZED_ENABLED, true);
+	window.LCG_TRACKING_INITIALIZED_FULL = _coalesce (window.LCG_TRACKING_INITIALIZED_FULL, false);
+	window.LCG_TRACKING_BEACON_ENABLED = _coalesce (window.LCG_TRACKING_BEACON_ENABLED, false);
+	window.LCG_TRACKING_BEACON_INTERVAL = _coalesce (window.LCG_TRACKING_BEACON_INTERVAL, 30);
+	window.LCG_TRACKING_CONTEXT_ENABLED = _coalesce (window.LCG_TRACKING_CONTEXT_ENABLED, true);
+	window.LCG_TRACKING_DOCUMENT_ENABLED = _coalesce (window.LCG_TRACKING_DOCUMENT_ENABLED, true);
+	window.LCG_TRACKING_DEVICE_ENABLED = _coalesce (window.LCG_TRACKING_DEVICE_ENABLED, true);
+	window.LCG_TRACKING_VIEWPORT_ENABLED = _coalesce (window.LCG_TRACKING_VIEWPORT_ENABLED, true);
+	window.LCG_TRACKING_VIEWPORT_INTERVAL = _coalesce (window.LCG_TRACKING_VIEWPORT_INTERVAL, 30);
+	window.LCG_TRACKING_PERFORMANCE_NAVIGATION_ENABLED = _coalesce (window.LCG_TRACKING_PERFORMANCE_ENABLED, true);
+	window.LCG_TRACKING_PERFORMANCE_ENTRIES_ENABLED = _coalesce (window.LCG_TRACKING_PERFORMANCE_ENABLED, true);
+	window.LCG_TRACKING_PERFORMANCE_ENTRIES_INTERVAL = _coalesce (window.LCG_TRACKING_PERFORMANCE_INTERVAL, 6);
+	window.LCG_TRACKING_INJECT_A_ELEMENTS_ENABLED = _coalesce (window.LCG_TRACKING_INJECT_A_ELEMENTS_ENABLED, false);
+	window.LCG_TRACKING_INJECT_DATA_ELEMENTS_ENABLED = _coalesce (window.LCG_TRACKING_INJECT_DATA_ELEMENTS_ENABLED, true);
+	window.LCG_TRACKING_COUNTRY = "AU";
+	if (window.LCG_TRACKING_DEBUG) {
+		console.log ("[LCG][dd][5256cd7a]", window.LCG_TRACKING_SESSION, window.LCG_TRACKING_TRANSACTION);
+	}
+	if (window.LCG_TRACKING_BOOTSTRAP !== undefined) {
+		setTimeout (window.LCG_TRACKING_BOOTSTRAP, 0);
+	}
+	function _coalesce () {
+		for (var _index in arguments) {
+			var _argument = arguments[_index];
+			if (_argument !== undefined)
+				return (_argument);
+		}
+		return (undefined);
+	}
+}) ();

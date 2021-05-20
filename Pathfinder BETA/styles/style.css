@@ -1,0 +1,196 @@
+:root {
+  --cell-color: rgb(229, 229, 229);
+  --wall-color: rgb(0, 0, 0);
+  --s-node-color: rgb(0, 232, 108);
+  --e-node-color: rgb(250, 133, 184);
+  --bg: rgb(255, 255, 255);
+
+  --visited-0: '';
+  --visited-1: '';
+  --visited-2: '';
+  --visited-3: '';
+  --visited-4: '';
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--bg);
+}
+#heading {
+  font-family: "Staatliches", sans-serif;
+}
+#headingbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+#table td {
+  color: transparent;
+  opacity: 1;
+  width: 50px;
+  height: 40px;
+}
+
+#table td:hover,
+li a:hover,
+select:hover {
+  opacity: 0.75;
+}
+
+#table {
+  background-color: var(--cell-color);
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+}
+
+li a,
+select {
+  display: block;
+  color: #000;
+  text-align: center;
+  border: none;
+  padding: 10px 12px;
+  text-decoration: none;
+  margin: 10px;
+  font-family: "Source Sans Pro", sans-serif;
+  text-transform: lowercase;
+  font-size: 20px;
+}
+#path-btn {
+  font-weight: bold;
+}
+
+select {
+  background-color: transparent;
+  outline: none;
+}
+
+.wall {
+  background-color: var(--wall-color) !important;
+}
+
+.cell {
+  background-color: var(--cell-color) !important;
+}
+
+.node-start {
+  background-color: var(--s-node-color) !important;
+}
+
+.node-end {
+  background-color: var(--e-node-color) !important;
+}
+
+.wall:hover,
+.node-start:hover,
+.node-end:hover {
+  animation-name: tableHover;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+.disabled {
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.node-shortest-path {
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(255, 254, 106);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(255, 254, 106);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(255, 254, 106);
+  }
+}
+@keyframes tableHover {
+  0% {
+    transform: scale(0.9);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.9);
+    background-color: var(--visited-0);
+  }
+
+  30% {
+    background-color: var(--visited-1);
+  }
+
+  55% {
+    transform: scale(1.1);
+    background-color: var(--visited-2);
+  }
+
+  75% {
+    background-color: var(--visited-3);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: var(--visited-4);
+  }
+}

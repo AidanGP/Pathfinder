@@ -36,19 +36,19 @@ const disable_bts = (disable) => {
   }
 };
 
-const changeTableDims = () => {
+const change_table_dims = () => {
   /*
-    if there is information on the board i cant resize it without losing said information
-    So if the board is empty i can automatically resize it
+    if there is information on the _grid i cant resize it without losing said information
+    So if the _grid is empty i can automatically resize it
   */
 
-  // Get the number of walls in the current board
-  const current_board = gridToArray();
-  const n_walls = getBlockedCells(current_board).length;
+  // Get the number of walls in the current _grid
+  const current__grid = grid_to_array();
+  const n_walls = get_blocked_cells(current__grid).length;
 
-  // If nothing has been placed on the board, then reset it
+  // If nothing has been placed on the _grid, then reset it
   if (n_walls === 0) {
-    clearBoard();
+    clear_grid();
   }
 };
 
@@ -98,7 +98,7 @@ const coords_of = (cell) => {
   return [col, row];
 };
 
-const defaultGrid = () => {
+const get_default_grid = () => {
   /* 
     get a 2d array that is empty aside from the start and end nodes
   */
@@ -122,23 +122,23 @@ const defaultGrid = () => {
   return grid;
 };
 
-const clearBoard = () => {
+const clear_grid = () => {
   /* 
-    Erase the board back to the default grid (empty aside from 2 nodes)
+    Erase the _grid back to the default grid (empty aside from 2 nodes)
   */
   if (is_disabled) return;
   path_found = false; // Disable the live pathfinding
   disable_bts(false); // Re-enable the buttons
   // Reset the grid
-  const default_grid = defaultGrid();
-  setGrid(default_grid);
-  removeMouseListeners(); // Remove the old mouse listeners
-  setMouseListeners(); // Initialise the grid mouse listeners
+  const default_grid = get_default_grid();
+  set_grid(default_grid);
+  remove_mouse_listeners(); // Remove the old mouse listeners
+  set_mouse_listeners(); // Initialise the grid mouse listeners
 };
 
-const restartBoard = () => {
+const restart_grid = () => {
   /* 
-    Clear all visualisations from the board
+    Clear all visualisations from the _grid
   */
   if (is_disabled) return;
   path_found = false; // Disable live pathfinding
@@ -154,9 +154,11 @@ const restartBoard = () => {
   }
 };
 
-// MAINLINE
+// MAINLINE -------------------------
 
-// Initialise the board and all that
-clearBoard();
+// Initialise the grid
+clear_grid();
 // Start checking if they resize the window
-window.addEventListener("resize", changeTableDims);
+window.addEventListener("resize", change_table_dims);
+
+// ----------------------------------

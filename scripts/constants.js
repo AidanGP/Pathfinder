@@ -23,7 +23,7 @@ const END_ROW = (height) => Math.floor((1 / 2) * height);
 const END_COL = (width) => Math.floor((4 / 5) * width);
 
 // Delays
-const PATH_DELAY = 40;
+const PATH_DELAY = 45;
 const VISUALISATION_DELAY = 15;
 
 // Algorithm Description
@@ -33,7 +33,7 @@ Dijstras doesnt use any distance heuristics and is generally considered to be wo
 on how many iterations the current node is away from the starting node as well as a weighting between each node.
 `;
 const A_STAR_DESCRIPTION = `
-The A* algorithm is commonly implemented in video games, it uses distance heuristics to imrpove its efficiency, this is
+The A* algorithm is commonly implemented in video games, it uses distance heuristics to improve its efficiency, this is
 known as an informed search. The algorithm is faster than Dijstras algorithm and will always find the shortest path.
 A* features a heavy use of distance heuristics such as the g-cost which measures the distance from the current node to the start,
 h-cost which measures the distance from the current node to the end node and f-cost which is the sum of g-cost and h-cost.`;

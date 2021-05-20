@@ -6,18 +6,18 @@ let moving_class; // Set to either S_NODE or E_NODE
 let path_found = false;
 let moving_node = false; // Is a node being moved
 
-const setMouseListeners = () => {
+const set_mouse_listeners = () => {
   /* 
     Initialise the mouse listeners - this is for 
     dragging the nodes and adding/removing walls
   */
   const table = document.getElementById("table");
-  table.addEventListener("mousedown", onMouseDown);
-  table.addEventListener("mousemove", onMouseMove);
-  table.addEventListener("mouseup", onMouseUp);
+  table.addEventListener("mousedown", on_mouse_down);
+  table.addEventListener("mousemove", on_mouse_move);
+  table.addEventListener("mouseup", on_mouse_up);
 };
 
-const removeMouseListeners = () => {
+const remove_mouse_listeners = () => {
   /* 
     We remove the event listeners on occaision so
     memory consumption doesnt keep going to the moon
@@ -26,12 +26,12 @@ const removeMouseListeners = () => {
     with a different size and layout etc.
   */
   const table = document.querySelector("table");
-  table.removeEventListener("mousedown", onMouseDown);
-  table.removeEventListener("mousemove", onMouseMove);
-  table.removeEventListener("mouseup", onMouseUp);
+  table.removeEventListener("mousedown", on_mouse_down);
+  table.removeEventListener("mousemove", on_mouse_move);
+  table.removeEventListener("mouseup", on_mouse_up);
 };
 
-const onMouseDown = (e) => {
+const on_mouse_down = (e) => {
   /* 
     Self explanatory, this is called 
     when you click any of the mouse buttons
@@ -49,14 +49,14 @@ const onMouseDown = (e) => {
   // Perform the action corresponding to the mouse button that was pressed
   switch (MOUSE_BTN) {
     case MOUSE_LEFT_CLICK:
-      onLeftClick(e.target);
+      on_left_click(e.target);
       break;
     case MOUSE_RIGHT_CLICK:
-      onRightClick(e.target);
+      on_right_click(e.target);
   }
 };
 
-const onMouseMove = (e) => {
+const on_mouse_move = (e) => {
   /* 
     This is called when the user moves the mouse over the table
   */
@@ -68,21 +68,21 @@ const onMouseMove = (e) => {
     // Determine the class of the node we are moving
     if (!moving_class) moving_class = e.target.className;
     // Now move the node
-    onNodeMove(e.target);
+    on_node_move(e.target);
   }
 
   // Perform the action corresponding to the mouse button that was pressed
   // This part registers clicking and dragging
   switch (MOUSE_BTN) {
     case MOUSE_LEFT_CLICK:
-      onLeftClick(e.target);
+      on_left_click(e.target);
       break;
     case MOUSE_RIGHT_CLICK:
-      onRightClick(e.target);
+      on_right_click(e.target);
   }
 };
 
-const onMouseUp = (e) => {
+const on_mouse_up = (e) => {
   /* 
     Reset some variables back to default values
     This is necessary for the dragging and dropping etc
@@ -93,7 +93,7 @@ const onMouseUp = (e) => {
   prev_cell = undefined;
 };
 
-const onLeftClick = (table_cell) => {
+const on_left_click = (table_cell) => {
   /* 
     Changes an empty cell to a wall
   */
@@ -105,7 +105,7 @@ const onLeftClick = (table_cell) => {
   if (path_found) update_path();
 };
 
-const onRightClick = (table_cell) => {
+const on_right_click = (table_cell) => {
   /* 
     Changes a wall to an empty cell
   */
@@ -113,7 +113,7 @@ const onRightClick = (table_cell) => {
   if (path_found) update_path();
 };
 
-const onNodeMove = (table_cell) => {
+const on_node_move = (table_cell) => {
   /* 
     Support for dragging and dropping the start / end nodes
   */

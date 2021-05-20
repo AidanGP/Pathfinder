@@ -1,4 +1,4 @@
-const setGrid = (arr) => {
+const set_grid = (arr) => {
   /* 
     Initialise the grid with empty cells and the starting spots for nodes
     based on a given array.

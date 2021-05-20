@@ -38,16 +38,16 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav position-absolute top-50 start-50 translate-middle">
           <li class="nav-item">
-            <a class="nav-link" onclick="clearBoard()">reset</a>
+            <a class="nav-link" onclick="clear_grid()">reset</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" onclick="restartBoard()">clear</a>
+            <a class="nav-link" onclick="restart_grid()">clear</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" onclick="saveBoard()">save</a>
+            <a class="nav-link" onclick="save_grid()">save</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" onclick="importToBoard()">import</a>
+            <a class="nav-link" onclick="import_grid()">import</a>
             <input id="file-input" type="file" name="name" style="display: none;" />
           </li>
           <!-- Algorithm Information dropdown -->
@@ -76,18 +76,18 @@
               <li>
                 <h6 class="dropdown-header">supported algorithms</h6>
               </li>
-              <li><a class="dropdown-item" onclick="startPathfinding(dijstras)">dijstras</a></li>
-              <li><a class="dropdown-item" onclick="startPathfinding(a_star)">a*</a></li>
-              <li><a class="dropdown-item" onclick="startPathfinding(breadth_first_search)">breadth first search</a>
+              <li><a class="dropdown-item" onclick="start_pathfinding(dijstras)">dijstras</a></li>
+              <li><a class="dropdown-item" onclick="start_pathfinding(a_star)">a*</a></li>
+              <li><a class="dropdown-item" onclick="start_pathfinding(breadth_first_search)">breadth first search</a>
               </li>
-              <li><a class="dropdown-item" onclick="startPathfinding(best_first_search)">best first search</a></li>
+              <li><a class="dropdown-item" onclick="start_pathfinding(best_first_search)">best first search</a></li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
     <!-- Help Button -->
-    <a onclick="$('#guide').modal('show');" id="help">help</a>
+    <button onclick="$('#guide').modal('show');" id="help" type="button" class="btn btn-outline-warning">help</button>
   </nav>
 
 

@@ -1,4 +1,4 @@
-const csvToArr = (csv) => {
+const csv_to_arr = (csv) => {
   /* 
     Converts a given csv file to a 2D array
     .CSV -> Array
@@ -15,9 +15,9 @@ const csvToArr = (csv) => {
   return arr;
 };
 
-const importToBoard = () => {
+const import_grid = () => {
   /* 
-    Get a .csv file and display it on the board
+    Get a .csv file and display it on the _grid
   */
   if (is_disabled) return; // Check if the buttons are disabled
   var file_in = document.getElementById("file-input");
@@ -41,13 +41,18 @@ const importToBoard = () => {
       // Get content of file
       const content = readerEvent.target.result;
       // convert the csv to a 2d array
-      const arr = csvToArr(content);
-      // Set the grid to said array
-      setGrid(arr);
+      const arr = csv_to_arr(content);
+      // A valid grid has a start node and end node...
+      if (arr.some(row => row.includes(S_NODE_ENCODING)) && arr.some(row => row.includes(E_NODE_ENCODING))) {
+        // Set the grid to said array
+        set_grid(arr);
 
-      // Reset the listeners
-      removeMouseListeners();
-      setMouseListeners();
+        // Reset the listeners
+        remove_mouse_listeners();
+        set_mouse_listeners();
+      } else {
+        alert('Sorry, that doesnt look like a valid grid.');
+      }
     };
   };
   file_in.click();

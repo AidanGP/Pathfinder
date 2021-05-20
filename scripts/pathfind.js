@@ -9,7 +9,7 @@ const algorithm_name_to_function = {
   "Best First Search": best_first_search,
 };
 
-async function startPathfinding(algorithm) {
+async function start_pathfinding(algorithm) {
   /* 
   Called when the user presses the 'pathfind' button
   Finishes when all of the visualisations are drawn
@@ -18,18 +18,18 @@ async function startPathfinding(algorithm) {
   // Return if the buttons are disabled
   if (is_disabled) return;
 
-  // Remove any visualisations that are already on the board
-  restartBoard();
+  // Remove any visualisations that are already on the _grid
+  restart_grid();
   // Disable the buttons
   disable_bts(true);
 
-  // Get the current state of the board as a 2d array
-  const current_board = gridToArray();
+  // Get the current state of the _grid as a 2d array
+  const current__grid = grid_to_array();
 
   // Get the location of all blocked cells (walls)
-  const blocked = getBlockedCells(current_board);
+  const blocked = get_blocked_cells(current__grid);
   // Get the location of all node cells (start and end)
-  const nodes = getNodeCells(current_board);
+  const nodes = get_node_cells(current__grid);
 
   const neighbors = get_neighbors(blocked);
 
@@ -54,7 +54,7 @@ async function startPathfinding(algorithm) {
 
   // Break the visited cells list into chunks for visualisation
   const visited_cells_to_chunks = [];
-  const chunk_size = 10;
+  const chunk_size = 4;
   for (let i = 0; i < visited_cells_trim.length; i += chunk_size) {
     const visualisation_chunk = visited_cells_trim.slice(i, i + chunk_size);
     visited_cells_to_chunks.push(visualisation_chunk);
@@ -105,17 +105,17 @@ const update_path = () => {
   Basically provides a live updating path
 
   */
-  restartBoard();
+  restart_grid();
 
-  const current_board = gridToArray();
+  const current__grid = grid_to_array();
 
-  const blocked = getBlockedCells(current_board);
-  const nodes = getNodeCells(current_board);
+  const blocked = get_blocked_cells(current__grid);
+  const nodes = get_node_cells(current__grid);
 
   const neighbors = get_neighbors(blocked);
 
   // Using a* for live pathfinding because it is likley to be the fastest and always the shortest path
-  const result = a_star(neighbors, nodes);
+  const result = best_first_search(neighbors, nodes);
 
   if (result === -1) {
     path_found = true;

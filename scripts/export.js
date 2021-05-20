@@ -1,4 +1,4 @@
-const gridToArray = () => {
+const grid_to_array = () => {
   /* 
     Convert the current grid to a 2D array
     Grid -> Array
@@ -38,7 +38,7 @@ const gridToArray = () => {
   return grid;
 };
 
-const saveBoard = () => {
+const save_grid = () => {
   /* 
     Save a copy of the current grid as a .csv file
     Grid -> .CSV
@@ -50,7 +50,7 @@ const saveBoard = () => {
   const file_name = prompt("Please enter a file name", "File Name");
   if (file_name != null) {
     // Get the current grid (encoded)
-    const grid = gridToArray();
+    const grid = grid_to_array();
 
     // Format the grid array into a list of rows (like a csv file)
     const csvRows = [];
